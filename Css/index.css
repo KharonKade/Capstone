@@ -1,0 +1,220 @@
+/* header */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header Styling */
+header {
+    background-color: rgba(255, 255, 255, 0.6); /* White with low transparency */
+    padding: 10px 20px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Logo */
+.logo {
+    height: 50px;
+    margin-right: auto; /* Adjust the size based on your logo */
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 80px;
+    margin-top: 50px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #000; /* Adjust color as needed */
+    font-weight: bold;
+    font-size: larger;
+}
+
+.nav-center {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.nav-links a:hover {
+    color: #0073e6; /* Highlight color on hover */
+}
+
+/*Body*/
+/* Sports Container */
+.sports-container {
+    background-image: url('../images/bg.png'); /* Replace with actual image path */
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Full height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding-top: 90px; /* Add padding to account for header height */
+}
+
+.sports-container h1 {
+    font-size: 7em; /* Adjust for desired size */
+    margin-bottom: 170px;
+}
+
+.sports-buttons {
+    display: flex;
+    gap: 260px;
+    margin-top: 60px;
+}
+
+.sports-buttons button {
+    padding: 30px 60px;
+    background: transparent;
+    background-color: gray;
+    border: 2px solid gray;
+    border-radius: 25px; /* Makes it oblong */
+    color: white;
+    font-size: 2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sports-buttons button:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+/* News Carousel */
+
+.news-container {
+    background-color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.news-container h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+/* News Carousel */
+.news-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 0;
+    width: 80%;
+    justify-content: center; /* Center the items horizontally */
+    align-items: center; /* Center the items vertically */
+    position: relative;
+    margin: 0 auto; /* Center the carousel within its parent container */
+}
+
+/* Flip Card Effect */
+.flip-card {
+    width: 250px;
+    height: 350px;
+    perspective: 1000px; /* Create 3D effect */
+    margin: 0 auto;
+}
+
+.flip-card-inner {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s; /* Flip speed */
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg); /* Flip the card when hovered */
+}
+
+/* Front of the card - displaying the image */
+.flip-card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Hide the back side when flipped */
+}
+
+.flip-card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the entire card */
+}
+
+/* Back of the card - displaying the details */
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Hide the front side when flipped */
+    background-color: black !important; /* Set black background */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    font-size: 1.1em;
+    opacity: 0; /* Start with the back content hidden */
+    transition: opacity 0.3s ease-in-out; /* Fade-in effect for text */
+}
+
+/* Show back content when hovered */
+.flip-card:hover .flip-card-back {
+    opacity: 1; /* Make the back content visible when the card is flipped */
+}
+
+/* Ensure the text inside the back content is visible when hovered */
+.flip-card-back .back-content {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.flip-card:hover .flip-card-back .back-content {
+    opacity: 1; /* Make the details visible when the card is flipped */
+}
+
+/* Scroll behavior */
+.news-carousel:hover {
+    cursor: pointer;
+}
+
+.news-carousel::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Auto-scroll effect */
+.news-carousel:hover {
+    animation: auto-scroll 10s linear infinite;
+}
+
+@keyframes auto-scroll {
+    0% { scroll-left: 0; }
+    100% { scroll-left: 100%; }
+}
+
+
+.advertisement {
+    background-color: #f0f0f0;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #333;
+    width: 80%; /* Center the advertisement space */
+    text-align: center;
+}
