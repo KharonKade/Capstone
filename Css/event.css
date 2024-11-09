@@ -295,3 +295,113 @@ a {
 .news-carousel::-webkit-scrollbar {
     display: none;
 }
+
+.createEventSection {
+    padding: 20px;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin-top: 30px;
+}
+
+.createEventSection h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.create-event-button {
+    font-size: 1.2em;
+    padding: 15px 30px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.create-event-button:hover {
+    background-color: #45a049; /* Slightly darker green */
+}
+
+.note {
+    margin-top: 30px;
+    color: red;
+    font-size: 1.1em;
+}
+
+.note a {
+    font-weight: bold;
+    color: red;
+    text-decoration: none;
+}
+
+.note a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Styling */
+.footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    flex-wrap: wrap; /* Ensures it wraps on smaller screens */
+}
+
+.footer-section {
+    flex: 1;
+    margin: 10px;
+    text-align: center;
+}
+
+.footer-section h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #f2f2f2;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin: 5px 0;
+}
+
+.footer-section a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: #fff;
+}
+
+.footer-logo {
+    width: 200px;
+    margin-top: 90px;
+}
+
+.social-icons img {
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+}
+
+.sponsor-logo {
+    width: 100px;
+    margin-top: 10px;
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
