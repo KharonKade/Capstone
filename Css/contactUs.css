@@ -1,0 +1,80 @@
+/* Reset Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header Styling */
+header {
+    background-color: rgba(255, 255, 255, 0.6); /* White with low transparency */
+    padding: 10px 20px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Logo */
+.logo {
+    height: 50px;
+    margin-right: auto; /* Adjust the size based on your logo */
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 80px;
+    margin-top: 50px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #000; /* Adjust color as needed */
+    font-weight: bold;
+    font-size: larger;
+}
+
+.nav-center {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.nav-links a:hover {
+    color: #0073e6; /* Highlight color on hover */
+}
+
+.event-hero {
+    background-image: url('../images/bg.png'); /* Add your background image here */
+    background-size: cover;
+    background-position: center;
+    height: 300px; /* Adjusted height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #fff;
+}
+
+.event-hero-content {
+    text-align: center;
+}
+
+.event-hero h1 {
+    font-size: 7rem;
+    margin-top: 30px;
+}
+
+.event-hero h2 {
+    font-size: 3rem;
+    font-weight: 300;
+}
