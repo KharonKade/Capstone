@@ -53,7 +53,7 @@ header {
     color: #0073e6; /* Highlight color on hover */
 }
 
-.event-hero {
+.hero {
     background-image: url('../images/bg.png'); /* Add your background image here */
     background-size: cover;
     background-position: center;
@@ -65,16 +65,16 @@ header {
     color: #fff;
 }
 
-.event-hero-content {
+.hero-content {
     text-align: center;
 }
 
-.event-hero h1 {
+.hero h1 {
     font-size: 7rem;
     margin-top: 30px;
 }
 
-.event-hero h2 {
+.hero h2 {
     font-size: 3rem;
     font-weight: 300;
 }
@@ -140,18 +140,18 @@ header {
 }
 
 /* News Carousel */
-.news-container {
+.inline-container {
     background-color: white;
     padding: 40px 20px;
     text-align: center;
 }
 
-.news-container h2 {
+.inline-container h2 {
     font-size: 3em;
     margin-bottom: 20px;
 }
 
-.news-carousel {
+.inline-carousel {
     display: flex;
     gap: 20px;
     overflow-x: auto;
@@ -191,14 +191,14 @@ a {
     color: inherit;
 }
 
-.news-item {
+.inline-item {
     flex-shrink: 0; /* Prevent items from shrinking */
     width: 250px;   /* Set fixed width for each card */
     scroll-snap-align: start; /* Align items to the start when scrolling */
     border-radius: 15px;
 }
 
-.news-item a {
+.inline-item a {
     display: inline-block;
     width: 100%;
     height: 100%;
@@ -276,16 +276,16 @@ a {
 }
 
 /* Scroll behavior */
-.news-carousel:hover {
+.inline-carousel:hover {
     cursor: pointer;
 }
 
-.news-carousel::-webkit-scrollbar {
+.inline-carousel::-webkit-scrollbar {
     display: none; /* Hide scrollbar */
 }
 
 /* Optional: hide scrollbar (optional for design) */
-.news-carousel::-webkit-scrollbar {
+.inline-carousel::-webkit-scrollbar {
     display: none;
 }
 
