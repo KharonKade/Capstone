@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events Pages</title>
     <link rel="stylesheet" href="Css/eventPages.css">
+    <!-- Swiper CSS -->
+<link
+rel="stylesheet"
+href="https://unpkg.com/swiper/swiper-bundle.min.css"
+/>
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </head>
 <body>
     <header>
@@ -32,17 +39,31 @@
     <div class="event-page">
         <!-- Left Section -->
         <div class="left-section">
-          <img src="event-poster.jpg" alt="Event Poster" class="event-poster">
-          <div class="event-details">
-            <h1 class="event-name">Event Name</h1>
-            <p class="event-datetime"><strong>Dates & Times:</strong> January 15, 2024, 10:00 AM - 5:00 PM</p>
-            <p class="event-description"><strong>Description:</strong> This is an exciting event featuring skateboarding, BMX, and inline sports!</p>
-            <p class="event-location"><strong>Location:</strong> Baguio Skate Park</p>
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <img src="images/sumvac.png" alt="Event Poster 1" class="event-poster">
+              </div>
+              <div class="swiper-slide">
+                <img src="images/sumvac.png" alt="Event Poster 2" class="event-poster">
+              </div>
+              <div class="swiper-slide">
+                <img src="images/sumvac.png" alt="Event Poster 3" class="event-poster">
+              </div>
+            </div>
+            <!-- Pagination dots (optional) -->
+            <div class="swiper-pagination"></div>
           </div>
         </div>
-    
+
         <!-- Right Section -->
         <div class="right-section">
+            <div class="event-details">
+                <h1 class="event-name">Event Name</h1>
+                <p class="event-datetime"><strong>Dates & Times:</strong> January 15, 2024, 10:00 AM - 5:00 PM</p>
+                <p class="event-description"><strong>Description:</strong> This is an exciting event featuring skateboarding, BMX, and inline sports!</p>
+                <p class="event-location"><strong>Location:</strong> Baguio Skate Park</p>
+            </div>
           <h2>Partners & Sponsors</h2>
           <div class="sponsors">
             <img src="images/vanlogo.png" alt="Sponsor 1 Logo">
@@ -50,7 +71,7 @@
             <img src="images/vanlogo.png" alt="Sponsor 3 Logo">
           </div>
         </div>
-      </div>
+    </div>
     
       <footer class="footer">
         <!-- BASF Logo Section -->
@@ -100,5 +121,22 @@
             <img src="images/vanlogo.png" alt="Sponsor Logo" class="sponsor-logo">
         </div>
     </footer>
+    <script>
+        const swiper = new Swiper('.swiper-container', {
+          loop: true, // Enables infinite scrolling
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true, // Enables clickable pagination dots
+          },
+          autoplay: false, // Autoplay off
+        });
+      
+        // Add click-to-slide functionality
+        document.querySelectorAll('.swiper-slide img').forEach((img) => {
+          img.addEventListener('click', () => {
+            swiper.slideNext(); // Move to the next slide on click
+          });
+        });
+      </script>    
 </body>
 </html>

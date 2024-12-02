@@ -1,3 +1,10 @@
+/* Reset Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* Header Styling */
 header {
     background-color: rgba(255, 255, 255, 0.6); /* White with low transparency */
@@ -85,16 +92,71 @@ header {
   
   /* Left Section */
   .left-section {
-    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   
   .event-poster {
-    width: 100%;
+    width: 50%;
+    height: auto;
     border-radius: 10px;
   }
   
+  /* Swiper container style */
+.swiper-container {
+    width: 100%; /* Ensure it fits within the parent container */
+    max-width: 500px; /* Limit the width */
+    height: auto; /* Adjust height to maintain image aspect ratio */
+    border-radius: 10px; /* Optional: Rounded corners */
+    overflow: hidden;
+    position: relative;
+  }
+  
+.swiper-slide img {
+    width: 50%;
+    height: auto;
+    cursor: pointer; /* Make the cursor a pointer to indicate clickability */
+    border-radius: 10px; 
+    display: block;
+    margin: 0 auto;
+}
+
+.swiper-pagination {
+    position: absolute; /* Position relative to swiper container */
+    bottom: 10px; /* Align to bottom of the container */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Ensure perfect horizontal centering */
+    width: 50%; /* Match image width */
+    display: flex; /* Flexbox to center pagination dots */
+    justify-content: center;
+  }
+
+
+  .swiper-pagination-bullet {
+    background-color: black; /* Set dot color */
+    opacity: 0.7; /* Slight transparency for better visibility */
+    margin: 0 5px;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background-color: red; /* Highlight active dot */
+    opacity: 1;
+  }
+  
+  /* Right Section */
+  .right-section {
+    flex: 1;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+  }
+
   .event-details {
     margin-top: 20px;
+    text-align: start;
   }
   
   .event-details h1 {
@@ -106,18 +168,10 @@ header {
     margin: 5px 0;
   }
   
-  /* Right Section */
-  .right-section {
-    flex: 1;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    text-align: center;
-  }
-  
   .right-section h2 {
     margin-bottom: 20px;
     font-size: 22px;
+    margin-top: 70px;
   }
   
   .sponsors img {
