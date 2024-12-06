@@ -30,7 +30,6 @@ $sponsors = $conn->query("SELECT * FROM sponsor_logos WHERE event_id = $event_id
 </head>
 <body>
     <div class="admin-container">
-        <h2>Edit Event</h2>
         <form action="update_event.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="event_id" value="<?php echo $event['id']; ?>">
 
@@ -97,19 +96,20 @@ $sponsors = $conn->query("SELECT * FROM sponsor_logos WHERE event_id = $event_id
     </div>
     <script>
         document.getElementById('add-schedule').addEventListener('click', function () {
-            const container = document.getElementById('schedule-container');
-            const scheduleDiv = document.createElement('div');
-            scheduleDiv.innerHTML = 
-                <label>Date:</label>
-                <input type="date" name="event_date[]" required>
-                <label>Start Time:</label>
-                <input type="time" name="start_time[]" required>
-                <label>End Time:</label>
-                <input type="time" name="end_time[]" required>
-                <button type="button" onclick="this.parentElement.remove()">Remove</button>
-            ;
+    const container = document.getElementById('schedule-container');
+    const scheduleDiv = document.createElement('div');
+    scheduleDiv.innerHTML = `
+        <label>Date:</label>
+        <input type="date" name="event_date[]" required>
+        <label>Start Time:</label>
+        <input type="time" name="start_time[]" required>
+        <label>End Time:</label>
+        <input type="time" name="end_time[]" required>
+        <button type="button" onclick="this.parentElement.remove()">Remove</button>
+            `;
             container.appendChild(scheduleDiv);
         });
+
     </script>
 </body>
 </html>

@@ -35,7 +35,7 @@ $row = $result->fetch_assoc();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Inquiry Message</title>
-    <link rel="stylesheet" href="Css/admin.css">
+    <link rel="stylesheet" href="Css/view_message.css">
     <style>
     .message-content {
             white-space: pre-wrap; /* Allows text wrapping, preserving new lines */
@@ -53,6 +53,7 @@ $row = $result->fetch_assoc();
                 <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="admin.html">Create Event</a></li>
                 <li><a href="manage_upcoming.php">Manage Events</a></li>
+                <li><a href="archived_events.php">Archived Events</a></li>
                 <li><a href="/create-news">Create News & Announcements</a></li>
                 <li><a href="/manage-news">Manage News & Announcements</a></li>
                 <li><a href="view_inquiries.php">Inquiries</a></li>
