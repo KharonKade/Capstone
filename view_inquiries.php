@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Inquiries</title>
-    <link rel="stylesheet" href="Css/admin.css">
+    <link rel="stylesheet" href="Css/view_inquiries.css">
 </head>
 <body>
     <div class="admin-container">
@@ -15,9 +15,11 @@
                 <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="admin.html">Create Event</a></li>
                 <li><a href="manage_upcoming.php">Manage Events</a></li>
+                <li><a href="archived_events.php">Archived Events</a></li>
                 <li><a href="/create-news">Create News & Announcements</a></li>
                 <li><a href="/manage-news">Manage News & Announcements</a></li>
                 <li><a href="view_inquiries.php">Inquiries</a></li>
+                <li><a href="archived_inquiries.php">Archived Inquiries</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
@@ -39,41 +41,60 @@
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            // Fetch contact inquiries from the database
-            $sql = "SELECT id, full_name, email, contact_number, concerns, message, submitted_at FROM contact_inquiries ORDER BY submitted_at DESC";
+            // Fetch contact inquiries from the database, ordered by ID DESC
+            $sql = "SELECT id, full_name, email, contact_number, concerns, message, submitted_at, archived FROM contact_inquiries ORDER BY id DESC";
             $result = $conn->query($sql);
 
             echo "<div class='content-wrapper'>";
+
             if ($result->num_rows > 0) {
                 echo "<h2>Contact Inquiries</h2>";
-                echo "<table border='1'>
-                        <tr>
-                            <th>ID</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Contact Number</th>
-                            <th>Concerns</th>
-                            <th>Message</th>
-                            <th>Submitted At</th>
-                        </tr>";
+                echo "<table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Contact Number</th>
+                                <th>Concerns</th>
+                                <th>Message</th>
+                                <th>Submitted At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+
+                // Initialize a counter for the row numbers
+                $counter = 1;
 
                 // Output data of each row
                 while($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>" . $row["id"] . "</td>
-                            <td>" . $row["full_name"] . "</td>
-                            <td>" . $row["email"] . "</td>
-                            <td>" . $row["contact_number"] . "</td>
-                            <td>" . $row["concerns"] . "</td>
-                            <td>" . $row["message"] . "</td>
-                            <td>" . $row["submitted_at"] . "</td>
-                          </tr>";
+                    // Only show inquiries that are not archived (optional, can be modified)
+                    if ($row["archived"] == 0) {
+                        $shortMessage = strlen($row["message"]) > 25 ? substr($row["message"], 0, 25) . '...' : $row["message"];
+                        echo "<tr>
+                                <td>" . $counter . "</td>
+                                <td>" . htmlspecialchars($row["full_name"]) . "</td>
+                                <td>" . htmlspecialchars($row["email"]) . "</td>
+                                <td>" . htmlspecialchars($row["contact_number"]) . "</td>
+                                <td>" . htmlspecialchars($row["concerns"]) . "</td>
+                                <td>" . htmlspecialchars($shortMessage) . "</td>
+                                <td>" . htmlspecialchars($row["submitted_at"]) . "</td>
+                                <td>
+                                    <a href='view_message.php?id=" . $row["id"] . "'>View</a> |
+                                    <a href='archive_inquiry.php?id=" . $row["id"] . "' onclick='return confirm(\"Are you sure you want to archive this inquiry?\");'>Archive</a> |
+                                    <a href='delete_inquiry.php?id=" . $row["id"] . "' onclick='return confirm(\"Are you sure you want to delete this inquiry?\");'>Delete</a>
+                                </td>
+                              </tr>";
+                        $counter++;
+                    }
                 }
 
-                echo "</table>";
+                echo "</tbody></table>";
             } else {
                 echo "<p>No inquiries found.</p>";
             }
+
             echo "</div>";
 
             // Close the connection

@@ -57,7 +57,11 @@ if ($conn->query($sql) === TRUE) {
         }
     }
 
-    echo "Event created successfully!";
+    // Display success message in JavaScript
+    echo "<script type='text/javascript'>
+            alert('Event created successfully!');
+            window.location.href = 'admin.html'; // Redirect to admin dashboard after event is created
+          </script>";
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }

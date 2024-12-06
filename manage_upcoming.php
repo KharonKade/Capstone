@@ -5,8 +5,27 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch all events
-$sql = "SELECT * FROM upcoming_events";
+// Handle Archive Action
+if (isset($_GET['archive_id'])) {
+    $archive_id = intval($_GET['archive_id']);
+    $archive_sql = "UPDATE upcoming_events SET status = 'archived' WHERE id = $archive_id";
+
+    if ($conn->query($archive_sql)) {
+        header("Location: manage_upcoming.php?message=Event archived successfully");
+        exit();
+    } else {
+        die("Error archiving event: " . $conn->error);
+    }
+}
+
+$sql = "
+    SELECT 
+        @rownum := @rownum + 1 AS row_num, 
+        id, event_name, location, category, registration 
+    FROM upcoming_events, (SELECT @rownum := 0) r 
+    WHERE status = 'active'
+    ORDER BY id DESC
+";
 $result = $conn->query($sql);
 ?>
 
@@ -16,7 +35,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Upcoming Events</title>
-    <link rel="stylesheet" href="Css/admin.css">
+    <link rel="stylesheet" href="Css/manage_event.css">
 </head>
 <body>
     <div class="admin-container">
@@ -26,9 +45,11 @@ $result = $conn->query($sql);
                 <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="admin.html">Create Event</a></li>
                 <li><a href="manage_upcoming.php">Manage Events</a></li>
+                <li><a href="archived_events.php">Archived Events</a></li>
                 <li><a href="/create-news">Create News & Announcements</a></li>
                 <li><a href="/manage-news">Manage News & Announcements</a></li>
                 <li><a href="view_inquiries.php">Inquiries</a></li>
+                <li><a href="archived_inquiries.php">Archived Inquiries</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
@@ -48,9 +69,12 @@ $result = $conn->query($sql);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php 
+                    // Initialize a counter for row numbers
+                    $row_num = 1;
+                    while ($row = $result->fetch_assoc()): ?>
                     <tr>
-                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row_num++; ?></td> <!-- Display the row number -->
                         <td><?php echo $row['event_name']; ?></td>
                         <td><?php echo $row['location']; ?></td>
                         <td><?php echo ucfirst($row['category']); ?></td>
@@ -74,7 +98,8 @@ $result = $conn->query($sql);
                         <td>
                             <a href="view_event.php?id=<?php echo $row['id']; ?>">View</a> |
                             <a href="edit_event.php?id=<?php echo $row['id']; ?>">Edit</a> |
-                            <a href="delete_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a>
+                            <a href="delete_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a> |
+                            <a href="archive_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Archive this event?')">Archive</a>
                         </td>
                     </tr>
                     <?php endwhile; ?>

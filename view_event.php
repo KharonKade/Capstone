@@ -5,11 +5,16 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Get the event ID
 $event_id = $_GET['id'];
 
 // Fetch event details
 $event_query = "SELECT * FROM upcoming_events WHERE id = $event_id";
-$event = $conn->query($event_query)->fetch_assoc();
+$event = $conn->query($event_query);
+if (!$event || $event->num_rows === 0) {
+    die("Event not found: " . $conn->error);
+}
+$event = $event->fetch_assoc();
 
 // Fetch schedules
 $schedules_query = "SELECT * FROM event_schedules WHERE event_id = $event_id";
@@ -18,10 +23,16 @@ $schedules = $conn->query($schedules_query);
 // Fetch poster images
 $images_query = "SELECT * FROM event_images WHERE event_id = $event_id";
 $images = $conn->query($images_query);
+if (!$images) {
+    die("Error fetching images: " . $conn->error);
+}
 
 // Fetch sponsor logos
 $sponsors_query = "SELECT * FROM sponsor_logos WHERE event_id = $event_id";
 $sponsors = $conn->query($sponsors_query);
+if (!$sponsors) {
+    die("Error fetching sponsors: " . $conn->error);
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,11 +41,13 @@ $sponsors = $conn->query($sponsors_query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Event</title>
-    <link rel="stylesheet" href="Css/admin.css">
+    <link rel="stylesheet" href="Css/view_event.css">
 </head>
 <body>
-    <div class="admin-container">
-        <h2><?php echo htmlspecialchars($event['event_name']); ?></h2>
+<div class="admin-container">
+    <!-- Left Side -->
+    <div class="left-side">
+        <p><strong>Event Name:</strong> <?php echo htmlspecialchars($event['event_name']); ?></p>
         <p><strong>Location:</strong> <?php echo htmlspecialchars($event['location']); ?></p>
         <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($event['description'])); ?></p>
         <p><strong>Category:</strong> <?php echo ucfirst(htmlspecialchars($event['category'])); ?></p>
@@ -44,39 +57,52 @@ $sponsors = $conn->query($sponsors_query);
         <ul>
             <?php if ($schedules->num_rows > 0): ?>
                 <?php while ($schedule = $schedules->fetch_assoc()): ?>
-                <li>
-                    <strong>Date:</strong> <?php echo $schedule['event_date']; ?> | 
-                    <strong>Start:</strong> <?php echo $schedule['start_time']; ?> | 
-                    <strong>End:</strong> <?php echo $schedule['end_time']; ?>
-                </li>
+                    <li>
+                        <strong>Date:</strong> <?php echo htmlspecialchars($schedule['event_date']); ?> | 
+                        <strong>Start:</strong> <?php echo htmlspecialchars($schedule['start_time']); ?> | 
+                        <strong>End:</strong> <?php echo htmlspecialchars($schedule['end_time']); ?>
+                    </li>
                 <?php endwhile; ?>
             <?php else: ?>
                 <p>No schedules available for this event.</p>
             <?php endif; ?>
         </ul>
+    </div>
 
-        <h3>Posters</h3>
-        <div>
-            <?php if ($images->num_rows > 0): ?>
-                <?php while ($image = $images->fetch_assoc()): ?>
-                <img src="<?php echo htmlspecialchars($image['image_path']); ?>" alt="Poster" style="width: 100px; height: auto; margin: 5px;">
-                <?php endwhile; ?>
-            <?php else: ?>
-                <p>No poster images uploaded for this event.</p>
-            <?php endif; ?>
-        </div>
+    <!-- Right Side -->
+    <div class="right-side">
+        <div class="media-container">
+            <div class="image-container">
+                <h3>Posters</h3>
+                <?php if ($images->num_rows > 0): ?>
+                    <?php while ($image = $images->fetch_assoc()): ?>
+                        <img src="<?php echo htmlspecialchars($image['image_path']); ?>" 
+                             alt="Poster" 
+                             style="width: 100%; height: auto; margin-bottom: 10px;">
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p>No poster images uploaded for this event.</p>
+                <?php endif; ?>
+            </div>
 
-        <h3>Sponsor Logos</h3>
-        <div>
-            <?php if ($sponsors->num_rows > 0): ?>
-                <?php while ($sponsor = $sponsors->fetch_assoc()): ?>
-                <img src="<?php echo htmlspecialchars($sponsor['logo_path']); ?>" alt="Sponsor Logo" style="width: 100px; height: auto; margin: 5px;">
-                <?php endwhile; ?>
-            <?php else: ?>
-                <p>No sponsor logos available for this event.</p>
-            <?php endif; ?>
+            <div class="sponsor-container">
+                <h3>Sponsor Logos</h3>
+                <?php if ($sponsors->num_rows > 0): ?>
+                    <?php while ($sponsor = $sponsors->fetch_assoc()): ?>
+                        <img src="<?php echo htmlspecialchars($sponsor['logo_path']); ?>" 
+                             alt="Sponsor Logo" 
+                             style="width: 100%; height: auto; margin-bottom: 10px;">
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p>No sponsor logos available for this event.</p>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
+</div>
+<form method="post" action="javascript:history.back()">
+            <button type="submit">Return</button>
+    </form>
 </body>
 </html>
 

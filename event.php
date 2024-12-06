@@ -72,6 +72,8 @@
                 event_schedules s ON e.id = s.event_id
             JOIN 
                 event_images i ON e.id = i.event_id
+            WHERE 
+                e.status = 'active'   -- Fetch only active events
             GROUP BY 
                 e.id
             ORDER BY 

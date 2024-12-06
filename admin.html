@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Event</title>
-    <link rel="stylesheet" href="Css/admin.css">
+    <link rel="stylesheet" href="Css/admin.css?v=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="admin-container">
@@ -14,9 +15,11 @@
                 <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="admin.html">Create Event</a></li>
                 <li><a href="manage_upcoming.php">Manage Events</a></li>
+                <li><a href="archived_events.php">Archived Events</a></li>
                 <li><a href="create_news.php">Create News & Announcements</a></li>
                 <li><a href="manage_news.php">Manage News & Announcements</a></li>
                 <li><a href="view_inquiries.php">Inquiries</a></li>
+                <li><a href="archived_inquiries.php">Archived Inquiries</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
@@ -42,7 +45,6 @@
 
                 <label for="registration">Event Registration:</label>
                 <input type="checkbox" name="registration" id="registration" value="1">
-                <span>Enable Registration</span>
 
                 <div id="schedule-container">
                     <div class="schedule-item">

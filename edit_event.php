@@ -99,7 +99,7 @@ $sponsors = $conn->query("SELECT * FROM sponsor_logos WHERE event_id = $event_id
         document.getElementById('add-schedule').addEventListener('click', function () {
             const container = document.getElementById('schedule-container');
             const scheduleDiv = document.createElement('div');
-            scheduleDiv.innerHTML = `
+            scheduleDiv.innerHTML = 
                 <label>Date:</label>
                 <input type="date" name="event_date[]" required>
                 <label>Start Time:</label>
@@ -107,7 +107,7 @@ $sponsors = $conn->query("SELECT * FROM sponsor_logos WHERE event_id = $event_id
                 <label>End Time:</label>
                 <input type="time" name="end_time[]" required>
                 <button type="button" onclick="this.parentElement.remove()">Remove</button>
-            `;
+            ;
             container.appendChild(scheduleDiv);
         });
     </script>
