@@ -36,14 +36,6 @@ $row = $result->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Inquiry Message</title>
     <link rel="stylesheet" href="Css/view_message.css">
-    <style>
-    .message-content {
-            white-space: pre-wrap; /* Allows text wrapping, preserving new lines */
-            word-wrap: break-word; /* Breaks long words onto the next line */
-            max-width: 100%;
-            overflow-wrap: break-word;
-        }
-    </style>
 </head>
 <body>
     <div class="admin-container">
@@ -62,11 +54,11 @@ $row = $result->fetch_assoc();
             </ul>
         </nav>
         <div class="main-content">
-            <h2>View Inquiry</h2>
-            <table border="1">
+            <h2>Inquiry Details</h2>
+            <table>
                 <tr>
                     <th>ID</th>
-                    <td><?php echo $inquiry_position; ?></td> <!-- Show the sequential position -->
+                    <td><?php echo $inquiry_position; ?></td>
                 </tr>
                 <tr>
                     <th>Full Name</th>

@@ -50,7 +50,7 @@ $result = $conn->query($sql);
                 echo "<table>
                         <thead>
                             <tr>
-                                <th>No.</th>
+                                <th>ID</th>
                                 <th>Full Name</th>
                                 <th>Email</th>
                                 <th>Contact Number</th>

@@ -64,6 +64,8 @@ body {
     padding: 30px;
     background-color: white;
     overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 /* Heading Styling */
@@ -71,14 +73,17 @@ h2 {
     font-size: 28px;
     color: #2c3e50;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Table Styling */
 table {
-    width: 70%;
+    width: auto; /* Adjusts width based on content */
+    max-width: 100%; /* Prevents overflow */
     border-collapse: collapse;
     margin-top: 20px;
-    border-radius: 15px;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 th, td {
@@ -97,6 +102,7 @@ th {
 td {
     font-size: 14px;
     color: #555;
+    width: 100%;
 }
 
 td a {
@@ -112,20 +118,42 @@ td a:hover {
 
 /* Message Content Styling */
 .message-content {
-    white-space: pre-wrap; /* Allows text wrapping, preserving new lines */
-    word-wrap: break-word; /* Breaks long words onto the next line */
-    word-break: break-word; /* Ensures long words break if necessary */
-    max-width: 100%;
-    overflow-wrap: break-word;
+    background-color: #fafafa;
+    padding: 15px;
+    border-radius: 8px;
     color: #555;
     font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: block;
+    width: 100%;
+    line-height: 1.6;
+    max-width: 100%; /* Prevents overflow */
+    word-break: break-word; /* Breaks long words at the boundary */
 }
 
+/* Optional: If you want a different background for code-like formatting */
 .message-content pre {
     background-color: #f8f8f8;
     padding: 10px;
     border-radius: 5px;
     margin: 10px 0;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+}
+
+/* Styling for long messages with more space */
+.message-content p {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+/* Table hover effect */
+tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
 }
 
 /* Responsive Design */
@@ -149,20 +177,4 @@ td a:hover {
     h2 {
         font-size: 24px;
     }
-}
-
-/* Button Styling */
-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #2980b9;
 }

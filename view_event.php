@@ -45,7 +45,6 @@ if (!$sponsors) {
 </head>
 <body>
 <div class="admin-container">
-    <!-- Left Side -->
     <div class="left-side">
         <p><strong>Event Name:</strong> <?php echo htmlspecialchars($event['event_name']); ?></p>
         <p><strong>Location:</strong> <?php echo htmlspecialchars($event['location']); ?></p>
