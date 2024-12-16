@@ -230,13 +230,31 @@ a {
 
 /* Back of the card */
 .flip-card-back {
-    background-color: darkgrey; /* Black background for the back */
+    background-size: cover; /* Ensure the image covers the area */
+    background-position: center; /* Center the background image */
     color: white;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    transform: rotateY(180deg); /* Rotates it 180 degrees to align when flipped */
+    transform: rotateY(180deg); /* Rotate for the flip effect */
+    position: relative; /* Enable overlay layers */
+    border-radius: 15px;
+    overflow: hidden; /* Ensures image stays within the border */
+}
+
+/* Applying blur only to the background image */
+.flip-card-back::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit; /* Use the same image as the front */
+    filter: blur(10px) brightness(0.5); /* Apply blur and dim the image */
+    z-index: 1; /* Behind text */
 }
 
 /* Show back content when hovered */
@@ -267,6 +285,36 @@ a {
 .event-carousel::-webkit-scrollbar {
     display: none;
 }
+
+/* Back content styling */
+.flip-card-back .back-content {
+    z-index: 2; /* Above the blurred background */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black box */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Modernize the text inside the back content */
+.flip-card-back .back-content p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    font-family: 'Poppins', sans-serif; /* Modern, clean font */
+}
+
+.flip-card-back .back-content p:first-child {
+    font-size: 1.5rem;
+    font-weight: bold; /* Emphasize event name */
+    color: #ffcc00; /* Highlighted color */
+}
+
+.flip-card-back .back-content p:nth-child(2),
+.flip-card-back .back-content p:nth-child(3) {
+    font-size: 1rem;
+    color: #e0e0e0; /* Softer text color */
+}
+
+
 
 /* Footer Styling */
 .footer {

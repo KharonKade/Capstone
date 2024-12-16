@@ -62,6 +62,7 @@
 
             $sql = "
             SELECT 
+                e.id,
                 e.event_name, 
                 e.category, 
                 s.event_date, 
@@ -80,23 +81,21 @@
                 s.event_date ASC";
 
             $result = $conn->query($sql);
-
+            
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="event-item">
-                            <a href="eventPages.html">
+                            <a href="eventPages.php?id=' . $row['id'] . '">
                                 <div class="flip-card">
                                     <div class="flip-card-inner">
-                                        <!-- Front Side (image) -->
                                         <div class="flip-card-front">
                                             <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
                                         </div>
-                                        <!-- Back Side (black background with details) -->
-                                        <div class="flip-card-back">
+                                        <div class="flip-card-back" style="background-image: url(' . "'" . $row["image_path"] . "'" . ');">
                                             <div class="back-content">
-                                                <p>' . $row["event_name"] . '</p> 
-                                                <p>Category: ' . $row["category"] . '</p> 
-                                                <p>Date: ' . $row["event_date"] . '</p> 
+                                                <p>' . $row["event_name"] . '</p>
+                                                <p>Category: ' . $row["category"] . '</p>
+                                                <p>Date: ' . $row["event_date"] . '</p>
                                                 <br>
                                                 <p>Click for more...</p>
                                             </div>
@@ -109,7 +108,6 @@
             } else {
                 echo "<p>No upcoming events found.</p>";
             }
-
 
             $conn->close();
             ?>
@@ -170,5 +168,28 @@
     </footer>
 
     <script src="jsScript/event.js"></script>
+    <script>
+        let currentSlide = 0;
+
+        function navigateCarousel(direction) {
+            const slides = document.querySelectorAll('.poster-slide');
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImage.src = src;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+    </script>
+        
 </body>
 </html>
