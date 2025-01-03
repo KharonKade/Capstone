@@ -62,6 +62,7 @@
 
             $sql = "
             SELECT 
+                e.id,           -- Add the event ID here
                 e.event_name, 
                 e.category, 
                 s.event_date, 
@@ -78,33 +79,35 @@
                 e.id
             ORDER BY 
                 s.event_date ASC";
-
+        
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
+
                     echo '<div class="event-item">
-                            <a href="eventPages.html">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        <!-- Front Side (image) -->
-                                        <div class="flip-card-front">
-                                            <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
-                                        </div>
-                                        <!-- Back Side (black background with details) -->
-                                        <div class="flip-card-back">
-                                            <div class="back-content">
-                                                <p>' . $row["event_name"] . '</p> 
-                                                <p>Category: ' . $row["category"] . '</p> 
-                                                <p>Date: ' . $row["event_date"] . '</p> 
-                                                <br>
-                                                <p>Click for more...</p>
-                                            </div>
+                        <a href="eventPages.php?id=' . $row['id'] . '">
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <!-- Front Side (image) -->
+                                    <div class="flip-card-front">
+                                        <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
+                                    </div>
+                                    <!-- Back Side (black background with details) -->
+                                    <div class="flip-card-back">
+                                        <div class="back-content">
+                                            <p>' . $row["event_name"] . '</p> 
+                                            <p>Category: ' . $row["category"] . '</p> 
+                                            <p>Date: ' . $row["event_date"] . '</p> 
+                                            <br>
+                                            <p>Click for more...</p>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>';
+                            </div>
+                        </a>
+                    </div>';
+
                 }
             } else {
                 echo "<p>No upcoming events found.</p>";
