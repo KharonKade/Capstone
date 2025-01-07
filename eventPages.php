@@ -6,7 +6,7 @@ $password = "";            // Your database password
 $dbname = "basf_events";   // Your database name
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-
+  
 // Check the connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -18,9 +18,8 @@ $event_id = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0
 if ($event_id > 0) {
     // Fetch event details based on the event ID
     $event_sql = "
-        SELECT e.event_name, e.description, e.location, s.event_date
+        SELECT e.event_name, e.description, e.location
         FROM upcoming_events e
-        JOIN event_schedules s ON e.id = s.event_id
         WHERE e.id = $event_id AND e.status = 'active'";
 
     $event_result = $conn->query($event_sql);
@@ -31,6 +30,28 @@ if ($event_id > 0) {
     } else {
         echo "Event not found or no active event available.";
         exit;
+    }
+
+    // Fetch event schedules based on the event ID
+    $schedule_sql = "SELECT event_date, start_time, end_time FROM event_schedules WHERE event_id = $event_id";
+    $schedule_result = $conn->query($schedule_sql);
+
+    // Check if the schedule result is valid and contains data
+    if ($schedule_result && $schedule_result->num_rows > 0) {
+        $schedules = $schedule_result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        $schedules = [];
+    }
+
+    // Fetch sponsor logos based on the event ID
+    $sponsor_sql = "SELECT logo_path FROM sponsor_logos WHERE event_id = $event_id";
+    $sponsor_result = $conn->query($sponsor_sql);
+
+    // Check if the sponsor result is valid and contains data
+    if ($sponsor_result && $sponsor_result->num_rows > 0) {
+        $sponsors = $sponsor_result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        $sponsors = [];
     }
 
     // Fetch event images based on the event ID
@@ -113,15 +134,34 @@ if ($event_id > 0) {
         <!-- Right Section (Event Details) -->
         <div class="right-section">
             <div class="event-details">
-                <p><strong>Dates & Times:</strong> <?php echo isset($event['event_date']) ? $event['event_date'] : 'Not available'; ?></p>
+            <strong>Dates & Times:</strong>
+                <ul>
+                    <?php
+                    // Display event schedules
+                    if (!empty($schedules)) {
+                        foreach ($schedules as $schedule) {
+                            echo '<li>' . $schedule['event_date'] . ' - ' . $schedule['start_time'] . ' to ' . $schedule['end_time'] . '</li>';
+                        }
+                    } else {
+                        echo "<li>No schedule available for this event.</li>";
+                    }
+                    ?>
+                </ul>
                 <p><strong>Description:</strong> <?php echo isset($event['description']) ? $event['description'] : 'Not available'; ?></p>
                 <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
             </div>
+
             <h2>Partners & Sponsors</h2>
             <div class="sponsors">
-                <img src="images/vanlogo.png" alt="Sponsor 1 Logo">
-                <img src="images/vanlogo.png" alt="Sponsor 2 Logo">
-                <img src="images/vanlogo.png" alt="Sponsor 3 Logo">
+                <?php
+                if (!empty($sponsors)) {
+                    foreach ($sponsors as $sponsor) {
+                        echo '<img src="' . $sponsor['logo_path'] . '" alt="Sponsor Logo">';
+                    }
+                } else {
+                    echo "<p>No sponsor logos available for this event.</p>";
+                }
+                ?>
             </div>
         </div>
     </div>

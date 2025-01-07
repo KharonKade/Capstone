@@ -86,27 +86,25 @@
                 while ($row = $result->fetch_assoc()) {
 
                     echo '<div class="event-item">
-                        <a href="eventPages.php?id=' . $row['id'] . '">
-                            <div class="flip-card">
-                                <div class="flip-card-inner">
-                                    <!-- Front Side (image) -->
-                                    <div class="flip-card-front">
-                                        <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
-                                    </div>
-                                    <!-- Back Side (black background with details) -->
-                                    <div class="flip-card-back">
-                                        <div class="back-content">
-                                            <p>' . $row["event_name"] . '</p> 
-                                            <p>Category: ' . $row["category"] . '</p> 
-                                            <p>Date: ' . $row["event_date"] . '</p> 
-                                            <br>
-                                            <p>Click for more...</p>
-                                        </div>
+                     <a href="eventPages.php?id=' . $row['id'] . '">
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
+                                </div>
+                                <div class="flip-card-back" style="background-image: url(' . "'" . $row["image_path"] . "'" . ');">
+                                    <div class="back-content">
+                                        <p>' . $row["event_name"] . '</p>
+                                        <p>Category: ' . $row["category"] . '</p>
+                                        <p>Date: ' . $row["event_date"] . '</p>
+                                        <br>
+                                        <p>Click for more...</p>
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                    </div>';
+                        </div>
+                    </a>
+                </div>';
 
                 }
             } else {
