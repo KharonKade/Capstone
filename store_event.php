@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "basf_news");
+$conn = new mysqli("localhost", "root", "", "basf_events");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -9,7 +9,7 @@ $event_name = $_POST['event_name'] ?? '';
 $location = $_POST['location'] ?? '';
 $description = $_POST['description'] ?? '';
 $category = $_POST['category'] ?? 'All'; // Default to "All" category
-$registration = isset($_POST['registration']) ? 1 : 0;
+$registration = isset($_POST['registration']) ? 1 : 0; // 1 for enabled, 0 for disabled
 
 // Validate form inputs
 if (empty($event_name) || empty($location) || empty($description)) {
@@ -19,6 +19,7 @@ if (empty($event_name) || empty($location) || empty($description)) {
 // Insert main event data
 $sql = "INSERT INTO upcoming_events (event_name, location, description, category, registration) 
         VALUES ('$event_name', '$location', '$description', '$category', '$registration')";
+
 if ($conn->query($sql) === TRUE) {
     $event_id = $conn->insert_id;
 
@@ -38,7 +39,7 @@ if ($conn->query($sql) === TRUE) {
     // Upload posters
     if (!empty($_FILES['posters']['tmp_name'][0])) {
         foreach ($_FILES['posters']['tmp_name'] as $index => $tmp_name) {
-            $poster_path = "images/uploads" . basename($_FILES['posters']['name'][$index]);
+            $poster_path = "images/uploads/" . basename($_FILES['posters']['name'][$index]);
             if (move_uploaded_file($tmp_name, $poster_path)) {
                 $image_sql = "INSERT INTO event_images (event_id, image_path) VALUES ('$event_id', '$poster_path')";
                 $conn->query($image_sql);
@@ -49,7 +50,7 @@ if ($conn->query($sql) === TRUE) {
     // Upload sponsor logos
     if (!empty($_FILES['sponsors']['tmp_name'][0])) {
         foreach ($_FILES['sponsors']['tmp_name'] as $index => $tmp_name) {
-            $sponsor_path = "images/uploads" . basename($_FILES['sponsors']['name'][$index]);
+            $sponsor_path = "images/uploads/" . basename($_FILES['sponsors']['name'][$index]);
             if (move_uploaded_file($tmp_name, $sponsor_path)) {
                 $sponsor_sql = "INSERT INTO sponsor_logos (event_id, logo_path) VALUES ('$event_id', '$sponsor_path')";
                 $conn->query($sponsor_sql);
@@ -64,6 +65,20 @@ if ($conn->query($sql) === TRUE) {
           </script>";
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+// Handle registration status update when admin enables/disables registration
+if (isset($_POST['event_id'])) {
+    $event_id = $_POST['event_id'];
+    $registration = isset($_POST['registration']) ? 1 : 0; // 1 for enabled, 0 for disabled
+
+    $update_sql = "UPDATE upcoming_events SET registration = '$registration' WHERE id = $event_id";
+
+    if ($conn->query($update_sql) === TRUE) {
+        echo "Registration status updated successfully!";
+    } else {
+        echo "Error updating status: " . $conn->error;
+    }
 }
 
 $conn->close();

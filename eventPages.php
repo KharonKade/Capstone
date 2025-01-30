@@ -18,7 +18,7 @@ $event_id = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0
 if ($event_id > 0) {
     // Fetch event details based on the event ID
     $event_sql = "
-        SELECT e.event_name, e.description, e.location
+        SELECT e.event_name, e.description, e.location, e.registration
         FROM upcoming_events e
         WHERE e.id = $event_id AND e.status = 'active'";
 
@@ -149,6 +149,10 @@ if ($event_id > 0) {
                 </ul>
                 <p><strong>Description:</strong> <?php echo isset($event['description']) ? $event['description'] : 'Not available'; ?></p>
                 <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
+
+                <?php if ($event['registration'] == 1): ?>
+                    <button id="registerBtn" class="register-btn">Register</button>
+                <?php endif; ?>
             </div>
 
             <h2>Partners & Sponsors</h2>
@@ -163,6 +167,27 @@ if ($event_id > 0) {
                 }
                 ?>
             </div>
+        </div>
+    </div>
+
+    <!-- Registration Form Modal -->
+    <div id="registrationModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeRegistrationModal()">&times;</span>
+            <h2>Register for the Event</h2>
+            <form id="registrationForm" action="submit_registration.php" method="POST">
+                <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone" required><br><br>
+
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </div>
 
@@ -236,6 +261,32 @@ if ($event_id > 0) {
             modal.style.display = 'none';
         }
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const registerBtn = document.getElementById('registerBtn');
+    const registrationModal = document.getElementById('registrationModal');
+    const closeModalBtn = document.querySelector('.close');
+
+    if (registerBtn) {
+        registerBtn.onclick = function() {
+            registrationModal.style.display = 'block';
+        };
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.onclick = function() {
+            registrationModal.style.display = 'none';
+        };
+    }
+
+    // If the user clicks anywhere outside the modal, close it
+    window.onclick = function(event) {
+        if (event.target === registrationModal) {
+            registrationModal.style.display = 'none';
+        }
+    };
+});
+</script>
 </body>
 </html>
 
