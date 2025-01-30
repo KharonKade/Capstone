@@ -196,6 +196,8 @@ if ($event_id > 0) {
         <span class="close" onclick="closeModal()">&times;</span>
         <div class="modal-content">
             <img class="modal-content-img" id="modalImage" />
+            <button class="prev" onclick="navigateImage(-1)">&#10094;</button>
+            <button class="next" onclick="navigateImage(1)">&#10095;</button>
         </div>
     </div>
 
@@ -266,6 +268,17 @@ if ($event_id > 0) {
             const modal = document.getElementById('imageModal');
             modal.style.display = 'none';
         }
+
+        function navigateImage(direction) {
+        const images = window.currentImages;
+        let newIndex = window.currentIndex + direction;
+
+        if (newIndex < 0) newIndex = images.length - 1; // Loop to the last image if at the start
+        if (newIndex >= images.length) newIndex = 0; // Loop to the first image if at the end
+
+        window.currentIndex = newIndex;
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = images[newIndex];}
     </script>
 
     <script>

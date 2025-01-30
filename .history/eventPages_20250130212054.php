@@ -171,7 +171,7 @@ if ($event_id > 0) {
     </div>
 
     <!-- Registration Form Modal -->
-    <div id="registrationModal" class="registration-modal" style="display:none;">
+    <div id="registrationModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeRegistrationModal()">&times;</span>
             <h2>Register for the Event</h2>
@@ -192,11 +192,9 @@ if ($event_id > 0) {
     </div>
 
     <!-- Modal for Image Preview -->
-    <div id="imageModal" class="image-modal" onclick="closeModal()">
+    <div id="imageModal" class="modal" onclick="closeModal()">
         <span class="close" onclick="closeModal()">&times;</span>
-        <div class="modal-content">
-            <img class="modal-content-img" id="modalImage" />
-        </div>
+        <img class="modal-content" id="modalImage">
     </div>
 
     <footer class="footer">
@@ -255,10 +253,6 @@ if ($event_id > 0) {
             const modalImage = document.getElementById('modalImage');
             modal.style.display = 'block';
             modalImage.src = src;
-
-            // Store the image array and current index in global variables
-            window.currentImages = images;
-            window.currentIndex = images.indexOf(src);
         }
 
         // Close Modal Function
@@ -267,7 +261,7 @@ if ($event_id > 0) {
             modal.style.display = 'none';
         }
     </script>
-
+    
     <script>
     document.addEventListener("DOMContentLoaded", function() {
     const registerBtn = document.getElementById('registerBtn');

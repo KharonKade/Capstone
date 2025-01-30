@@ -171,7 +171,7 @@ if ($event_id > 0) {
     </div>
 
     <!-- Registration Form Modal -->
-    <div id="registrationModal" class="registration-modal" style="display:none;">
+    <div id="registrationModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeRegistrationModal()">&times;</span>
             <h2>Register for the Event</h2>
@@ -192,13 +192,16 @@ if ($event_id > 0) {
     </div>
 
     <!-- Modal for Image Preview -->
-    <div id="imageModal" class="image-modal" onclick="closeModal()">
-        <span class="close" onclick="closeModal()">&times;</span>
+    <div id="imageModal" class="modal">
         <div class="modal-content">
-            <img class="modal-content-img" id="modalImage" />
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-slider">
+            <button class="prev-btn" onclick="prevImage()">&#10094;</button>
+            <img id="modalImage" src="" alt="Event Poster">
+            <button class="next-btn" onclick="nextImage()">&#10095;</button>
+            </div>
         </div>
     </div>
-
     <footer class="footer">
         <div class="footer-section logo-section">
             <img src="images/logo.png" alt="BASF Logo" class="footer-logo">
@@ -255,10 +258,6 @@ if ($event_id > 0) {
             const modalImage = document.getElementById('modalImage');
             modal.style.display = 'block';
             modalImage.src = src;
-
-            // Store the image array and current index in global variables
-            window.currentImages = images;
-            window.currentIndex = images.indexOf(src);
         }
 
         // Close Modal Function
@@ -267,7 +266,6 @@ if ($event_id > 0) {
             modal.style.display = 'none';
         }
     </script>
-
     <script>
     document.addEventListener("DOMContentLoaded", function() {
     const registerBtn = document.getElementById('registerBtn');

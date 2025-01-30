@@ -192,11 +192,9 @@ if ($event_id > 0) {
     </div>
 
     <!-- Modal for Image Preview -->
-    <div id="imageModal" class="image-modal" onclick="closeModal()">
+    <div id="imageModal" class="modal" onclick="closeModal()">
         <span class="close" onclick="closeModal()">&times;</span>
-        <div class="modal-content">
-            <img class="modal-content-img" id="modalImage" />
-        </div>
+        <img class="modal-content" id="modalImage">
     </div>
 
     <footer class="footer">
@@ -255,10 +253,6 @@ if ($event_id > 0) {
             const modalImage = document.getElementById('modalImage');
             modal.style.display = 'block';
             modalImage.src = src;
-
-            // Store the image array and current index in global variables
-            window.currentImages = images;
-            window.currentIndex = images.indexOf(src);
         }
 
         // Close Modal Function
