@@ -169,6 +169,7 @@ header {
   background: #f9f9f9;
   border-radius: 10px;
   text-align: center;
+  gap: 50px;
 }
 
 .event-details {
@@ -190,7 +191,6 @@ header {
   word-wrap: break-word;
   overflow-wrap: break-word; /* Ensures word wrapping within the paragraph */
   white-space: normal; 
-  margin-bottom: 20px;
 }
 
 .right-section h2 {

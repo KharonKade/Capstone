@@ -18,7 +18,7 @@ $email = $_POST['email'] ?? '';
 $phone = $_POST['phone'] ?? '';
 $event_id = $_POST['event_id'] ?? 0;
 
-if (empty($name) || empty($email) || empty($phone) || empty($event_id)) {
+if (empty($name) || empty($email) || empty($event_id) || empty($event_id)) {
     die("Error: Please fill all the required fields.");
 }
 

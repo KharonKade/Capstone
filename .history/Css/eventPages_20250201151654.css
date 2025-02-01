@@ -178,6 +178,8 @@ header {
   overflow-wrap: break-word; /* Ensures word wrapping within the paragraph */
   white-space: normal; /* Allow text to wrap naturally */
   word-break: break-word; /* Forces breaks at appropriate places to prevent overflow */
+  border: 2px solid red;
+  gap: 20px;
 }
 
 .event-details h1 {
@@ -190,7 +192,6 @@ header {
   word-wrap: break-word;
   overflow-wrap: break-word; /* Ensures word wrapping within the paragraph */
   white-space: normal; 
-  margin-bottom: 20px;
 }
 
 .right-section h2 {

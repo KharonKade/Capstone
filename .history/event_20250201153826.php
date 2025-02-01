@@ -14,7 +14,7 @@
             <img src="images/logo.png" alt="BASF Logo" class="logo">
             <div class="nav-center">
                 <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="spots.html">Spots</a></li>
                     <li><a href="event.html">Events</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
@@ -62,6 +62,7 @@
 
             $sql = "
             SELECT 
+                e.id,           -- Add the event ID here
                 e.event_name, 
                 e.category, 
                 s.event_date, 
@@ -78,33 +79,59 @@
                 e.id
             ORDER BY 
                 s.event_date ASC";
-
+        
             $result = $conn->query($sql);
+
+            // Query to count registrations in the last 24 hours
+            $trend_sql = "
+            SELECT 
+                COUNT(r.id) AS recent_registrations
+            FROM 
+                registrations r
+            JOIN 
+                upcoming_events e ON r.event_id = e.id
+            WHERE 
+                r.event_id = e.id
+                AND r.registration_time > NOW() - INTERVAL 1 DAY
+            ";
+            $trend_result = $conn->query($trend_sql);
+            $trend_row = $trend_result->fetch_assoc();
+            $recent_registrations = $trend_row['recent_registrations'];
+
+            if ($recent_registrations > 10) {
+                $is_trending = true;
+            } else {
+                $is_trending = false;
+            }
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
+
                     echo '<div class="event-item">
-                            <a href="eventPages.html">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        <!-- Front Side (image) -->
-                                        <div class="flip-card-front">
-                                            <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
-                                        </div>
-                                        <!-- Back Side (black background with details) -->
-                                        <div class="flip-card-back">
-                                            <div class="back-content">
-                                                <p>' . $row["event_name"] . '</p> 
-                                                <p>Category: ' . $row["category"] . '</p> 
-                                                <p>Date: ' . $row["event_date"] . '</p> 
-                                                <br>
-                                                <p>Click for more...</p>
-                                            </div>
-                                        </div>
+                    <a href="eventPages.php?id=' . $row['id'] . '">
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
+                                </div>
+                                <div class="flip-card-back" style="background-image: url(' . "'" . $row["image_path"] . "'" . ');">
+                                    <div class="back-content">
+                                        <p>' . $row["event_name"] . '</p>
+                                        <p>Category: ' . $row["category"] . '</p>
+                                        <p>Date: ' . $row["event_date"] . '</p>';
+                                        if ($is_trending) {
+                                            echo '<span class="trending-tag">Trending Now</span>';
+                                        }
+                                    echo '<br>
+                                        <p>Click for more...</p>
                                     </div>
                                 </div>
-                            </a>
-                        </div>';
+                            </div>
+                        </div>
+                    </a>
+                </div>';
+
+
                 }
             } else {
                 echo "<p>No upcoming events found.</p>";

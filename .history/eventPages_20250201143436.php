@@ -43,20 +43,6 @@ if ($event_id > 0) {
         $registration_count = 0;
     }
 
-    // Determine the event's popularity
-    $max_capacity = 100; // Define a max capacity for the event (you can adjust this number)
-    $popularity_status = 'Available';
-    $popularity_color = 'green';
-
-    if ($registration_count >= 0.75 * $max_capacity) {
-        $popularity_status = 'Filling Fast';
-        $popularity_color = 'yellow';
-    } 
-    if ($registration_count >= $max_capacity) {
-        $popularity_status = 'Almost Full';
-        $popularity_color = 'red';
-    }
-
 
     // Fetch event schedules based on the event ID
     $schedule_sql = "SELECT event_date, start_time, end_time FROM event_schedules WHERE event_id = $event_id";
@@ -178,10 +164,6 @@ if ($event_id > 0) {
 
                 <?php if ($event['registration'] == 1): ?>
                     <button id="registerBtn" class="register-btn">Register</button>
-                    <br></br>
-                    <div class="event-popularity">
-                        <span class="popularity-badge" style="background-color: #4CAF50;"><strong><?php echo $popularity_status; ?> - <?php echo $registration_count; ?> Participants Registered</strong></span>
-                    </div>
                 <?php endif; ?>
             </div>
 
@@ -200,7 +182,7 @@ if ($event_id > 0) {
         </div>
     </div>
 
-    
+    <p style="color: <?php echo $popularity_color; ?>"><strong><?php echo $popularity_status; ?> - <?php echo $registration_count; ?> Participants Registered</strong></p>
 
     <!-- Registration Form Modal -->
     <div id="registrationModal" class="registration-modal" style="display:none;">

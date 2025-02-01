@@ -164,7 +164,9 @@ header {
 
 /* Right Section */
 .right-section {
-  flex: 1;
+  display: flex;            /* Enable flexbox */
+  flex-direction: column;   /* Stack items vertically */
+  gap: 15px;                /* Space between child elements */
   padding: 20px;
   background: #f9f9f9;
   border-radius: 10px;
@@ -190,7 +192,6 @@ header {
   word-wrap: break-word;
   overflow-wrap: break-word; /* Ensures word wrapping within the paragraph */
   white-space: normal; 
-  margin-bottom: 20px;
 }
 
 .right-section h2 {

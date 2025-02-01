@@ -90,8 +90,10 @@
                 COUNT(r.id) AS recent_registrations
             FROM 
                 event_registrations r
+            JOIN 
+                upcoming_events e ON r.event_id = e.id
             WHERE 
-                r.event_id = " . $row['id'] . "
+                r.event_id = e.id
                 AND r.registration_time > NOW() - INTERVAL 1 DAY
             ";
             $trend_result = $conn->query($trend_sql);

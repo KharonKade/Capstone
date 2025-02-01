@@ -82,8 +82,6 @@
         
             $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
             // Query to count registrations in the last 24 hours
             $trend_sql = "
             SELECT 
@@ -91,7 +89,7 @@
             FROM 
                 event_registrations r
             WHERE 
-                r.event_id = " . $row['id'] . "
+                r.event_id = e.id
                 AND r.registration_time > NOW() - INTERVAL 1 DAY
             ";
             $trend_result = $conn->query($trend_sql);
@@ -103,6 +101,9 @@
             } else {
                 $is_trending = false;
             }
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
 
                     echo '<div class="event-item">
                     <a href="eventPages.php?id=' . $row['id'] . '">

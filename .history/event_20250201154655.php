@@ -91,7 +91,7 @@
             FROM 
                 event_registrations r
             WHERE 
-                r.event_id = " . $row['id'] . "
+                r.event_id = e.id
                 AND r.registration_time > NOW() - INTERVAL 1 DAY
             ";
             $trend_result = $conn->query($trend_sql);

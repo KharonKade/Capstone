@@ -125,7 +125,7 @@ $registrations = $conn->query($registrations_query);
                     $counter = 1; 
                     while ($registration = $registrations->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo $counter++; ?></td>
+                            <td><?php echo htmlspecialchars($registration['id']); ?></td>
                             <td><?php echo htmlspecialchars($registration['name']); ?></td>
                             <td><?php echo htmlspecialchars($registration['email']); ?></td>
                             <td><?php echo htmlspecialchars($registration['phone']); ?></td>

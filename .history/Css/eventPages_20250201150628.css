@@ -165,10 +165,11 @@ header {
 /* Right Section */
 .right-section {
   flex: 1;
-  padding: 20px;
+  padding: 10px;
   background: #f9f9f9;
   border-radius: 10px;
   text-align: center;
+  padding: 20px;
 }
 
 .event-details {
@@ -190,13 +191,13 @@ header {
   word-wrap: break-word;
   overflow-wrap: break-word; /* Ensures word wrapping within the paragraph */
   white-space: normal; 
-  margin-bottom: 20px;
 }
 
 .right-section h2 {
   margin-bottom: 20px;
   font-size: 22px;
   margin-top: 70px;
+  gap: 15px;
 }
 
 .sponsors img {

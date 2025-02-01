@@ -160,7 +160,7 @@ if ($event_id > 0) {
         <!-- Right Section (Event Details) -->
         <div class="right-section">
             <div class="event-details">
-            <strong>Dates & Times:</strong>
+            <p><strong>Dates & Times:</strong></p>
                 <ul>
                     <?php
                     // Display event schedules
@@ -178,11 +178,11 @@ if ($event_id > 0) {
 
                 <?php if ($event['registration'] == 1): ?>
                     <button id="registerBtn" class="register-btn">Register</button>
-                    <br></br>
-                    <div class="event-popularity">
-                        <span class="popularity-badge" style="background-color: #4CAF50;"><strong><?php echo $popularity_status; ?> - <?php echo $registration_count; ?> Participants Registered</strong></span>
-                    </div>
                 <?php endif; ?>
+                <br></br>
+                <div class="event-popularity">
+                    <span class="popularity-badge" style="background-color: #4CAF50;"><strong><?php echo $popularity_status; ?> - <?php echo $registration_count; ?> Participants Registered</strong></span>
+                </div>
             </div>
 
             <h2>Partners & Sponsors</h2>

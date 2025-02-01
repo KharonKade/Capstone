@@ -82,16 +82,16 @@
         
             $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
             // Query to count registrations in the last 24 hours
             $trend_sql = "
             SELECT 
                 COUNT(r.id) AS recent_registrations
             FROM 
-                event_registrations r
+                registrations r
+            JOIN 
+                upcoming_events e ON r.event_id = e.id
             WHERE 
-                r.event_id = " . $row['id'] . "
+                r.event_id = e.id
                 AND r.registration_time > NOW() - INTERVAL 1 DAY
             ";
             $trend_result = $conn->query($trend_sql);
@@ -104,8 +104,11 @@
                 $is_trending = false;
             }
 
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+
                     echo '<div class="event-item">
-                    <a href="eventPages.php?id=' . $row['id'] . '">
+                     <a href="eventPages.php?id=' . $row['id'] . '">
                         <div class="flip-card">
                             <div class="flip-card-inner">
                                 <div class="flip-card-front">
@@ -115,11 +118,8 @@
                                     <div class="back-content">
                                         <p>' . $row["event_name"] . '</p>
                                         <p>Category: ' . $row["category"] . '</p>
-                                        <p>Date: ' . $row["event_date"] . '</p>';
-                                        if ($is_trending) {
-                                            echo '<span class="trending-tag">Trending Now</span>';
-                                        }
-                                    echo '<br>
+                                        <p>Date: ' . $row["event_date"] . '</p>
+                                        <br>
                                         <p>Click for more...</p>
                                     </div>
                                 </div>
@@ -127,7 +127,6 @@
                         </div>
                     </a>
                 </div>';
-
 
                 }
             } else {

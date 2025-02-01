@@ -178,10 +178,6 @@ if ($event_id > 0) {
 
                 <?php if ($event['registration'] == 1): ?>
                     <button id="registerBtn" class="register-btn">Register</button>
-                    <br></br>
-                    <div class="event-popularity">
-                        <span class="popularity-badge" style="background-color: #4CAF50;"><strong><?php echo $popularity_status; ?> - <?php echo $registration_count; ?> Participants Registered</strong></span>
-                    </div>
                 <?php endif; ?>
             </div>
 
@@ -197,6 +193,9 @@ if ($event_id > 0) {
                 }
                 ?>
             </div>
+        </div>
+        <div class="event-popularity">
+            <span class="popularity-badge" style="background-color: #4CAF50;">120 Participants Registered</span>
         </div>
     </div>
 
