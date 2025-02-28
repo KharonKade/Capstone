@@ -12,7 +12,7 @@
             <img src="images/logo.png" alt="BASF Logo" class="logo">
             <div class="nav-center">
                 <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="spots.html">Spots</a></li>
                     <li><a href="event.php">Events</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
@@ -78,7 +78,7 @@
 
             $sql = "
             SELECT 
-                e.id,           -- Add the event ID here
+                e.id,           
                 e.event_name, 
                 e.category, 
                 s.event_date, 
@@ -90,7 +90,8 @@
             JOIN 
                 event_images i ON e.id = i.event_id
             WHERE 
-                e.status = 'active'   -- Fetch only active events
+                e.status = 'active'   
+                AND (e.category = 'All' OR e.category = 'Skateboard')  -- Filter category
             GROUP BY 
                 e.id
             ORDER BY 
@@ -121,60 +122,61 @@
                         </div>
                     </a>
                 </div>';
-
                 }
             } else {
                 echo "<p>No upcoming events found.</p>";
             }
-
-
             $conn->close();
             ?>
-        </div>
-        <div class="carousel-arrows">
-            <button class="arrow" onclick="scrollRight1()">&#8594;</button>
         </div>
     </section>
 
     <div class="highlight-carousel-section">
         <h1 class="carousel-heading">Highlight</h1>
         <div class="carousel-container">
-          <button class="carousel-btn prev-btn">&#10094;</button>
-          <div class="carousel">
-            <div class="carousel-item">
-              <video src="images/video ads.mp4" autoplay muted loop></video>
+            <div class="carousel">
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
+                <div class="carousel-item">
+                    <video src="images/video ads.mp4" autoplay muted loop onclick="openModal(this)"></video>
+                </div>
             </div>
-            <div class="carousel-item">
-              <video src="images/video ads.mp4" autoplay muted loop></video>
-            </div>
-            <div class="carousel-item">
-              <video src="images/video ads.mp4" autoplay muted loop></video>
-            </div>
-            <div class="carousel-item">
-              <video src="images/video ads.mp4" autoplay muted loop></video>
-            </div>
-            <div class="carousel-item">
-              <video src="images/video ads.mp4" autoplay muted loop></video>
-            </div>
-            <div class="carousel-item">
-              <video src="images/video ads.mp4" autoplay muted loop></video>
-            </div>
-          </div>
-          <button class="carousel-btn next-btn">&#10095;</button>
         </div>
-      </div>
-      
-      <!-- Video Popup Modal -->
-      <div class="video-modal" id="videoModal">
+    </div>
+
+    <!-- Video Popup Modal -->
+    <div class="video-modal" id="videoModal">
         <div class="video-modal-content">
-          <button class="close-btn" id="closeModalBtn">&times;</button>
-          <video id="modalVideo" controls autoplay></video>
-          <div class="video-details">
-            <h3>Video Title</h3>
-            <p>Description of the video goes here.</p>
-          </div>
+            <button class="close-btn" id="closeModalBtn">&times;</button>
+            <video id="modalVideo" controls autoplay></video>
+            <div class="video-details">
+                <h3 id="videoTitle">Video Title</h3>
+                <p id="videoDescription">Description of the video goes here.</p>
+            </div>
         </div>
-      </div>
+    </div>
       
 
     <div class="players" id="top-athletes">
@@ -335,5 +337,40 @@
     <script src="jsScript/players.js"></script>
     <script src="jsScript/event.js"></script>
     <script src="jsScript/videoplay.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const carousel = document.querySelector(".event-carousel");
+
+        carousel.addEventListener("wheel", (e) => {
+            e.preventDefault(); // Prevent vertical scrolling
+
+            let scrollAmount = e.deltaY * 1.5; // Adjust sensitivity
+            scrollAmount = Math.sign(scrollAmount) * Math.max(10, Math.abs(scrollAmount)); // Ensure a minimum scroll step
+
+            carousel.scrollLeft += scrollAmount;
+        });
+    });
+
+    // Open video in modal
+    function openModal(video) {
+        const modal = document.getElementById("videoModal");
+        const modalVideo = document.getElementById("modalVideo");
+
+        modal.style.opacity = "1";
+        modal.style.visibility = "visible";
+        modalVideo.src = video.src; // Set the modal video source
+    }
+
+    // Close modal when clicking the close button
+    document.getElementById("closeModalBtn").addEventListener("click", function () {
+        const modal = document.getElementById("videoModal");
+        const modalVideo = document.getElementById("modalVideo");
+
+        modal.style.opacity = "0";
+        modal.style.visibility = "hidden";
+        modalVideo.pause(); // Pause video when closing modal
+        modalVideo.src = ""; // Reset video source
+    });
+    </script>
 </body>
 </html>

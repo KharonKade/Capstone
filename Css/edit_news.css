@@ -92,6 +92,46 @@ button:hover {
     background-color: #2980b9;
 }
 
+ul {
+    display: flex;
+    flex-wrap: wrap;  /* Allows wrapping */
+    gap: 10px;        /* Adjust spacing between images */
+    padding: 0;       /* Remove default padding */
+    list-style: none; /* Remove bullet points */
+}
+
+.image-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    width: 120px; /* Set a fixed width */
+    text-align: center;
+}
+
+.image-item img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.image-item button {
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.image-item button:hover {
+    background-color: #c0392b;
+}
+
 /* Section headers */
 h3 {
     font-size: 1.5rem;

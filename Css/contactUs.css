@@ -133,6 +133,32 @@ header {
     background-color: #005bb5;
 }
 
+.clear-button {
+    background-color: #e74c3c; /* Red background */
+    color: white; /* White text */
+    border: none;
+    padding: 8px 13px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: block; /* Ensure it takes full width if needed */
+    width: fit-content;
+}
+
+/* Hover effect */
+.clear-button:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* Active effect */
+.clear-button:active {
+    transform: scale(0.95);
+}
+
+
 /* Contact Details */
 .contact-details {
     flex: 2;

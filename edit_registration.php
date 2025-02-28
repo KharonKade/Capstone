@@ -61,8 +61,8 @@ $conn->close();
     <link rel="stylesheet" href="Css/edit_registration.css"></link>
 </head>
 <body>
-    <h2>Edit Registration</h2>
     <form method="post">
+        <h2>Edit Registration</h2>
         <label>Name:</label>
         <input type="text" name="name" value="<?php echo htmlspecialchars($registration['name']); ?>" required><br>
 

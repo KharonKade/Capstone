@@ -96,65 +96,52 @@ body {
     display: inline-block;
 }
 
-/* Right side styles */
-.right-side h3 {
-    font-size: 1.5rem;
-    color: #fff;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #34495e;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-    display: inline-block;
-}
-
-/* Right side styles */
-.right-side h3 {
-    font-size: 1.5rem;
-    color: #fff;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #34495e;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-    display: inline-block;
-}
-
 /* Structure for images and logos */
 .right-side .media-container {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
     margin-top: 20px;
     flex-wrap: wrap;
 }
 
 .right-side .image-container,
 .right-side .sponsor-container {
-    width: 20%;
+    width: 45%;
     box-sizing: border-box;
-    margin: 0 auto;
+    text-align: center;
+}
+
+.poster-images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 10px;
 }
 
 /* Poster Images */
-.right-side .image-container img {
-    width: 20%;  /* Smaller size for posters */
+.poster-img {
+    width: 45%;
     height: auto;
     margin-bottom: 10px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    object-fit: contain;
 }
 
-/* Sponsor Logos */
-.right-side .sponsor-container img {
-    width: 15%;  /* Smaller size for logos */
+/* Sponsor logos - horizontal wrapping */
+.sponsor-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.sponsor-img {
+    width: 60px;
     height: auto;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     object-fit: contain;
 }
 
@@ -210,7 +197,7 @@ body {
 /* Button styles */
 button {
     padding: 12px 25px;
-    background-color: #007bff;
+    background-color: #f44336;
     color: white;
     border: none;
     border-radius: 5px;
@@ -223,7 +210,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #d32f2f;
 }
 
 /* Responsive design */

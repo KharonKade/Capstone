@@ -79,28 +79,32 @@ $registrations = $conn->query($registrations_query);
             <div class="media-container">
                 <div class="image-container">
                     <h3>Posters</h3>
-                    <?php if ($images->num_rows > 0): ?>
-                        <?php while ($image = $images->fetch_assoc()): ?>
-                            <img src="<?php echo htmlspecialchars($image['image_path']); ?>" 
-                                alt="Poster" 
-                                style="width: 100%; height: auto; margin-bottom: 10px;">
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <p>No poster images uploaded for this event.</p>
-                    <?php endif; ?>
+                    <div class="poster-images">
+                        <?php if ($images->num_rows > 0): ?>
+                            <?php while ($image = $images->fetch_assoc()): ?>
+                                <img src="<?php echo htmlspecialchars($image['image_path']); ?>" 
+                                    alt="Poster" 
+                                    class="poster-img">
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p>No poster images uploaded for this event.</p>
+                        <?php endif; ?>
+                    </div>
                 </div>
 
                 <div class="sponsor-container">
                     <h3>Sponsor Logos</h3>
-                    <?php if ($sponsors->num_rows > 0): ?>
-                        <?php while ($sponsor = $sponsors->fetch_assoc()): ?>
-                            <img src="<?php echo htmlspecialchars($sponsor['logo_path']); ?>" 
-                                alt="Sponsor Logo" 
-                                style="width: 100%; height: auto; margin-bottom: 10px;">
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <p>No sponsor logos available for this event.</p>
-                    <?php endif; ?>
+                    <div class="sponsor-logos">
+                        <?php if ($sponsors->num_rows > 0): ?>
+                            <?php while ($sponsor = $sponsors->fetch_assoc()): ?>
+                                <img src="<?php echo htmlspecialchars($sponsor['logo_path']); ?>" 
+                                    alt="Sponsor Logo" 
+                                    class="sponsor-img">
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p>No sponsor logos available for this event.</p>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>

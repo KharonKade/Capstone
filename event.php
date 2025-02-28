@@ -127,14 +127,10 @@
                         </div>
                     </a>
                 </div>';
-
-
                 }
             } else {
                 echo "<p>No upcoming events found.</p>";
             }
-
-
             $conn->close();
             ?>
         </div>

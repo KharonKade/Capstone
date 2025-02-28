@@ -169,7 +169,7 @@ $conn->close();
                 <label for="news_date">Publish Date:</label>
                 <input type="date" id="news_date" name="news_date" value="<?php echo $news['publish_date']; ?>" required>
 
-                <label for="image">Upload New Images (Optional):</label>
+                <label for="image">Upload New Images:</label>
                 <input type="file" id="image" name="image[]" multiple>
 
                 <?php if (!empty($images)): ?>
