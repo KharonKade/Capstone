@@ -79,8 +79,8 @@ header {
     font-weight: 300;
 }
 
-/* BMX Content Section */
-.bmx-content {
+/* Inline Content Section */
+.inline-content {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -362,10 +362,14 @@ header {
 
 /* Force Scrollbar to Always Appear */
 .carousel::-webkit-scrollbar {
-    height: 20px; /* Set a visible height */
+    height: 8px; /* Set a visible height */
     display: block; /* Ensures scrollbar is always visible */
 }
 
+/* Scrollbar Styling */
+.carousel::-webkit-scrollbar {
+    height: 8px; /* Visible scrollbar */
+}
 
 .carousel::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.5);

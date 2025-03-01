@@ -147,7 +147,7 @@ header {
 }
 
 .event-carousel::-webkit-scrollbar {
-    height: 20px; /* Adjust scrollbar thickness */
+    height: 12px; /* Adjust scrollbar thickness */
 }
 
 .event-carousel::-webkit-scrollbar-track {

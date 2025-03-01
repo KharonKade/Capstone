@@ -79,8 +79,8 @@ header {
     font-weight: 300;
 }
 
-/* BMX Content Section */
-.bmx-content {
+/* Inline Content Section */
+.skateboard-content {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -289,7 +289,6 @@ header {
     opacity: 1; /* Make the details visible when the card is flipped */
 }
 
-
 /* Back content styling */
 .flip-card-back .back-content {
     z-index: 2; /* Above the blurred background */
@@ -362,10 +361,14 @@ header {
 
 /* Force Scrollbar to Always Appear */
 .carousel::-webkit-scrollbar {
-    height: 20px; /* Set a visible height */
+    height: 8px; /* Set a visible height */
     display: block; /* Ensures scrollbar is always visible */
 }
 
+/* Scrollbar Styling */
+.carousel::-webkit-scrollbar {
+    height: 8px; /* Visible scrollbar */
+}
 
 .carousel::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.5);
