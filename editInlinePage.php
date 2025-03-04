@@ -20,36 +20,109 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($_FILES['highlight_video']['name'])) {
         $video = $_FILES['highlight_video']['name'];
         $video_tmp = $_FILES['highlight_video']['tmp_name'];
-        move_uploaded_file($video_tmp, "uploads/videos/$video");
+        move_uploaded_file($video_tmp, "images/uploads/$video");
         $title = $_POST['highlight_title'];
         $description = $_POST['highlight_description'];
         mysqli_query($conn, "INSERT INTO highlight_carousel (video, title, description) VALUES ('$video', '$title', '$description')");
     }
 
-    // Insert Top Athletes
     if (!empty($_FILES['athlete_image']['name'])) {
-        $athlete_img = $_FILES['athlete_image']['name'];
-        move_uploaded_file($_FILES['athlete_image']['tmp_name'], "uploads/athletes/$athlete_img");
-        $athlete_name = $_POST['athlete_name'];
-        $athlete_desc = $_POST['athlete_description'];
-        mysqli_query($conn, "INSERT INTO top_athletes (image, name, description) VALUES ('$athlete_img', '$athlete_name', '$athlete_desc')");
-    }
+        $athlete_img = time() . "_" . basename($_FILES['athlete_image']['name']); // Unique filename
+        $target_dir = "images/uploads/";
+        $target_file = $target_dir . $athlete_img;
+        
+        // Validate image type
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($_FILES['athlete_image']['type'], $allowed_types)) {
+            die("Invalid image format. Only JPG, PNG, and GIF are allowed.");
+        }
+    
+        move_uploaded_file($_FILES['athlete_image']['tmp_name'], $target_file);
+    
+        // Athlete details
+        $athlete_name = htmlspecialchars($_POST['athlete_name']);
+        $athlete_desc = htmlspecialchars($_POST['athlete_description']);
+        $athlete_bio = htmlspecialchars($_POST['athlete_bio']);
+        $athlete_wins = intval($_POST['athlete_wins']);
+        $athlete_podium = intval($_POST['athlete_podium']);
+        $athlete_years_active = intval($_POST['athlete_years_active']);
+        $athlete_specialty = htmlspecialchars($_POST['athlete_specialty']);
+    
+        // Insert athlete into top_athletes table
+        $stmt = $conn->prepare("INSERT INTO top_athletes (image, name, description, bio, wins, podium_finishes, years_active, specialty) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssiiis", $athlete_img, $athlete_name, $athlete_desc, $athlete_bio, $athlete_wins, $athlete_podium, $athlete_years_active, $athlete_specialty);
+        $stmt->execute();
+        $athlete_id = $stmt->insert_id;
+        $stmt->close();
+    
+        // Insert achievements
+        if (!empty($_POST['achievement_title'])) {
+            $stmt = $conn->prepare("INSERT INTO achievements (athlete_id, title, description) VALUES (?, ?, ?)");
+    
+            foreach ($_POST['achievement_title'] as $index => $title) {
+                $description = htmlspecialchars($_POST['achievement_desc'][$index]);
+                $stmt->bind_param("iss", $athlete_id, $title, $description);
+                $stmt->execute();
+            }
+            $stmt->close();
+        }
+    
+        // Handle multiple gallery images
+        if (!empty($_FILES['athlete_gallery']['name'][0])) {
+            foreach ($_FILES['athlete_gallery']['name'] as $key => $gallery_img) {
+                $temp_name = $_FILES['athlete_gallery']['tmp_name'][$key];
+        
+                if ($gallery_img && $temp_name) {
+                    $unique_filename = time() . "_" . basename($gallery_img);
+                    $target_path = "images/uploads/$unique_filename";
+                    
+                    if (move_uploaded_file($temp_name, $target_path)) {
+                        $stmt = $conn->prepare("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES (?, ?, ?)");
+                        $stmt->bind_param("iss", $athlete_id, $unique_filename, $_POST['gallery_description'][$key]);
+                        $stmt->execute();
+                    }
+                }
+            }
+        }        
+    } 
 
     // Insert Community Leaders
-    if (!empty($_FILES['leader_image']['name'])) {
-        $leader_img = $_FILES['leader_image']['name'];
-        move_uploaded_file($_FILES['leader_image']['tmp_name'], "uploads/leaders/$leader_img");
-        $leader_name = $_POST['leader_name'];
-        $leader_role = $_POST['leader_role'];
-        mysqli_query($conn, "INSERT INTO community_leaders (image, name, role) VALUES ('$leader_img', '$leader_name', '$leader_role')");
+    if (!empty($_FILES['leader_image']['name']) && is_string($_FILES['leader_image']['name'])) {
+        $leader_img = time() . "_" . basename($_FILES['leader_image']['name']); // Unique filename
+        $target_path = "images/uploads/" . $leader_img;
+        
+        if (move_uploaded_file($_FILES['leader_image']['tmp_name'], $target_path)) {
+            $leader_name = htmlspecialchars($_POST['leader_name']);
+            $leader_role = htmlspecialchars($_POST['leader_role']);
+    
+            $stmt = $conn->prepare("INSERT INTO community_leaders (image, name, role) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $leader_img, $leader_name, $leader_role);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            echo "Error uploading leader image.";
+        }
     }
-
+    
     // Insert Partnerships
-    if (!empty($_FILES['partner_logo']['name'])) {
-        $partner_logo = $_FILES['partner_logo']['name'];
-        move_uploaded_file($_FILES['partner_logo']['tmp_name'], "uploads/partners/$partner_logo");
-        mysqli_query($conn, "INSERT INTO partnerships (logo) VALUES ('$partner_logo')");
-    }
+    if (!empty($_FILES['partner_logo']['name'][0])) {
+        foreach ($_FILES['partner_logo']['name'] as $key => $logo_name) {
+            $temp_name = $_FILES['partner_logo']['tmp_name'][$key];
+    
+            if ($logo_name && $temp_name) {
+                $unique_filename = time() . "_" . basename($logo_name);
+                $target_path = "images/uploads/" . $unique_filename;
+    
+                if (move_uploaded_file($temp_name, $target_path)) {
+                    $stmt = $conn->prepare("INSERT INTO partnerships (logo) VALUES (?)");
+                    $stmt->bind_param("s", $unique_filename);
+                    $stmt->execute();
+                }
+            }
+        }
+    }    
+    echo "<script>alert('Update successful!'); window.location.href='editInlinePage.php';</script>";
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -133,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h3>Partnerships</h3>
                 <div id="partnerships-container">
                     <div class="partnership-item">
-                        <input type="file" name="partner_logo[]" accept="image/*" required>
+                        <input type="file" name="partner_logo[]" accept="image/*" multiple required>
                     </div>
                 </div>
                 <button type="button" id="add-partner">Add More Partners</button>
