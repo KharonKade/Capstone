@@ -150,71 +150,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <li><a href="/logout">Logout</a></li>
                     </ul>
                 </nav>
-            <main class="content">
-                <h2>Manage Inline Page</h2>
-                <form action="" method="post" enctype="multipart/form-data">
-                    <h3>About Us</h3>
-                    <textarea name="about_us" required></textarea>
-                    
-                    <h3>Highlight Carousel</h3>
-                    <input type="file" name="highlight_video" accept="video/*" required>
-                    <input type="text" name="highlight_title" placeholder="Video Title" required>
-                    <textarea name="highlight_description" placeholder="Video Description" required></textarea>
-                    
-                    <h3>Top Athletes</h3>
-                    <input type="file" name="athlete_image" accept="image/*" required>
-                    <input type="text" name="athlete_name" placeholder="Athlete Name" required>
-                    <textarea name="athlete_description" placeholder="Athlete Description" required></textarea>
+            <h2>Manage Inline Page</h2>
+            <form action="" method="post" enctype="multipart/form-data">
+                <h3>About Us</h3>
+                <textarea name="about_us" required></textarea>
+                
+                <h3>Highlight Carousel</h3>
+                <input type="file" name="highlight_video" accept="video/*" required>
+                <input type="text" name="highlight_title" placeholder="Video Title" required>
+                <textarea name="highlight_description" placeholder="Video Description" required></textarea>
+                
+                <h3>Top Athletes</h3>
+                <input type="file" name="athlete_image" accept="image/*" required>
+                <input type="text" name="athlete_name" placeholder="Athlete Name" required>
+                <textarea name="athlete_description" placeholder="Athlete Description" required></textarea>
 
-                    <h3>About the Player</h3>
-                    <textarea name="athlete_bio" placeholder="Write about the athlete" required></textarea>
+                <h3>About the Player</h3>
+                <textarea name="athlete_bio" placeholder="Write about the athlete" required></textarea>
 
-                    <h4>Player Statistics</h4>
-                    <input type="number" name="athlete_wins" placeholder="Total Wins" required>
-                    <input type="number" name="athlete_podium" placeholder="Podium Finishes" required>
-                    <input type="number" name="athlete_years_active" placeholder="Years Active" required>
-                    <input type="text" name="athlete_specialty" placeholder="Specialty (e.g., Speed Skating, Freestyle)" required>
+                <h4>Player Statistics</h4>
+                <input type="number" name="athlete_wins" placeholder="Total Wins" required>
+                <input type="number" name="athlete_podium" placeholder="Podium Finishes" required>
+                <input type="number" name="athlete_years_active" placeholder="Years Active" required>
+                <input type="text" name="athlete_specialty" placeholder="Specialty (e.g., Speed Skating, Freestyle)" required>
 
-                    <h3>Achievements</h3>
-                    <div id="achievements-container">
-                        <div class="achievement-item">
-                            <input type="text" name="achievement_title[]" placeholder="Achievement Title" required>
-                            <textarea name="achievement_desc[]" placeholder="Achievement Description" required></textarea>
-                        </div>
+                <h3>Achievements</h3>
+                <div id="achievements-container">
+                    <div class="achievement-item">
+                        <input type="text" name="achievement_title[]" placeholder="Achievement Title" required>
+                        <textarea name="achievement_desc[]" placeholder="Achievement Description" required></textarea>
                     </div>
-                    <button type="button" id="add-achievement">Add More Achievements</button>
+                </div>
+                <button type="button" id="add-achievement">Add More Achievements</button>
 
-                    <h3>Gallery</h3>
-                    <div id="gallery-container">
-                        <div class="gallery-item">
-                            <input type="file" name="athlete_gallery[]" accept="image/*" required>
-                            <input type="text" name="gallery_description[]" placeholder="Image Description" required>
-                        </div>
+                <h3>Gallery</h3>
+                <div id="gallery-container">
+                    <div class="gallery-item">
+                        <input type="file" name="athlete_gallery[]" accept="image/*" required>
+                        <input type="text" name="gallery_description[]" placeholder="Image Description" required>
                     </div>
-                    <button type="button" id="add-gallery">Add More Images</button>
-                    
-                    <h3>Community Leaders</h3>
-                    <div id="leaders-container">
-                        <div class="leader-item">
-                            <input type="file" name="leader_image[]" accept="image/*" required>
-                            <input type="text" name="leader_name[]" placeholder="Leader Name" required>
-                            <input type="text" name="leader_role[]" placeholder="Leader Role" required>
-                            <textarea name="leader_bio[]" placeholder="Leader Bio" required></textarea>
-                        </div>
+                </div>
+                <button type="button" id="add-gallery">Add More Images</button>
+                
+                <h3>Community Leaders</h3>
+                <div id="leaders-container">
+                    <div class="leader-item">
+                        <input type="file" name="leader_image[]" accept="image/*" required>
+                        <input type="text" name="leader_name[]" placeholder="Leader Name" required>
+                        <input type="text" name="leader_role[]" placeholder="Leader Role" required>
+                        <textarea name="leader_bio[]" placeholder="Leader Bio" required></textarea>
                     </div>
-                    <button type="button" id="add-leader">Add More Leaders</button>
-                    
-                    <h3>Partnerships</h3>
-                    <div id="partnerships-container">
-                        <div class="partnership-item">
-                            <input type="file" name="partner_logo[]" accept="image/*" multiple required>
-                        </div>
+                </div>
+                <button type="button" id="add-leader">Add More Leaders</button>
+                
+                <h3>Partnerships</h3>
+                <div id="partnerships-container">
+                    <div class="partnership-item">
+                        <input type="file" name="partner_logo[]" accept="image/*" multiple required>
                     </div>
-                    <button type="button" id="add-partner">Add More Partners</button>
-                                    
-                    <button type="submit">Save Changes</button>
-                </form>
-            </main>
+                </div>
+                <button type="button" id="add-partner">Add More Partners</button>
+                                
+                <button type="submit">Save Changes</button>
+            </form>
     </div>
     <script>
         document.getElementById("add-achievement").addEventListener("click", function () {
