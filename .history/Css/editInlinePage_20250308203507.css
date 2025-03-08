@@ -1,11 +1,16 @@
-/* admin.css */
-
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background: #f7f9fc;
     color: #333;
+    display: flex;
+    height: 100vh;
+}
+
+.admin-container {
+    display: flex;
+    min-height: 100vh;
 }
 
 /* Sidebar */
@@ -20,6 +25,7 @@ body {
     gap: 20px;
     position: fixed;
     height: 100%;
+    overflow-y: auto;
 }
 
 .sidebar h2 {
@@ -51,54 +57,34 @@ body {
     background: #34495e;
 }
 
-.admin-container {
-    display: flex;
-    min-height: 100vh;
-}
-
 /* Main Content */
 .content {
     flex-grow: 1;
+    padding: 40px;
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 20px auto; /* Centers the content */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Ensures everything inside is centered */
-    justify-content: center;
-    text-align: center;
-
+    margin: 20px;
 }
 
 .content h2 {
     margin-bottom: 20px;
     font-size: 1.8rem;
     color: #2c3e50;
+    text-align: center;
     border-bottom: 2px solid #ecf0f1;
     padding-bottom: 10px;
-    width: 100%;
 }
 
 form {
     max-width: 700px;
-    width: 100%;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: center;
-}
-
-form label {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-right: 10px;
-    cursor: pointer;
 }
 
 form input,
-form select,
 form textarea,
 form button {
     font-size: 1rem;
@@ -107,11 +93,9 @@ form button {
     border-radius: 5px;
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
-    width: 100%;
 }
 
 form input:focus,
-form select:focus,
 form textarea:focus {
     border-color: #3498db;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
@@ -130,11 +114,66 @@ form button:hover {
     background: #2980b9;
 }
 
+/* Achievements and Gallery Sections */
+#achievements-container,
+#gallery-container,
+#leaders-container,
+#partnerships-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.achievement-item,
+.gallery-item,
+.leader-item,
+.partnership-item {
+    background: #f7f9fc;
+    padding: 15px;
+    border: 1px solid #dcdde1;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+/* Add More Buttons */
+#add-achievement,
+#add-gallery,
+#add-leader,
+#add-partner {
+    align-self: center;
+    background: #27ae60;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#add-achievement:hover,
+#add-gallery:hover,
+#add-leader:hover,
+#add-partner:hover {
+    background: #229954;
+}
+
+/* File Inputs */
+form input[type="file"] {
+    padding: 5px;
+    font-size: 0.9rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
-    .admin-container {
+    .content {
+        margin: 10px;
         padding: 20px;
     }
+
     form {
         padding: 0 10px;
     }
