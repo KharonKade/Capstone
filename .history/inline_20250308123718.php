@@ -23,12 +23,6 @@
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Rollerblades</h1>
-        </div>
-    </section>
-
     <?php
     // Database connection
     $servername = "localhost";
@@ -204,26 +198,26 @@
     </div>
 
 
-    <section class="partnership-section">
-        <h2>Partners & Sponsors</h2>
-        <div class="partner-logos">
+    <div class="partnership-section">
+        <h2> Our Partners </h2>
             <?php
-            // Fetch partner logos from the 'partnerships' table
+            // Fetch partnership logos from the correct table
             $result = $conn_content->query("SELECT logo FROM partnerships");
 
-            // Check if there are any partners
+            // Check if there are partners
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    echo '<img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo" class="partner-logo">';
+                    echo '<div class="partner-logos">
+                            <img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo">
+                        </div>';
                 }
             } else {
-                // Display message when there are no partners
-                echo '<p class="no-data">No partners or sponsors available at the moment.</p>';
+                // Message when there are no partners
+                echo '<p class="no-data">No partners available.</p>';
             }
             ?>
         </div>
-    </section>
-
+    </div>
 
     <?php
     $conn_content->close();

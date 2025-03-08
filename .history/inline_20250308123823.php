@@ -23,12 +23,6 @@
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Rollerblades</h1>
-        </div>
-    </section>
-
     <?php
     // Database connection
     $servername = "localhost";

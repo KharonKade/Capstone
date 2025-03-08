@@ -25,7 +25,7 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Rollerblades</h1>
+            <h1>BMX</h1>
         </div>
     </section>
 

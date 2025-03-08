@@ -23,12 +23,6 @@
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Rollerblades</h1>
-        </div>
-    </section>
-
     <?php
     // Database connection
     $servername = "localhost";
@@ -117,23 +111,17 @@
         <div class="carousel-container">
             <div class="carousel">
                 <?php
-                $result = $conn_content->query("SELECT video, title, description FROM highlight_carousel");
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<div class="carousel-item">
-                                <video src="' . $row["video"] . '" autoplay muted loop onclick="openModal(this, \'' . $row["title"] . '\', \'' . $row["description"] . '\')"></video>
-                            </div>';
-                    }
-                } else {
-                    echo '<p class="no-videos">No highlight videos available at the moment.</p>';
+                $result = $conn_content->query("SELECT media_path FROM basf_content WHERE section='highlight_videos'");
+                while ($row = $result->fetch_assoc()) {
+                    echo '<div class="carousel-item">
+                            <video src="' . $row["media_path"] . '" autoplay muted loop onclick="openModal(this)"></video>
+                        </div>';
                 }
                 ?>
             </div>
         </div>
     </div>
 
-    <!-- Video Popup Modal -->
     <div class="video-modal" id="videoModal">
         <div class="video-modal-content">
             <button class="close-btn" id="closeModalBtn">&times;</button>
@@ -145,26 +133,19 @@
         </div>
     </div>
 
-
-
     <div class="players" id="top-athletes">
         <h2>Top Athletes</h2>
         <div class="slider">
             <?php
-            $result = $conn_content->query("SELECT name, description, image FROM top_athletes");
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo '<div class="slides" style="--img: url(' . $row["image"] . ')">
-                            <div class="content">
-                                <h1>' . $row["name"] . '</h1>
-                                <p>' . $row["description"] . '</p>
-                                <button class="explore-btn">Explore</button>
-                            </div>
-                        </div>';
-                }
-            } else {
-                echo '<p class="no-data">No athletes have been added yet.</p>';
+            $result = $conn_content->query("SELECT name, description, image_path FROM basf_content WHERE section='top_athletes'");
+            while ($row = $result->fetch_assoc()) {
+                echo '<div class="slides" style="--img: url(' . $row["image_path"] . ')">
+                        <div class="content">
+                            <h1>' . $row["name"] . '</h1>
+                            <p>' . $row["description"] . '</p>
+                            <button class="explore-btn">Explore</button>
+                        </div>
+                    </div>';
             }
             ?>
         </div>
@@ -174,56 +155,37 @@
         </div>
     </div>
 
-
     <div class="community-leaders-section">
         <h1 class="section-heading">Community Leaders</h1>
         <div class="leaders-container">
             <?php
-            // Fetch community leaders from the database
-            $result = $conn_content->query("SELECT name, role, image FROM community_leaders");
-
-            // Check if there are community leaders
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo '<div class="leader">
-                            <div class="profile-pic">
-                                <img src="' . $row["image"] . '" alt="' . htmlspecialchars($row["name"]) . '" />
-                            </div>
-                            <div class="leader-info">
-                                <h3 class="leader-name">' . htmlspecialchars($row["name"]) . '</h3>
-                                <p class="leader-role">' . htmlspecialchars($row["role"]) . '</p>
-                            </div>
-                        </div>';
-                }
-            } else {
-                // Message when there are no leaders
-                echo '<p class="no-data">No community leaders available.</p>';
+            $result = $conn_content->query("SELECT name, role, image_path FROM basf_content WHERE section='community_leaders'");
+            while ($row = $result->fetch_assoc()) {
+                echo '<div class="leader">
+                        <div class="profile-pic">
+                            <img src="' . $row["image_path"] . '" alt="' . $row["name"] . '" />
+                        </div>
+                        <div class="leader-info">
+                            <h3 class="leader-name">' . $row["name"] . '</h3>
+                            <p class="leader-role">' . $row["role"] . '</p>
+                        </div>
+                    </div>';
             }
             ?>
         </div>
     </div>
 
-
     <section class="partnership-section">
         <h2>Partners & Sponsors</h2>
         <div class="partner-logos">
             <?php
-            // Fetch partner logos from the 'partnerships' table
-            $result = $conn_content->query("SELECT logo FROM partnerships");
-
-            // Check if there are any partners
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo '<img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo" class="partner-logo">';
-                }
-            } else {
-                // Display message when there are no partners
-                echo '<p class="no-data">No partners or sponsors available at the moment.</p>';
+            $result = $conn_content->query("SELECT image_path FROM basf_content WHERE section='partners_sponsors'");
+            while ($row = $result->fetch_assoc()) {
+                echo '<img src="' . $row["image_path"] . '" alt="Sponsor" class="partner-logo">';
             }
             ?>
         </div>
     </section>
-
 
     <?php
     $conn_content->close();

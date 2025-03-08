@@ -23,12 +23,6 @@
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Rollerblades</h1>
-        </div>
-    </section>
-
     <?php
     // Database connection
     $servername = "localhost";
@@ -208,22 +202,13 @@
         <h2>Partners & Sponsors</h2>
         <div class="partner-logos">
             <?php
-            // Fetch partner logos from the 'partnerships' table
-            $result = $conn_content->query("SELECT logo FROM partnerships");
-
-            // Check if there are any partners
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo '<img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo" class="partner-logo">';
-                }
-            } else {
-                // Display message when there are no partners
-                echo '<p class="no-data">No partners or sponsors available at the moment.</p>';
+            $result = $conn_content->query("SELECT image_path FROM basf_content WHERE section='partners_sponsors'");
+            while ($row = $result->fetch_assoc()) {
+                echo '<img src="' . $row["image_path"] . '" alt="Sponsor" class="partner-logo">';
             }
             ?>
         </div>
     </section>
-
 
     <?php
     $conn_content->close();
