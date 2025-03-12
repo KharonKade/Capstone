@@ -155,7 +155,7 @@
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    echo '<div class="slides" style="--img: url(' . $row["image"] . ')">
+                    echo '<div class="slides" style="background-image: url(\'' . $row["image"] . '\');">
                             <div class="content">
                                 <h1>' . $row["name"] . '</h1>
                                 <p>' . $row["description"] . '</p>

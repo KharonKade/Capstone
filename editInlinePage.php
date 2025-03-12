@@ -111,12 +111,19 @@
                         </div>
                     </div>
                     <button type="button" onclick="addAchievement()">+ Add More Achievements</button>
+                    <button type="button" onclick="removeAchievement()">Cancel</button>
 
                     <!-- Gallery -->
                     <h3>Gallery</h3>
                     <label>Upload Images:</label>
-                    <input type="file" name="athlete_gallery[]" multiple required>
-                    <textarea name="gallery_descriptions[]" placeholder="Enter descriptions for each image. One per line." required></textarea>
+                    <div id="gallery-container">
+                        <div class="gallery-item">
+                            <input type="file" name="athlete_gallery[]" required>
+                            <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addGalleryImage()">+ Add More Images</button>
+                    <button type="button" onclick="removeGalleryImage()">Cancel</button>
 
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addAthleteForm')">Cancel</button>
@@ -298,6 +305,41 @@
             function deleteItem(url) {
                 if (confirm("Are you sure you want to delete this item?")) {
                     window.location.href = url;
+                }
+            }
+
+            function addAchievement() {
+                const container = document.getElementById('achievements-container');
+                const newAchievement = document.createElement('div');
+                newAchievement.classList.add('achievement');
+                newAchievement.innerHTML = `
+                    <input type="text" name="achievements[]" placeholder="Achievement Title" required>
+                    <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
+                `;
+                container.appendChild(newAchievement);
+            }
+
+            function removeAchievement() {
+                const container = document.getElementById('achievements-container');
+                if (container.children.length > 1) {
+                    container.removeChild(container.lastElementChild);
+                }
+            }
+            function addGalleryImage() {
+                const container = document.getElementById('gallery-container');
+                const newGalleryItem = document.createElement('div');
+                newGalleryItem.classList.add('gallery-item');
+                newGalleryItem.innerHTML = `
+                    <input type="file" name="athlete_gallery[]" required>
+                    <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
+                `;
+                container.appendChild(newGalleryItem);
+            }
+
+            function removeGalleryImage() {
+                const container = document.getElementById('gallery-container');
+                if (container.children.length > 1) {
+                    container.removeChild(container.lastElementChild);
                 }
             }
             </script>
