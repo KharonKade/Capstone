@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["name"]) && !isset($_PO
         if (!empty($_FILES["athlete_gallery"]["name"][0])) {
             foreach ($_FILES["athlete_gallery"]["tmp_name"] as $key => $tmp_name) {
                 if (!empty($_FILES["athlete_gallery"]["name"][$key]) && $_FILES["athlete_gallery"]["error"][$key] == 0) {
-                    $gallery_image_path = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
+                    $gallery_image_path = "images/gallery/" . basename($_FILES["athlete_gallery"]["name"][$key]);
                     move_uploaded_file($tmp_name, $gallery_image_path);
                     
                     // Get the corresponding description for this image
@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["name"]) && !isset($_PO
                 if (!empty($_FILES["athlete_gallery"]["name"][0])) {
                     foreach ($_FILES["athlete_gallery"]["tmp_name"] as $key => $tmp_name) {
                         if ($_FILES["athlete_gallery"]["error"][$key] == 0) {
-                            $gallery_image_path = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
+                            $gallery_image_path = "images/gallery/" . basename($_FILES["athlete_gallery"]["name"][$key]);
                             move_uploaded_file($tmp_name, $gallery_image_path);
                             
                             $description = isset($_POST["gallery_descriptions"][$key]) ? $_POST["gallery_descriptions"][$key] : '';

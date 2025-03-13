@@ -199,40 +199,8 @@
                     echo "<input type='number' name='years_active' value='{$row['years_active']}' required>";
                     echo "<input type='text' name='specialty' value='{$row['specialty']}' required>";
                     echo "<input type='file' name='image'>";
-
-                    // Achievements Section
-                    echo "<h3>Achievements</h3>";
-                    echo "<div id='achievements-container-{$row['id']}'>";
-                    $achievements = $conn_content->query("SELECT id, title, description FROM achievements WHERE athlete_id='{$row['id']}'");
-                    while ($ach = $achievements->fetch_assoc()) {
-                        echo "<div class='achievement'>";
-                        echo "<input type='hidden' name='achievement_ids[]' value='{$ach['id']}'>";
-                        echo "<input type='text' name='achievements[]' value='{$ach['title']}' required>";
-                        echo "<textarea name='achievements_descriptions[]' required>{$ach['description']}</textarea>";
-                        echo "</div>";
-                    }
-                    echo "</div>";
-                    echo "<button type='button' onclick=\"addAchievement('achievements-container-{$row['id']}')\">+ Add More Achievements</button>";
-
-                    // Gallery Section
-                    echo "<h3>Gallery</h3>";
-                    echo "<div id='gallery-container-{$row['id']}'>";
-                    $gallery = $conn_content->query("SELECT id, image, description FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
-                    while ($img = $gallery->fetch_assoc()) {
-                        echo "<div class='gallery-item'>";
-                        echo "<input type='hidden' name='gallery_ids[]' value='{$img['id']}'>";
-                        echo "<img src='{$img['image']}' alt='Athlete Gallery Image' width='100'>";
-                        echo "<input type='file' name='athlete_gallery[]'>";
-                        echo "<textarea name='gallery_descriptions[]' required>{$img['description']}</textarea>";
-                        echo "</div>";
-                    }
-                    echo "</div>";
-                    echo "<button type='button' onclick=\"addGalleryImage('gallery-container-{$row['id']}')\">+ Add More Images</button>";
-
                     echo "<button type='submit'>Update</button>";
-                    echo "<button type='button' onclick=\"hideForm('editAthleteForm{$row['id']}')\">Cancel</button>";
                     echo "</form></div>";
-
                 }
                 ?>
             </section>
@@ -384,29 +352,6 @@
             function hideForm(formId) {
                 document.getElementById(formId).style.display = 'none';
             }
-
-            function addAchievement(containerId) {
-                let container = document.getElementById(containerId);
-                let newAchievement = document.createElement('div');
-                newAchievement.classList.add('achievement');
-                newAchievement.innerHTML = `
-                    <input type="text" name="achievements[]" placeholder="Achievement Title" required>
-                    <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                `;
-                container.appendChild(newAchievement);
-            }
-
-            function addGalleryImage(containerId) {
-                let container = document.getElementById(containerId);
-                let newGalleryItem = document.createElement('div');
-                newGalleryItem.classList.add('gallery-item');
-                newGalleryItem.innerHTML = `
-                    <input type="file" name="athlete_gallery[]" required>
-                    <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
-                `;
-                container.appendChild(newGalleryItem);
-            }
-
 
             </script>
 

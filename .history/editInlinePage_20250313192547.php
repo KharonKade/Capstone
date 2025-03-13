@@ -385,29 +385,6 @@
                 document.getElementById(formId).style.display = 'none';
             }
 
-            function addAchievement(containerId) {
-                let container = document.getElementById(containerId);
-                let newAchievement = document.createElement('div');
-                newAchievement.classList.add('achievement');
-                newAchievement.innerHTML = `
-                    <input type="text" name="achievements[]" placeholder="Achievement Title" required>
-                    <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                `;
-                container.appendChild(newAchievement);
-            }
-
-            function addGalleryImage(containerId) {
-                let container = document.getElementById(containerId);
-                let newGalleryItem = document.createElement('div');
-                newGalleryItem.classList.add('gallery-item');
-                newGalleryItem.innerHTML = `
-                    <input type="file" name="athlete_gallery[]" required>
-                    <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
-                `;
-                container.appendChild(newGalleryItem);
-            }
-
-
             </script>
 
             <?php
