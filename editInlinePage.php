@@ -176,7 +176,7 @@
                     if ($gallery->num_rows > 0) {
                         while ($img = $gallery->fetch_assoc()) {
                             echo "<div class='gallery-item'>";
-                            echo "<img src='{$row['image']}' alt='Athlete Gallery Image'>";
+                            echo "<img src='{$img['image']}' alt='Athlete Gallery Image'>";
                             echo "<p class='gallery-description'>{$img['description']}</p>"; // Display image description
                             echo "</div>";
                         }
@@ -190,7 +190,7 @@
                     // Edit Athlete Form
                     echo "<button onclick=\"showEditForm('editAthleteForm{$row['id']}')\">Edit</button>";
                     echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes.php' enctype='multipart/form-data'>";
-                    echo "<input type='hidden' name='id' value='{$row['id']}'>";
+                    echo "<input type='hidden' name='edit_id' value='{$row['id']}'>";
                     echo "<input type='text' name='name' value='{$row['name']}' required>";
                     echo "<textarea name='bio' required>{$row['bio']}</textarea>";
                     echo "<textarea name='description' required>{$row['description']}</textarea>";
@@ -198,6 +198,7 @@
                     echo "<input type='number' name='podium_finishes' value='{$row['podium_finishes']}' required>";
                     echo "<input type='number' name='years_active' value='{$row['years_active']}' required>";
                     echo "<input type='text' name='specialty' value='{$row['specialty']}' required>";
+                    echo "<input type='hidden' name='existing_image' value='{$row['image']}'>";
                     echo "<input type='file' name='image'>";
 
                     // Achievements Section
@@ -220,9 +221,9 @@
                     $gallery = $conn_content->query("SELECT id, image, description FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
                     while ($img = $gallery->fetch_assoc()) {
                         echo "<div class='gallery-item'>";
-                        echo "<input type='hidden' name='gallery_ids[]' value='{$img['id']}'>";
+                        echo "<input type='hidden' name='gallery_existing_images[]' value='{$img['image']}'>"; // Keep existing image
                         echo "<img src='{$img['image']}' alt='Athlete Gallery Image' width='100'>";
-                        echo "<input type='file' name='athlete_gallery[]'>";
+                        echo "<input type='file' name='athlete_gallery[]'>"; // Upload new image if needed
                         echo "<textarea name='gallery_descriptions[]' required>{$img['description']}</textarea>";
                         echo "</div>";
                     }
@@ -342,41 +343,6 @@
                 }
             }
 
-            function addAchievement() {
-                const container = document.getElementById('achievements-container');
-                const newAchievement = document.createElement('div');
-                newAchievement.classList.add('achievement');
-                newAchievement.innerHTML = `
-                    <input type="text" name="achievements[]" placeholder="Achievement Title" required>
-                    <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                `;
-                container.appendChild(newAchievement);
-            }
-
-            function removeAchievement() {
-                const container = document.getElementById('achievements-container');
-                if (container.children.length > 1) {
-                    container.removeChild(container.lastElementChild);
-                }
-            }
-            function addGalleryImage() {
-                const container = document.getElementById('gallery-container');
-                const newGalleryItem = document.createElement('div');
-                newGalleryItem.classList.add('gallery-item');
-                newGalleryItem.innerHTML = `
-                    <input type="file" name="athlete_gallery[]" required>
-                    <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
-                `;
-                container.appendChild(newGalleryItem);
-            }
-
-            function removeGalleryImage() {
-                const container = document.getElementById('gallery-container');
-                if (container.children.length > 1) {
-                    container.removeChild(container.lastElementChild);
-                }
-            }
-
             function showEditForm(formId) {
                 document.getElementById(formId).style.display = 'block';
             }
@@ -385,24 +351,28 @@
                 document.getElementById(formId).style.display = 'none';
             }
 
-            function addAchievement(containerId) {
-                let container = document.getElementById(containerId);
-                let newAchievement = document.createElement('div');
+            function addAchievement() {
+                const container = document.getElementById('achievements-container');
+                if (!container) return; // Ensure the container exists
+                const newAchievement = document.createElement('div');
                 newAchievement.classList.add('achievement');
                 newAchievement.innerHTML = `
                     <input type="text" name="achievements[]" placeholder="Achievement Title" required>
                     <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
+                    <button type="button" onclick="this.parentNode.remove()">Remove</button>
                 `;
                 container.appendChild(newAchievement);
             }
 
-            function addGalleryImage(containerId) {
-                let container = document.getElementById(containerId);
-                let newGalleryItem = document.createElement('div');
+            function addGalleryImage() {
+                const container = document.getElementById('gallery-container');
+                if (!container) return;
+                const newGalleryItem = document.createElement('div');
                 newGalleryItem.classList.add('gallery-item');
                 newGalleryItem.innerHTML = `
-                    <input type="file" name="athlete_gallery[]" required>
-                    <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
+                    <input type="file" name="athlete_gallery[]" accept="image/*">
+                    <textarea name="gallery_descriptions[]" placeholder="Enter description for this image."></textarea>
+                    <button type="button" onclick="this.parentNode.remove()">Remove</button>
                 `;
                 container.appendChild(newGalleryItem);
             }
