@@ -218,20 +218,17 @@
                     echo "<h3>Gallery</h3>";
                     echo "<div id='gallery-container-{$row['id']}'>";
                     $gallery = $conn_content->query("SELECT id, image, description FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
-
                     while ($img = $gallery->fetch_assoc()) {
                         echo "<div class='gallery-item'>";
-                        echo "<input type='hidden' name='gallery_image_ids[]' value='{$img['id']}'>"; 
+                        echo "<input type='hidden' name='gallery_existing_images[]' value='{$img['image']}'>"; // Keep existing image
                         echo "<img src='{$img['image']}' alt='Athlete Gallery Image' width='100'>";
-                        echo "<input type='hidden' name='gallery_existing_images[]' value='{$img['image']}'>"; 
-                        echo "<input type='file' name='athlete_gallery[]'>"; 
+                        echo "<input type='file' name='athlete_gallery[]'>"; // Upload new image if needed
                         echo "<textarea name='gallery_descriptions[]' required>{$img['description']}</textarea>";
                         echo "</div>";
                     }
                     echo "</div>";
                     echo "<button type='button' onclick=\"addGalleryImage('gallery-container-{$row['id']}')\">+ Add More Images</button>";
-                    echo "<button type='button' onclick=\"removeLastGalleryImage('gallery-container-{$row['id']}')\">Cancel</button>";
-
+                    echo "<button type='button' onclick=\"removeLastGalleryImage('gallery-container-{$row['id']}')\">cancel</button>";
 
                     echo "<button type='submit'>Update</button>";
                     echo "<button type='button' onclick=\"hideForm('editAthleteForm{$row['id']}')\">Cancel</button>";

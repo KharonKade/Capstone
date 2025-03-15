@@ -60,27 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $conn->query("INSERT INTO achievements (athlete_id, title, description) VALUES ('$id', '$achievement_title', '$achievement_desc')");
             }
 
-            // Handle gallery images update
-            if (!empty($_POST["gallery_image_ids"])) {
-                foreach ($_POST["gallery_image_ids"] as $key => $gallery_id) {
-                    $existing_image = $_POST["gallery_existing_images"][$key]; // Keep old image if no new file
-                    
-                    // Check if a new image was uploaded for this entry
-                    if (!empty($_FILES["athlete_gallery"]["name"][$key]) && $_FILES["athlete_gallery"]["error"][$key] == 0) {
-                        $new_image_path = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
-                        move_uploaded_file($_FILES["athlete_gallery"]["tmp_name"][$key], $new_image_path);
-                        $existing_image = $new_image_path; // Use new image
-                    }
-            
-                    $updated_desc = $conn->real_escape_string($_POST["gallery_descriptions"][$key]);
-            
-                    // Update existing gallery image entry
-                    $conn->query("UPDATE athlete_gallery SET image='$existing_image', description='$updated_desc' WHERE id='$gallery_id'");
-                }
-            }
-
-            // Append new images instead of deleting all
+            // Handle gallery images: Only remove if new ones are uploaded
             if (!empty($_FILES["athlete_gallery"]["name"][0])) {
+                $conn->query("DELETE FROM athlete_gallery WHERE athlete_id='$id'"); // Remove only if new images are added
                 foreach ($_FILES["athlete_gallery"]["tmp_name"] as $key => $tmp_name) {
                     if ($_FILES["athlete_gallery"]["error"][$key] == 0) {
                         $gallery_image = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
@@ -119,19 +101,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $conn->query("INSERT INTO achievements (athlete_id, title, description) VALUES ('$athlete_id', '$achievement_title', '$achievement_desc')");
             }
 
+            // Insert gallery images
             if (!empty($_FILES["athlete_gallery"]["name"][0])) {
                 foreach ($_FILES["athlete_gallery"]["tmp_name"] as $key => $tmp_name) {
                     if ($_FILES["athlete_gallery"]["error"][$key] == 0) {
                         $gallery_image = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
                         move_uploaded_file($tmp_name, $gallery_image);
-            
+
                         $gallery_description = isset($_POST["gallery_descriptions"][$key]) ? $conn->real_escape_string($_POST["gallery_descriptions"][$key]) : '';
-                        
-                        // Insert new image entry
+                        $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$athlete_id', '$gallery_image', '$gallery_description')");
+                    }
+                }
+            }
+
+            // Only delete selected images instead of all
+            if (!empty($_POST["delete_gallery_images"])) {
+                foreach ($_POST["delete_gallery_images"] as $delete_image) {
+                    $delete_image = $conn->real_escape_string($delete_image);
+                    $conn->query("DELETE FROM athlete_gallery WHERE athlete_id='$id' AND image='$delete_image'");
+                    unlink($delete_image); // Remove the file from the server
+                }
+            }
+
+            // Append new images without deleting old ones
+            if (!empty($_FILES["athlete_gallery"]["name"][0])) {
+                foreach ($_FILES["athlete_gallery"]["tmp_name"] as $key => $tmp_name) {
+                    if ($_FILES["athlete_gallery"]["error"][$key] == 0) {
+                        $gallery_image = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
+                        move_uploaded_file($tmp_name, $gallery_image);
+
+                        $gallery_description = isset($_POST["gallery_descriptions"][$key]) ? $conn->real_escape_string($_POST["gallery_descriptions"][$key]) : '';
                         $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$id', '$gallery_image', '$gallery_description')");
                     }
                 }
             }
+
 
             header("Location: editInlinePage.php");
             exit();
