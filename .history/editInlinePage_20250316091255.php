@@ -417,7 +417,7 @@
                 newImageDiv.classList.add("gallery-item");
                 newImageDiv.innerHTML = `
                     <input type="hidden" name="gallery_existing_ids[]" value="new">
-                    <input type="file" name="athlete_gallery[]" accept="image/*" required>
+                    <input type="file" name="athlete_gallery[]" required>
                     <textarea name="gallery_descriptions[]" placeholder="Image Description" required></textarea>
                 `;
                 container.appendChild(newImageDiv);

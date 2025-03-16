@@ -1,6 +1,9 @@
 <?php
 
-
+echo "<pre>";
+print_r($_FILES);
+echo "</pre>";
+exit;
 
 $servername = "localhost";
 $username = "root";
@@ -90,7 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         move_uploaded_file($tmp_name, $gallery_image);
 
                         $gallery_description = isset($_POST["gallery_descriptions"][$key]) ? $conn->real_escape_string($_POST["gallery_descriptions"][$key]) : '';
-                        $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$id', '$gallery_image', '$gallery_description')");
+                        $sql = "INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$id', '$gallery_image', '$gallery_description')";
+                        if (!$conn->query($sql)) {
+                            die("Gallery Insert Error: " . $conn->error);
+                        }
+
                     }
                 }
             }
@@ -135,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $check_existing = $conn->query("SELECT id FROM athlete_gallery WHERE athlete_id='$id' AND image='$gallery_image'");
                         if ($check_existing->num_rows == 0) {  
                             // Only insert if this image does not already exist
-                            $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$athlete_id', '$gallery_image', '$gallery_description')");
+                            $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$id', '$gallery_image', '$gallery_description')");
                         }
                     }
                 }

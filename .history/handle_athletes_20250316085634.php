@@ -1,7 +1,4 @@
 <?php
-
-
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -135,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $check_existing = $conn->query("SELECT id FROM athlete_gallery WHERE athlete_id='$id' AND image='$gallery_image'");
                         if ($check_existing->num_rows == 0) {  
                             // Only insert if this image does not already exist
-                            $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$athlete_id', '$gallery_image', '$gallery_description')");
+                            $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$id', '$gallery_image', '$gallery_description')");
                         }
                     }
                 }

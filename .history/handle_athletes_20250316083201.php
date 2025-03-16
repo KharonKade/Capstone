@@ -1,7 +1,4 @@
 <?php
-
-
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -122,26 +119,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $conn->query("INSERT INTO achievements (athlete_id, title, description) VALUES ('$athlete_id', '$achievement_title', '$achievement_desc')");
             }
 
-            // Ensure we only insert new images, not duplicate existing ones
             if (!empty($_FILES["athlete_gallery"]["name"][0])) {
                 foreach ($_FILES["athlete_gallery"]["tmp_name"] as $key => $tmp_name) {
                     if ($_FILES["athlete_gallery"]["error"][$key] == 0) {
                         $gallery_image = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
                         move_uploaded_file($tmp_name, $gallery_image);
-
+            
                         $gallery_description = isset($_POST["gallery_descriptions"][$key]) ? $conn->real_escape_string($_POST["gallery_descriptions"][$key]) : '';
-
-                        // Ensure we are adding only **NEW** gallery images
-                        $check_existing = $conn->query("SELECT id FROM athlete_gallery WHERE athlete_id='$id' AND image='$gallery_image'");
-                        if ($check_existing->num_rows == 0) {  
-                            // Only insert if this image does not already exist
-                            $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$athlete_id', '$gallery_image', '$gallery_description')");
-                        }
+                        
+                        // Insert new image entry
+                        $conn->query("INSERT INTO athlete_gallery (athlete_id, image, description) VALUES ('$athlete_id', '$gallery_image', '$gallery_description')");
                     }
                 }
             }
-
-            
 
             header("Location: editInlinePage.php");
             exit();
