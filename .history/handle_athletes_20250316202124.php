@@ -66,31 +66,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Handle gallery images update
             if (!empty($_POST["gallery_image_ids"])) {
                 foreach ($_POST["gallery_image_ids"] as $key => $gallery_id) {
-                    if (!empty($gallery_id) && is_numeric($gallery_id)) { // Ensure ID is valid
-                        $existing_image = $_POST["gallery_existing_images"][$key]; // Default to existing image
-                        
-                        // Check if a new image was uploaded
-                        if (!empty($_FILES["athlete_gallery"]["name"][$key]) && $_FILES["athlete_gallery"]["error"][$key] == 0) {
-                            $new_image_path = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
-                            move_uploaded_file($_FILES["athlete_gallery"]["tmp_name"][$key], $new_image_path);
-                            $existing_image = $new_image_path;
-                        }
-            
-                        $updated_desc = $conn->real_escape_string($_POST["gallery_descriptions"][$key]);
-            
-                        // Check if the current image is actually changing
-                        $result = $conn->query("SELECT * FROM athlete_gallery WHERE id='$gallery_id'");
-                        if ($result && $result->num_rows > 0) {
-                            $row = $result->fetch_assoc();
-                            if ($row["image"] != $existing_image || $row["description"] != $updated_desc) {
-                                // Only update if something has changed
-                                $conn->query("UPDATE athlete_gallery SET image='$existing_image', description='$updated_desc' WHERE id='$gallery_id'");
-                            }
-                        }
+                    $existing_image = $_POST["gallery_existing_images"][$key]; // Keep old image if no new file
+                    
+                    // Check if a new image was uploaded for this entry
+                    if (!empty($_FILES["athlete_gallery"]["name"][$key]) && $_FILES["athlete_gallery"]["error"][$key] == 0) {
+                        $new_image_path = "images/uploads/" . basename($_FILES["athlete_gallery"]["name"][$key]);
+                        move_uploaded_file($_FILES["athlete_gallery"]["tmp_name"][$key], $new_image_path);
+                        $existing_image = $new_image_path; // Use new image
                     }
+            
+                    $updated_desc = $conn->real_escape_string($_POST["gallery_descriptions"][$key]);
+            
+                    // Update existing gallery image entry
+                    $conn->query("UPDATE athlete_gallery SET image='$existing_image', description='$updated_desc' WHERE id='$gallery_id'");
                 }
             }
-            
 
             // Append new images only if they are actually uploaded
             if (!empty($_FILES["athlete_gallery"]["name"])) {
