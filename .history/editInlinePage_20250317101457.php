@@ -217,7 +217,6 @@
                     // Gallery Section
                     echo "<h3>Gallery</h3>";
                     echo "<div id='gallery-container-{$row['id']}'>";
-                    echo "<input type='hidden' name='deleted_images' id='deleted_images_{$row['id']}'>";
                     $gallery = $conn_content->query("SELECT id, image, description FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
 
                     while ($img = $gallery->fetch_assoc()) {

@@ -217,7 +217,6 @@
                     // Gallery Section
                     echo "<h3>Gallery</h3>";
                     echo "<div id='gallery-container-{$row['id']}'>";
-                    echo "<input type='hidden' name='deleted_images' id='deleted_images_{$row['id']}'>";
                     $gallery = $conn_content->query("SELECT id, image, description FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
 
                     while ($img = $gallery->fetch_assoc()) {
@@ -430,23 +429,18 @@
 
                 if (galleryItems.length > 0) {
                     let lastItem = galleryItems[galleryItems.length - 1];
-                    
-                    // Check if the last item contains a hidden input for ID
                     let imageIdInput = lastItem.querySelector("input[name='gallery_image_ids[]']");
+                    
                     if (imageIdInput) {
-                        let deletedImagesInput = document.getElementById('deleted_images');
-                        if (!deletedImagesInput) {
-                            deletedImagesInput = document.createElement("input");
-                            deletedImagesInput.type = "hidden";
-                            deletedImagesInput.name = "deleted_images";
-                            deletedImagesInput.id = "deleted_images";
-                            container.appendChild(deletedImagesInput);
+                        let imageId = imageIdInput.value;
+                        if (imageId !== "new") {
+                            let deletedImagesInput = document.getElementById("gallery_images_to_delete");
+                            let deletedImages = deletedImagesInput.value ? deletedImagesInput.value.split(",") : [];
+                            deletedImages.push(imageId);
+                            deletedImagesInput.value = deletedImages.join(",");
                         }
-                        // Append the ID to deleted images
-                        deletedImagesInput.value += deletedImagesInput.value ? `,${imageIdInput.value}` : imageIdInput.value;
                     }
 
-                    // Remove from UI
                     container.removeChild(lastItem);
                 }
             }

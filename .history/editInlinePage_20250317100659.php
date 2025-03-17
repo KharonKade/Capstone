@@ -217,7 +217,6 @@
                     // Gallery Section
                     echo "<h3>Gallery</h3>";
                     echo "<div id='gallery-container-{$row['id']}'>";
-                    echo "<input type='hidden' name='deleted_images' id='deleted_images_{$row['id']}'>";
                     $gallery = $conn_content->query("SELECT id, image, description FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
 
                     while ($img = $gallery->fetch_assoc()) {
@@ -427,30 +426,10 @@
             function removeLastGalleryImage(containerId) {
                 let container = document.getElementById(containerId);
                 let galleryItems = container.getElementsByClassName("gallery-item");
-
                 if (galleryItems.length > 0) {
-                    let lastItem = galleryItems[galleryItems.length - 1];
-                    
-                    // Check if the last item contains a hidden input for ID
-                    let imageIdInput = lastItem.querySelector("input[name='gallery_image_ids[]']");
-                    if (imageIdInput) {
-                        let deletedImagesInput = document.getElementById('deleted_images');
-                        if (!deletedImagesInput) {
-                            deletedImagesInput = document.createElement("input");
-                            deletedImagesInput.type = "hidden";
-                            deletedImagesInput.name = "deleted_images";
-                            deletedImagesInput.id = "deleted_images";
-                            container.appendChild(deletedImagesInput);
-                        }
-                        // Append the ID to deleted images
-                        deletedImagesInput.value += deletedImagesInput.value ? `,${imageIdInput.value}` : imageIdInput.value;
-                    }
-
-                    // Remove from UI
-                    container.removeChild(lastItem);
+                    container.removeChild(galleryItems[galleryItems.length - 1]);
                 }
             }
-
 
             </script>
 

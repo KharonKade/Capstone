@@ -63,13 +63,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $conn->query("INSERT INTO achievements (athlete_id, title, description) VALUES ('$id', '$achievement_title', '$achievement_desc')");
             }
 
-            if (!empty($_POST['deleted_images'])) {
-                $deletedImages = explode(',', $_POST['deleted_images']);
-                foreach ($deletedImages as $imageId) {
-                    $stmt = $conn->prepare("DELETE FROM athlete_gallery WHERE id = ?");
-                    $stmt->bind_param("i", $imageId);
-                    $stmt->execute();
-                    $stmt->close();
+            if (!empty($_POST["gallery_images_to_delete"])) {
+                $imagesToDelete = explode(",", $_POST["gallery_images_to_delete"]);
+                
+                foreach ($imagesToDelete as $delete_id) {
+                    $delete_id = $conn->real_escape_string($delete_id);
+                    
+                    // Fetch and delete the image file from the server (optional)
+                    $result = $conn->query("SELECT image FROM athlete_gallery WHERE id='$delete_id'");
+                    if ($result && $row = $result->fetch_assoc()) {
+                        $imagePath = $row["image"];
+                        if (file_exists($imagePath)) {
+                            unlink($imagePath); // Delete the image file
+                        }
+                    }
+                    
+                    // Delete from the database
+                    $conn->query("DELETE FROM athlete_gallery WHERE id='$delete_id'");
                 }
             }
             

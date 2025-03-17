@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['deleted_images'])) {
                 $deletedImages = explode(',', $_POST['deleted_images']);
                 foreach ($deletedImages as $imageId) {
-                    $stmt = $conn->prepare("DELETE FROM athlete_gallery WHERE id = ?");
+                    $stmt = $conn_content->prepare("DELETE FROM athlete_gallery WHERE id = ?");
                     $stmt->bind_param("i", $imageId);
                     $stmt->execute();
                     $stmt->close();
