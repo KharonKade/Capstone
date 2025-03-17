@@ -323,44 +323,29 @@
             <section>
                 <label>Partners & Sponsors:</label>
                 <button onclick="toggleForm('addPartnerForm')">Add Partner</button>
-
                 <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships.php" enctype="multipart/form-data">
                     <input type="file" name="logo" required>
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addPartnerForm')">Cancel</button>
                 </form>
-
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Logo File Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $result = $conn_content->query("SELECT id, logo FROM partnerships");
-                        if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $logoFileName = basename($row["logo"]); // Extract file name
-                                echo '<tr>';
-                                echo '<td>' . htmlspecialchars($logoFileName) . '</td>';
-                                echo '<td>
-                                        <form method="POST" action="handle_partnerships.php">
-                                            <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete">Remove</button>
-                                        </form>
-                                    </td>';
-                                echo '</tr>';
-                            }
-                        } else {
-                            echo '<tr><td colspan="2">No partners or sponsors added yet.</td></tr>';
+                <div class="partner-logos">
+                    <?php
+                    $result = $conn_content->query("SELECT id, logo FROM partnerships");
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="partner-item">
+                                    <img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo" class="partner-logo">
+                                    <form method="POST" action="handle_partnerships.php">
+                                        <input type="hidden" name="id" value="' . $row['id'] . '">
+                                        <button type="submit" name="delete">Remove</button>
+                                    </form>
+                                </div>';
                         }
-                        ?>
-                    </tbody>
-                </table>
+                    } else {
+                    }
+                    ?>
+                </div>
             </section>
-
 
             <script>
             function showEditForm(id) {

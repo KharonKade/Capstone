@@ -120,7 +120,6 @@
                 <h3>Top Athletes</h3>
                 <button onclick="showAddForm('addAthleteForm')">Add</button>
 
-                <!-- Add Athlete Form -->
                 <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Athlete Name" required>
                     <textarea name="bio" placeholder="Bio" required></textarea>
@@ -131,26 +130,6 @@
                     <input type="text" name="specialty" placeholder="Specialty" required>
                     <input type="file" name="image" required>
 
-                    <!-- Achievements -->
-                    <h3>Achievements</h3>
-                    <div id="achievements-container">
-                        <div class="achievement">
-                            <input type="text" name="achievements[]" placeholder="Achievement Title" required>
-                            <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                        </div>
-                    </div>
-                    <button type="button" onclick="addNewAchievement()">+ Add More Achievements</button>
-
-                    <!-- Gallery -->
-                    <h3>Gallery</h3>
-                    <div id="gallery-container">
-                        <div class="gallery-item">
-                            <input type="file" name="athlete_gallery[]" required>
-                            <textarea name="gallery_descriptions[]" placeholder="Image Description" required></textarea>
-                        </div>
-                    </div>
-                    <button type="button" onclick="addNewGalleryImage()">+ Add More Images</button>
-
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addAthleteForm')">Cancel</button>
                 </form>
@@ -158,16 +137,14 @@
                 <table border="1">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>Athlete Name</th>
                             <th>Bio</th>
                             <th>Description</th>
                             <th>Wins</th>
-                            <th>Podiums</th>
+                            <th>Podium Finishes</th>
                             <th>Years Active</th>
                             <th>Specialty</th>
                             <th>Image File</th>
-                            <th>Achievements</th>
-                            <th>Gallery</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -183,73 +160,37 @@
                             echo "<td>{$row['podium_finishes']}</td>";
                             echo "<td>{$row['years_active']}</td>";
                             echo "<td>{$row['specialty']}</td>";
-                            echo "<td>" . basename($row['image']) . "</td>";
-
-                            // Achievements
-                            $achievements = $conn_content->query("SELECT title FROM achievements WHERE athlete_id='{$row['id']}'");
-                            echo "<td>";
-                            while ($ach = $achievements->fetch_assoc()) {
-                                echo "<p>{$ach['title']}</p>";
-                            }
-                            echo "</td>";
-
-                            // Gallery
-                            $gallery = $conn_content->query("SELECT image FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
-                            echo "<td>";
-                            while ($img = $gallery->fetch_assoc()) {
-                                echo "<p>" . basename($img['image']) . "</p>";
-                            }
-                            echo "</td>";
-
+                            echo "<td>" . basename($row['image']) . "</td>"; // Display file name instead of image
                             echo "<td>
                                     <button onclick=\"showEditForm('editAthleteForm{$row['id']}')\">Edit</button>
                                     <button onclick='deleteItem(\"handle_athletes.php?delete_id={$row['id']}\")'>Delete</button>
                                 </td>";
                             echo "</tr>";
 
-                            // Edit Form (Hidden)
+                            // Hidden Edit Form (Appears when "Edit" is clicked)
                             echo "<tr id='editAthleteForm{$row['id']}' style='display:none; background:#f9f9f9;'>";
-                            echo "<td colspan='11'>
+                            echo "<td colspan='9'>
                                     <form method='post' action='handle_athletes.php' enctype='multipart/form-data'>
-                                        <input type='hidden' name='id' value='{$row['id']}'>
+                                        <input type='hidden' name='edit_id' value='{$row['id']}'>
+                                        <label>Name:</label>
                                         <input type='text' name='name' value='{$row['name']}' required>
+                                        <label>Bio:</label>
                                         <textarea name='bio' required>{$row['bio']}</textarea>
+                                        <label>Description:</label>
                                         <textarea name='description' required>{$row['description']}</textarea>
+                                        <label>Wins:</label>
                                         <input type='number' name='wins' value='{$row['wins']}' required>
+                                        <label>Podium Finishes:</label>
                                         <input type='number' name='podium_finishes' value='{$row['podium_finishes']}' required>
+                                        <label>Years Active:</label>
                                         <input type='number' name='years_active' value='{$row['years_active']}' required>
+                                        <label>Specialty:</label>
                                         <input type='text' name='specialty' value='{$row['specialty']}' required>
-                                        <label>New Image File (optional):</label>
+                                        <label>Change Image (optional):</label>
                                         <input type='file' name='image'>
-
-                                        <h3>Achievements</h3>
-                                        <div id='achievements-container-{$row['id']}'>";
-                            $achievements = $conn_content->query("SELECT id, title FROM achievements WHERE athlete_id='{$row['id']}'");
-                            while ($ach = $achievements->fetch_assoc()) {
-                                echo "<div class='achievement'>
-                                        <input type='hidden' name='achievement_ids[]' value='{$ach['id']}'>
-                                        <input type='text' name='achievements[]' value='{$ach['title']}' required>
-                                    </div>";
-                            }
-                            echo "</div>
-                                <button type='button' onclick=\"addAchievement('achievements-container-{$row['id']}')\">+ Add More Achievements</button>";
-
-                            // Gallery
-                            echo "<h3>Gallery</h3>
-                                <div id='gallery-container-{$row['id']}'>";
-                            $gallery = $conn_content->query("SELECT id, image FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
-                            while ($img = $gallery->fetch_assoc()) {
-                                echo "<div class='gallery-item'>
-                                        <input type='hidden' name='gallery_image_ids[]' value='{$img['id']}'>
-                                        <input type='hidden' name='gallery_existing_images[]' value='{$img['image']}'>
-                                        <input type='file' name='athlete_gallery[]'>
-                                    </div>";
-                            }
-                            echo "</div>
-                                <button type='button' onclick=\"addGalleryImage('gallery-container-{$row['id']}')\">+ Add More Images</button>
-                                <button type='submit'>Update</button>
-                                <button type='button' onclick=\"hideForm('editAthleteForm{$row['id']}')\">Cancel</button>
-                                </form>
+                                        <button type='submit'>Update</button>
+                                        <button type='button' onclick=\"hideForm('editAthleteForm{$row['id']}')\">Cancel</button>
+                                    </form>
                                 </td>";
                             echo "</tr>";
                         }
@@ -257,7 +198,6 @@
                     </tbody>
                 </table>
             </section>
-
 
 
 
@@ -265,7 +205,6 @@
             <section>
                 <label class="section-heading">Community Leaders:</label>
                 <button onclick="toggleForm('addLeaderForm')">Add Leader</button>
-
                 <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="role" placeholder="Role" required>
@@ -273,94 +212,66 @@
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addLeaderForm')">Cancel</button>
                 </form>
-
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Profile Picture File</th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $result = $conn_content->query("SELECT id, name, role, image FROM community_leaders");
-                        if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $imageFileName = basename($row["image"]); // Extract file name
-                                echo '<tr>';
-                                echo '<td>' . htmlspecialchars($imageFileName) . '</td>';
-                                echo '<td>' . htmlspecialchars($row["name"]) . '</td>';
-                                echo '<td>' . htmlspecialchars($row["role"]) . '</td>';
-                                echo '<td>
+                <div class="leaders-container">
+                    <?php
+                    $result = $conn_content->query("SELECT id, name, role, image FROM community_leaders");
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="leader">
+                                    <div class="profile-pic">
+                                        <img src="' . $row["image"] . '" alt="' . htmlspecialchars($row["name"]) . '" />
+                                    </div>
+                                    <div class="leader-info">
+                                        <h3 class="leader-name">' . htmlspecialchars($row["name"]) . '</h3>
+                                        <p class="leader-role">' . htmlspecialchars($row["role"]) . '</p>
                                         <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Edit</button>
                                         <form id="editLeaderForm' . $row['id'] . '" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
                                             <input type="hidden" name="edit_id" value="' . $row['id'] . '">
-                                            <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required>
-                                            <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required>
-                                            <input type="file" name="image">
+                                            <input type="text" name="name" value="' . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . '" required>
+                                            <input type="text" name="role" value="' . htmlspecialchars($row['role'], ENT_QUOTES, 'UTF-8') . '" required>
+                                            <input type="file" name="image"> 
                                             <button type="submit">Update</button>
                                         </form>
                                         <form method="POST" action="handle_leaders.php">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
                                             <button type="submit" name="delete">Remove</button>
                                         </form>
-                                    </td>';
-                                echo '</tr>';
-                            }
-                        } else {
-                            echo '<tr><td colspan="4">No community leaders added yet.</td></tr>';
+                                    </div>
+                                </div>';
                         }
-                        ?>
-                    </tbody>
-                </table>
+                    } else {
+                    }
+                    ?>
+                </div>
             </section>
-
-
 
 
             <section>
                 <label>Partners & Sponsors:</label>
                 <button onclick="toggleForm('addPartnerForm')">Add Partner</button>
-
                 <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships.php" enctype="multipart/form-data">
                     <input type="file" name="logo" required>
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addPartnerForm')">Cancel</button>
                 </form>
-
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Logo File Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $result = $conn_content->query("SELECT id, logo FROM partnerships");
-                        if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $logoFileName = basename($row["logo"]); // Extract file name
-                                echo '<tr>';
-                                echo '<td>' . htmlspecialchars($logoFileName) . '</td>';
-                                echo '<td>
-                                        <form method="POST" action="handle_partnerships.php">
-                                            <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete">Remove</button>
-                                        </form>
-                                    </td>';
-                                echo '</tr>';
-                            }
-                        } else {
-                            echo '<tr><td colspan="2">No partners or sponsors added yet.</td></tr>';
+                <div class="partner-logos">
+                    <?php
+                    $result = $conn_content->query("SELECT id, logo FROM partnerships");
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="partner-item">
+                                    <img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo" class="partner-logo">
+                                    <form method="POST" action="handle_partnerships.php">
+                                        <input type="hidden" name="id" value="' . $row['id'] . '">
+                                        <button type="submit" name="delete">Remove</button>
+                                    </form>
+                                </div>';
                         }
-                        ?>
-                    </tbody>
-                </table>
+                    } else {
+                    }
+                    ?>
+                </div>
             </section>
-
 
             <script>
             function showEditForm(id) {

@@ -233,6 +233,7 @@
                             }
                             echo "</div>
                                 <button type='button' onclick=\"addAchievement('achievements-container-{$row['id']}')\">+ Add More Achievements</button>";
+                                
 
                             // Gallery
                             echo "<h3>Gallery</h3>
@@ -265,7 +266,6 @@
             <section>
                 <label class="section-heading">Community Leaders:</label>
                 <button onclick="toggleForm('addLeaderForm')">Add Leader</button>
-
                 <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="role" placeholder="Role" required>
@@ -273,94 +273,66 @@
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addLeaderForm')">Cancel</button>
                 </form>
-
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Profile Picture File</th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $result = $conn_content->query("SELECT id, name, role, image FROM community_leaders");
-                        if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $imageFileName = basename($row["image"]); // Extract file name
-                                echo '<tr>';
-                                echo '<td>' . htmlspecialchars($imageFileName) . '</td>';
-                                echo '<td>' . htmlspecialchars($row["name"]) . '</td>';
-                                echo '<td>' . htmlspecialchars($row["role"]) . '</td>';
-                                echo '<td>
+                <div class="leaders-container">
+                    <?php
+                    $result = $conn_content->query("SELECT id, name, role, image FROM community_leaders");
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="leader">
+                                    <div class="profile-pic">
+                                        <img src="' . $row["image"] . '" alt="' . htmlspecialchars($row["name"]) . '" />
+                                    </div>
+                                    <div class="leader-info">
+                                        <h3 class="leader-name">' . htmlspecialchars($row["name"]) . '</h3>
+                                        <p class="leader-role">' . htmlspecialchars($row["role"]) . '</p>
                                         <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Edit</button>
                                         <form id="editLeaderForm' . $row['id'] . '" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
                                             <input type="hidden" name="edit_id" value="' . $row['id'] . '">
-                                            <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required>
-                                            <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required>
-                                            <input type="file" name="image">
+                                            <input type="text" name="name" value="' . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . '" required>
+                                            <input type="text" name="role" value="' . htmlspecialchars($row['role'], ENT_QUOTES, 'UTF-8') . '" required>
+                                            <input type="file" name="image"> 
                                             <button type="submit">Update</button>
                                         </form>
                                         <form method="POST" action="handle_leaders.php">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
                                             <button type="submit" name="delete">Remove</button>
                                         </form>
-                                    </td>';
-                                echo '</tr>';
-                            }
-                        } else {
-                            echo '<tr><td colspan="4">No community leaders added yet.</td></tr>';
+                                    </div>
+                                </div>';
                         }
-                        ?>
-                    </tbody>
-                </table>
+                    } else {
+                    }
+                    ?>
+                </div>
             </section>
-
-
 
 
             <section>
                 <label>Partners & Sponsors:</label>
                 <button onclick="toggleForm('addPartnerForm')">Add Partner</button>
-
                 <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships.php" enctype="multipart/form-data">
                     <input type="file" name="logo" required>
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addPartnerForm')">Cancel</button>
                 </form>
-
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Logo File Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $result = $conn_content->query("SELECT id, logo FROM partnerships");
-                        if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $logoFileName = basename($row["logo"]); // Extract file name
-                                echo '<tr>';
-                                echo '<td>' . htmlspecialchars($logoFileName) . '</td>';
-                                echo '<td>
-                                        <form method="POST" action="handle_partnerships.php">
-                                            <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete">Remove</button>
-                                        </form>
-                                    </td>';
-                                echo '</tr>';
-                            }
-                        } else {
-                            echo '<tr><td colspan="2">No partners or sponsors added yet.</td></tr>';
+                <div class="partner-logos">
+                    <?php
+                    $result = $conn_content->query("SELECT id, logo FROM partnerships");
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="partner-item">
+                                    <img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo" class="partner-logo">
+                                    <form method="POST" action="handle_partnerships.php">
+                                        <input type="hidden" name="id" value="' . $row['id'] . '">
+                                        <button type="submit" name="delete">Remove</button>
+                                    </form>
+                                </div>';
                         }
-                        ?>
-                    </tbody>
-                </table>
+                    } else {
+                    }
+                    ?>
+                </div>
             </section>
-
 
             <script>
             function showEditForm(id) {
