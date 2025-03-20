@@ -73,24 +73,13 @@
             <?php
             $sql = "
             SELECT 
-                e.id,           
-                e.event_name, 
-                e.category, 
-                s.event_date, 
-                MIN(i.image_path) AS image_path
-            FROM 
-                upcoming_events e
-            JOIN 
-                event_schedules s ON e.id = s.event_id
-            JOIN 
-                event_images i ON e.id = i.event_id
-            WHERE 
-                e.status = 'active'   
-                AND (e.category = 'All' OR e.category = 'Inline')  -- Filter category
-            GROUP BY 
-                e.id
-            ORDER BY 
-                s.event_date ASC";
+                e.id, e.event_name, e.category, s.event_date, MIN(i.image_path) AS image_path
+            FROM upcoming_events e
+            JOIN event_schedules s ON e.id = s.event_id
+            JOIN event_images i ON e.id = i.event_id
+            WHERE e.status = 'active'
+            GROUP BY e.id
+            ORDER BY s.event_date ASC";
             
             $result = $conn_events->query($sql);
             if ($result->num_rows > 0) {
@@ -172,19 +161,17 @@
         <h2>Top Athletes</h2>
         <div class="slider">
             <?php
-            $result = $conn_content->query("SELECT id, name, description, image FROM top_athletes");
+            $result = $conn_content->query("SELECT name, description, image FROM top_athletes");
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="slides" style="background-image: url(\'' . $row["image"] . '\');">
-                    <div class="content">
-                        <h1>' . $row["name"] . '</h1>
-                        <p>' . $row["description"] . '</p>
-                        <button class="explore-btn">
-                            <a href="playerPage.php?id=' . $row['id'] . '">Explore</a>
-                        </button>
-                    </div>
-                  </div>';            
+                            <div class="content">
+                                <h1>' . $row["name"] . '</h1>
+                                <p>' . $row["description"] . '</p>
+                                <button class="explore-btn">Explore</button>
+                            </div>
+                        </div>';
                 }
             } else {
                 echo '<p class="no-data">No athletes have been added yet.</p>';

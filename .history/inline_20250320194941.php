@@ -172,19 +172,20 @@
         <h2>Top Athletes</h2>
         <div class="slider">
             <?php
-            $result = $conn_content->query("SELECT id, name, description, image FROM top_athletes");
+            $result = $conn_content->query("SELECT name, description, image FROM top_athletes");
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="slides" style="background-image: url(\'' . $row["image"] . '\');">
-                    <div class="content">
-                        <h1>' . $row["name"] . '</h1>
-                        <p>' . $row["description"] . '</p>
-                        <button class="explore-btn">
-                            <a href="playerPage.php?id=' . $row['id'] . '">Explore</a>
-                        </button>
-                    </div>
-                  </div>';            
+                            <div class="content">
+                                <h1>' . $row["name"] . '</h1>
+                                <p>' . $row["description"] . '</p>
+                                <button class="explore-btn">
+                                    <a href="playerPage.php?id=<?php echo $row['id']; ?>">Explore</a>
+                                </button>
+
+                            </div>
+                        </div>';
                 }
             } else {
                 echo '<p class="no-data">No athletes have been added yet.</p>';

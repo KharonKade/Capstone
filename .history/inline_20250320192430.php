@@ -73,24 +73,13 @@
             <?php
             $sql = "
             SELECT 
-                e.id,           
-                e.event_name, 
-                e.category, 
-                s.event_date, 
-                MIN(i.image_path) AS image_path
-            FROM 
-                upcoming_events e
-            JOIN 
-                event_schedules s ON e.id = s.event_id
-            JOIN 
-                event_images i ON e.id = i.event_id
-            WHERE 
-                e.status = 'active'   
-                AND (e.category = 'All' OR e.category = 'Inline')  -- Filter category
-            GROUP BY 
-                e.id
-            ORDER BY 
-                s.event_date ASC";
+                e.id, e.event_name, e.category, s.event_date, MIN(i.image_path) AS image_path
+            FROM upcoming_events e
+            JOIN event_schedules s ON e.id = s.event_id
+            JOIN event_images i ON e.id = i.event_id
+            WHERE e.status = 'active'
+            GROUP BY e.id
+            ORDER BY s.event_date ASC";
             
             $result = $conn_events->query($sql);
             if ($result->num_rows > 0) {
@@ -172,19 +161,17 @@
         <h2>Top Athletes</h2>
         <div class="slider">
             <?php
-            $result = $conn_content->query("SELECT id, name, description, image FROM top_athletes");
+            $result = $conn_content->query("SELECT name, description, image FROM top_athletes");
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="slides" style="background-image: url(\'' . $row["image"] . '\');">
-                    <div class="content">
-                        <h1>' . $row["name"] . '</h1>
-                        <p>' . $row["description"] . '</p>
-                        <button class="explore-btn">
-                            <a href="playerPage.php?id=' . $row['id'] . '">Explore</a>
-                        </button>
-                    </div>
-                  </div>';            
+                            <div class="content">
+                                <h1>' . $row["name"] . '</h1>
+                                <p>' . $row["description"] . '</p>
+                                <button class="explore-btn">Explore</button>
+                            </div>
+                        </div>';
                 }
             } else {
                 echo '<p class="no-data">No athletes have been added yet.</p>';
@@ -321,37 +308,6 @@
         });
     });
 
-    // Open video in modal
-    function openModal(video, title, description) {
-        const modal = document.getElementById("videoModal");
-        const modalVideo = document.getElementById("modalVideo");
-        const modalTitle = document.getElementById("videoTitle");
-        const modalDescription = document.getElementById("videoDescription");
-
-        // Show the modal
-        modal.style.opacity = "1";
-        modal.style.visibility = "visible";
-        
-        // Set the modal video source
-        modalVideo.src = video.src;
-
-        // Set the title and description in the modal
-        modalTitle.innerText = title;
-        modalDescription.innerText = description;
-    }
-
-    // Close modal when clicking the close button
-    document.getElementById("closeModalBtn").addEventListener("click", function () {
-        const modal = document.getElementById("videoModal");
-        const modalVideo = document.getElementById("modalVideo");
-
-        modal.style.opacity = "0";
-        modal.style.visibility = "hidden";
-        modalVideo.pause(); // Pause video when closing modal
-        modalVideo.src = ""; // Reset video source
-    });
-
-
     </script>
 
     <script>
@@ -385,6 +341,53 @@
         });
 
         updateSlides();
+
+        // Open video in modal with title and description
+        function openModal(videoElement, title, description) {
+            const modal = document.getElementById("videoModal");
+            const modalVideo = document.getElementById("modalVideo");
+            const videoTitle = document.getElementById("videoTitle");
+            const videoDescription = document.getElementById("videoDescription");
+
+            // Debugging: Log to see if the function is being triggered
+            console.log("Modal Triggered");
+            console.log("Video Source:", videoElement.src);
+            console.log("Title:", title);
+            console.log("Description:", description);
+
+            // Ensure the modal updates correctly
+            modalVideo.src = videoElement.src; 
+            videoTitle.textContent = title;
+            videoDescription.textContent = description;
+
+            // Display the modal
+            modal.style.display = "block";
+        }
+
+
+        // Close modal logic
+        document.getElementById("closeModalBtn").addEventListener("click", function () {
+            const modal = document.getElementById("videoModal");
+            const modalVideo = document.getElementById("modalVideo");
+            
+            modal.style.display = "none";
+            modalVideo.pause();
+            modalVideo.src = "";
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener("click", function (event) {
+            const modal = document.getElementById("videoModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+                document.getElementById("modalVideo").pause();
+                document.getElementById("modalVideo").src = "";
+            }
+        });
+
+
+
+
 
     </script>
 </body>

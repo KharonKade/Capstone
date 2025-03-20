@@ -172,7 +172,7 @@
         <h2>Top Athletes</h2>
         <div class="slider">
             <?php
-            $result = $conn_content->query("SELECT id, name, description, image FROM top_athletes");
+            $result = $conn_content->query("SELECT name, description, image FROM top_athletes");
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
