@@ -12,28 +12,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// DELETE athlete logic - Place this at the top
-if (isset($_GET['delete_id'])) {
-    $athlete_id = intval($_GET['delete_id']);
-
-    // Delete related achievements
-    $conn->query("DELETE FROM achievements WHERE athlete_id = $athlete_id");
-
-    // Delete related gallery images
-    $conn->query("DELETE FROM athlete_gallery WHERE athlete_id = $athlete_id");
-
-    // Delete the athlete
-    $delete_query = $conn->query("DELETE FROM top_athletes WHERE id = $athlete_id");
-
-    if ($delete_query) {
-        echo "<script>alert('Athlete deleted successfully!'); window.location.href = 'editInlinePage.php';</script>";
-        exit();
-    } else {
-        echo "<script>alert('Error deleting athlete. Please try again.'); window.location.href = 'editInlinePage.php';</script>";
-        exit();
-    }
-}
-
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = isset($_POST["edit_id"]) ? $_POST["edit_id"] : null;
@@ -143,8 +121,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
 
-            $page = $_POST['page'] ?? 1;
-            header("Location: editInlinePage.php?page=" . $page);
+
+            header("Location: editInlinePage.php");
             exit();
         } else {
             echo "Error updating athlete: " . $conn->error;
@@ -191,7 +169,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             
-            header("Location: editInlinePage.php");
+            $page = $_POST['page'] ?? 1;
+            header("Location: editInlinePage.php" . $page);
             exit();
         } else {
             echo "Error inserting athlete: " . $conn->error;

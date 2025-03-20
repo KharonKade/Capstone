@@ -60,7 +60,7 @@
 
             <section>
                 <label>Highlight Carousel</label>
-                <button onclick="showAddForm('addHighlightForm')">Add Highlight</button>
+                <button onclick="showAddForm('addHighlightForm')">Add</button>
                 <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight.php" enctype="multipart/form-data">
                     <input type="file" name="video" required>
                     <input type="text" name="title" placeholder="Title" required>
@@ -92,21 +92,25 @@
                                 </td>";
                             
                             // Edit form in a separate row
-                            echo "<tr id='editRow{$row['id']}' style='display:none;'>";
-                            echo "<td colspan='4'>
-                                    <form method='post' action='handle_highlight.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
-                                        <input type='hidden' name='id' value='{$row['id']}'>
-                                        <h3>Edit Video File:</h3>
-                                        <input type='file' name='video'>
-                                        <h3>Title:</h3>
-                                        <input type='text' name='title' value='{$row['title']}' required>
-                                        <h3>Description:</h3>
-                                        <textarea name='description' required>{$row['description']}</textarea>
-                                        <button type='submit'>Update</button>
-                                        <button type='button' onclick=\"toggleEditForm('editRow{$row['id']}')\">Cancel</button>
-                                    </form>
-                                </td>";
-                            echo "</tr>";
+                            echo "<tr id='editRow{$row['id']}' style='display:none; background:#f9f9f9;'>
+                                    <td colspan='4'>
+                                        <div style='width: 100%; display: flex; flex-direction: column; padding: 10px;'>
+                                            <form method='post' action='handle_highlight.php' enctype='multipart/form-data' 
+                                                style='width: 100%; display: flex; flex-direction: column; gap: 10px;'>
+                                                <input type='hidden' name='id' value='{$row['id']}'>
+                                                <h3>Edit Video File:</h3>
+                                                <input type='file' name='video'>
+                                                <h3>Title:</h3>
+                                                <input type='text' name='title' value='{$row['title']}' required>
+                                                <h3>Description:</h3>
+                                                <textarea name='description' required>{$row['description']}</textarea>
+                                                <button type='submit'>Update</button>
+                                                <button type='button' onclick=\"toggleEditForm('editRow{$row['id']}')\">Cancel</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>";
+
                         }
                         ?>
                     </tbody>
@@ -117,7 +121,7 @@
 
             <section>
                 <label>Top Athletes:</label>
-                <button onclick="showAddForm('addAthleteForm')" style="margin-bottom: 20px";>Add Athlete</button>
+                <button onclick="showAddForm('addAthleteForm')" style="margin-bottom: 20px";>Add</button>
                 
                 <!-- Add Athlete Form -->
                 <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes.php" enctype="multipart/form-data">
@@ -339,26 +343,24 @@
                             while ($row = $result->fetch_assoc()) {
                                 $imageFileName = basename($row["image"]); // Extract file name
                                 echo '<tr>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($imageFileName) . '</td>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["name"]) . '</td>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["role"]) . '</td>';
+                                echo '<td>' . htmlspecialchars($imageFileName) . '</td>';
+                                echo '<td>' . htmlspecialchars($row["name"]) . '</td>';
+                                echo '<td>' . htmlspecialchars($row["role"]) . '</td>';
                                 echo '<td>
-                                    <div style="display: flex; align-items: center; gap: 5px;">
-                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" style="height: 36px;">Edit</button>
-                                        <form method="POST" action="handle_leaders.php" style="margin: 0;">
-                                            <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete" style="height: 36px;">Remove</button>
+                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Edit</button>
+                                        <form id="editLeaderForm' . $row['id'] . '" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
+                                            <input type="hidden" name="edit_id" value="' . $row['id'] . '">
+                                            <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required>
+                                            <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required>
+                                            <input type="file" name="image">
+                                            <button type="submit">Update</button>
+                                            <button type="button" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Cancel</button>
                                         </form>
-                                    </div>
-                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
-                                        <input type="hidden" name="edit_id" value="' . $row['id'] . '">
-                                        <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
-                                        <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
-                                        <input type="file" name="image" style="width: 90%;">
-                                        <button type="submit">Update</button>
-                                        <button type="button" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Cancel</button>
-                                    </form>
-                                </td>';
+                                        <form method="POST" action="handle_leaders.php">
+                                            <input type="hidden" name="id" value="' . $row['id'] . '">
+                                            <button type="submit" name="delete">Remove</button>
+                                        </form>
+                                    </td>';
                                 echo '</tr>';
                             }
                         } else {

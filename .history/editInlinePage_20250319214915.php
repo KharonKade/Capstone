@@ -45,7 +45,7 @@
                     <?php
                     $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
                     if ($row = $result->fetch_assoc()) {
-                        echo '<p class="wrapped-text">' . $row['content'] . '</p>';
+                        echo '<p>' . $row['content'] . '</p>';
                     } else {
                         echo "<p>About Us content not found.</p>";
                     }
@@ -59,8 +59,8 @@
             </section>
 
             <section>
-                <label>Highlight Carousel</label>
-                <button onclick="showAddForm('addHighlightForm')">Add Highlight</button>
+                <h3>Highlight Carousel</h3>
+                <button onclick="showAddForm('addHighlightForm')">Add</button>
                 <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight.php" enctype="multipart/form-data">
                     <input type="file" name="video" required>
                     <input type="text" name="title" placeholder="Title" required>
@@ -79,31 +79,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
+                        <?php
                         $result = $conn_content->query("SELECT id, video, title, description FROM highlight_carousel");
                         while ($row = $result->fetch_assoc()) {
-                            echo "<tr id='row{$row['id']}'>";
+                            echo "<tr>";
                             echo "<td>" . basename($row["video"]) . "</td>";
                             echo "<td>{$row['title']}</td>";
                             echo "<td>{$row['description']}</td>";
                             echo "<td>
-                                    <button onclick=\"toggleEditForm('editRow{$row['id']}')\">Edit</button>
-                                    <button class='remove' onclick='deleteItem(\"handle_highlight.php?delete_id={$row['id']}\")'>Remove</button>
+                                    <button onclick=\"showEditForm('editHighlightForm{$row['id']}')\">Edit</button>
+                                    <button onclick='deleteItem(\"handle_highlight.php?delete_id={$row['id']}\")'>Delete</button>
                                 </td>";
-                            
-                            // Edit form in a separate row
-                            echo "<tr id='editRow{$row['id']}' style='display:none;'>";
+                            echo "</tr>";
+
+                            // Hidden Edit Form (Appears when "Edit" is clicked)
+                            echo "<tr id='editHighlightForm{$row['id']}' style='display:none; background:#f9f9f9;'>";
                             echo "<td colspan='4'>
-                                    <form method='post' action='handle_highlight.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
+                                    <form method='post' action='handle_highlight.php' enctype='multipart/form-data'>
                                         <input type='hidden' name='id' value='{$row['id']}'>
-                                        <h3>Edit Video File:</h3>
+                                        <label>New Video File (optional):</label>
                                         <input type='file' name='video'>
-                                        <h3>Title:</h3>
+                                        <label>Title:</label>
                                         <input type='text' name='title' value='{$row['title']}' required>
-                                        <h3>Description:</h3>
+                                        <label>Description:</label>
                                         <textarea name='description' required>{$row['description']}</textarea>
                                         <button type='submit'>Update</button>
-                                        <button type='button' onclick=\"toggleEditForm('editRow{$row['id']}')\">Cancel</button>
+                                        <button type='button' onclick=\"hideForm('editHighlightForm{$row['id']}')\">Cancel</button>
                                     </form>
                                 </td>";
                             echo "</tr>";
@@ -117,7 +118,7 @@
 
             <section>
                 <label>Top Athletes:</label>
-                <button onclick="showAddForm('addAthleteForm')" style="margin-bottom: 20px";>Add Athlete</button>
+                <button onclick="showAddForm('addAthleteForm')">Add</button>
                 
                 <!-- Add Athlete Form -->
                 <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes.php" enctype="multipart/form-data">
@@ -144,34 +145,20 @@
                     <h3>Gallery</h3>
                     <label>Upload Images:</label>
                     <div id="gallery-container">
-                        <div class="new-gallery-item">
+                        <div class="gallery-item">
                             <input type="file" name="athlete_gallery[]" required>
                             <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
                         </div>
                     </div>
                     <button type="button" onclick="addNewGalleryImage()">+ Add More Images</button>
-                    
-                    <div class = "button-container">
+
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addAthleteForm')">Cancel</button>
-                    </div>
                 </form>
 
                 <?php
-                $items_per_page = 1; // Number of athletes per page
-                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                $offset = ($page - 1) * $items_per_page;
-                
-                // Get the total number of athletes
-                $total_result = $conn_content->query("SELECT COUNT(*) as total FROM top_athletes");
-                $total_row = $total_result->fetch_assoc();
-                $total_athletes = $total_row['total'];
-                $total_pages = ceil($total_athletes / $items_per_page);
-                
-                // Fetch athletes with pagination
-                $result = $conn_content->query("SELECT * FROM top_athletes LIMIT $items_per_page OFFSET $offset");
+                $result = $conn_content->query("SELECT * FROM top_athletes");
                 while ($row = $result->fetch_assoc()) {
-                    
                     echo "<div class='athlete-profile'>";
                     echo "<img src='{$row['image']}' alt='{$row['name']}'>";
                     echo "<h2>{$row['name']}</h2>";
@@ -228,13 +215,9 @@
                     echo "</section>";
 
                     // Edit Athlete Form
-                    echo "<div class='edit-button'>";
                     echo "<button onclick=\"showEditForm('editAthleteForm{$row['id']}')\">Edit</button>";
-                    echo "<button class='remove' onclick=\"confirmDelete({$row['id']})\">Delete</button>"; // Added delete button
-                    echo "</div>";
                     echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes.php' enctype='multipart/form-data'>";
                     echo "<input type='hidden' name='edit_id' value='{$row['id']}'>";
-                    echo "<input type='hidden' name='page' value='$page'>";
                     echo "<input type='text' name='name' value='{$row['name']}' required>";
                     echo "<textarea name='bio' required>{$row['bio']}</textarea>";
                     echo "<textarea name='description' required>{$row['description']}</textarea>";
@@ -247,64 +230,45 @@
 
                     // Achievements Section
                     echo "<h3>Achievements</h3>";
-                    echo "<div id='achievements-container-{$row['id']}' >";
+                    echo "<div id='achievements-container-{$row['id']}'>";
                     $achievements = $conn_content->query("SELECT id, title, description FROM achievements WHERE athlete_id='{$row['id']}'");
                     while ($ach = $achievements->fetch_assoc()) {
-                        echo "<div class='achievement' id='achievement-{$ach['id']}'>";
+                        echo "<div class='achievement'>";
                         echo "<input type='hidden' name='achievement_ids[]' value='{$ach['id']}'>";
                         echo "<input type='text' name='achievements[]' value='{$ach['title']}' required>";
                         echo "<textarea name='achievements_descriptions[]' required>{$ach['description']}</textarea>";
-                        echo "<button class='remove' type='button' onclick=\"removeAchievement('achievement-{$ach['id']}')\">Remove</button>";
                         echo "</div>";
                     }
                     echo "</div>";
-                    echo "<div class='edit-button'>";
                     echo "<button type='button' onclick=\"addAchievement('achievements-container-{$row['id']}')\">+ Add More Achievements</button>";
-                    echo "</div>";
+                    echo "<button type='button' onclick=\"removeLastAchievement('achievements-container-{$row['id']}')\">Cancel</button>";
 
                     // Gallery Section
                     echo "<h3>Gallery</h3>";
-                    echo "<div id='gallery-container-{$row['id']}' class='edit-gallery-container'>";
+                    echo "<div id='gallery-container-{$row['id']}'>";
                     echo "<input type='hidden' name='deleted_images' id='deleted_images_{$row['id']}'>";
                     $gallery = $conn_content->query("SELECT id, image, description FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
 
                     while ($img = $gallery->fetch_assoc()) {
-                        echo "<div class='edit-gallery-item' id='gallery-{$img['id']}'>";
+                        echo "<div class='gallery-item'>";
                         echo "<input type='hidden' name='gallery_image_ids[]' value='{$img['id']}'>"; 
                         echo "<img src='{$img['image']}' alt='Athlete Gallery Image' width='100'>";
                         echo "<input type='hidden' name='gallery_existing_images[]' value='{$img['image']}'>"; 
                         echo "<input type='file' name='athlete_gallery[]'>"; 
                         echo "<textarea name='gallery_descriptions[]' required>{$img['description']}</textarea>";
-                        echo "<button class='remove' type='button' onclick=\"removeGalleryImage('gallery-{$img['id']}', '{$row['id']}')\">Remove</button>";
                         echo "</div>";
-                        
                     }
                     echo "</div>";
-                    echo "<div class='edit-button'>";
                     echo "<button type='button' onclick=\"addGalleryImage('gallery-container-{$row['id']}')\">+ Add More Images</button>";
-                    echo "</div>";
+                    echo "<button type='button' onclick=\"removeLastGalleryImage('gallery-container-{$row['id']}')\">Cancel</button>";
 
-                    echo "<div class='button-container'>";
+
                     echo "<button type='submit'>Update</button>";
                     echo "<button type='button' onclick=\"hideForm('editAthleteForm{$row['id']}')\">Cancel</button>";
-                    echo "</div>";
                     echo "</form></div>";
 
                 }
                 ?>
-                <div class="pagination">
-                    <?php if ($page > 1): ?>
-                        <a href="?page=<?= $page - 1 ?>" class="prev">Previous</a>
-                    <?php endif; ?>
-
-                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                        <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
-                    <?php endfor; ?>
-
-                    <?php if ($page < $total_pages): ?>
-                        <a href="?page=<?= $page + 1 ?>" class="next">Next</a>
-                    <?php endif; ?>
-                </div>
             </section>
 
 
@@ -339,26 +303,23 @@
                             while ($row = $result->fetch_assoc()) {
                                 $imageFileName = basename($row["image"]); // Extract file name
                                 echo '<tr>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($imageFileName) . '</td>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["name"]) . '</td>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["role"]) . '</td>';
+                                echo '<td>' . htmlspecialchars($imageFileName) . '</td>';
+                                echo '<td>' . htmlspecialchars($row["name"]) . '</td>';
+                                echo '<td>' . htmlspecialchars($row["role"]) . '</td>';
                                 echo '<td>
-                                    <div style="display: flex; align-items: center; gap: 5px;">
-                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" style="height: 36px;">Edit</button>
-                                        <form method="POST" action="handle_leaders.php" style="margin: 0;">
-                                            <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete" style="height: 36px;">Remove</button>
+                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Edit</button>
+                                        <form id="editLeaderForm' . $row['id'] . '" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
+                                            <input type="hidden" name="edit_id" value="' . $row['id'] . '">
+                                            <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required>
+                                            <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required>
+                                            <input type="file" name="image">
+                                            <button type="submit">Update</button>
                                         </form>
-                                    </div>
-                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
-                                        <input type="hidden" name="edit_id" value="' . $row['id'] . '">
-                                        <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
-                                        <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
-                                        <input type="file" name="image" style="width: 90%;">
-                                        <button type="submit">Update</button>
-                                        <button type="button" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Cancel</button>
-                                    </form>
-                                </td>';
+                                        <form method="POST" action="handle_leaders.php">
+                                            <input type="hidden" name="id" value="' . $row['id'] . '">
+                                            <button type="submit" name="delete">Remove</button>
+                                        </form>
+                                    </td>';
                                 echo '</tr>';
                             }
                         } else {
@@ -491,100 +452,65 @@
             }
 
             // Functions for the "Edit Athlete" Form
-            document.addEventListener("DOMContentLoaded", function () {
-                console.log("JavaScript loaded");
+            function addAchievement(containerId) {
+                let container = document.getElementById(containerId);
+                let newAchievement = document.createElement("div");
+                newAchievement.classList.add("achievement");
+                newAchievement.innerHTML = `
+                    <input type="hidden" name="achievement_ids[]" value="new">
+                    <input type="text" name="achievements[]" placeholder="Title" required>
+                    <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
+                `;
+                container.appendChild(newAchievement);
+            }
 
-                // Remove Achievement
-                window.removeAchievement = function (achievementId) {
-                    console.log("Removing Achievement:", achievementId);
-                    let achievement = document.getElementById(achievementId);
-                    if (achievement) {
-                        achievement.remove();
-                    } else {
-                        console.error("Achievement not found:", achievementId);
-                    }
-                };
+            function removeLastAchievement(containerId) {
+                let container = document.getElementById(containerId);
+                let achievements = container.getElementsByClassName("achievement");
+                if (achievements.length > 0) {
+                    container.removeChild(achievements[achievements.length - 1]);
+                }
+            }
 
-                // Remove Gallery Image
-                window.removeGalleryImage = function (galleryId, athleteId) {
-                    console.log("Removing Gallery Image:", galleryId);
-                    let galleryItem = document.getElementById(galleryId);
-                    if (galleryItem) {
-                        let imageIdInput = galleryItem.querySelector("input[name='gallery_image_ids[]']");
-                        if (imageIdInput) {
-                            let deletedImagesInput = document.getElementById(`deleted_images_${athleteId}`);
-                            if (!deletedImagesInput) {
-                                deletedImagesInput = document.createElement("input");
-                                deletedImagesInput.type = "hidden";
-                                deletedImagesInput.name = "deleted_images";
-                                deletedImagesInput.id = `deleted_images_${athleteId}`;
-                                document.getElementById(`gallery-container-${athleteId}`).appendChild(deletedImagesInput);
-                            }
-                            deletedImagesInput.value += deletedImagesInput.value ? `,${imageIdInput.value}` : imageIdInput.value;
+            function addGalleryImage(containerId) {
+                let container = document.getElementById(containerId);
+                let newImageDiv = document.createElement("div");
+                newImageDiv.classList.add("gallery-item");
+                newImageDiv.innerHTML = `
+                    <input type="hidden" name="gallery_existing_ids[]" value="new">
+                    <input type="file" name="athlete_gallery[]" accept="image/*" required>
+                    <textarea name="gallery_descriptions[]" placeholder="Image Description" required></textarea>
+                `;
+                container.appendChild(newImageDiv);
+            }
+
+            function removeLastGalleryImage(containerId) {
+                let container = document.getElementById(containerId);
+                let galleryItems = container.getElementsByClassName("gallery-item");
+
+                if (galleryItems.length > 0) {
+                    let lastItem = galleryItems[galleryItems.length - 1];
+                    
+                    // Check if the last item contains a hidden input for ID
+                    let imageIdInput = lastItem.querySelector("input[name='gallery_image_ids[]']");
+                    if (imageIdInput) {
+                        let deletedImagesInput = document.getElementById('deleted_images');
+                        if (!deletedImagesInput) {
+                            deletedImagesInput = document.createElement("input");
+                            deletedImagesInput.type = "hidden";
+                            deletedImagesInput.name = "deleted_images";
+                            deletedImagesInput.id = "deleted_images";
+                            container.appendChild(deletedImagesInput);
                         }
-                        galleryItem.remove();
-                    } else {
-                        console.error("Gallery item not found:", galleryId);
+                        // Append the ID to deleted images
+                        deletedImagesInput.value += deletedImagesInput.value ? `,${imageIdInput.value}` : imageIdInput.value;
                     }
-                };
 
-                // Add New Achievement
-                window.addAchievement = function (containerId) {
-                    console.log("Adding new Achievement to:", containerId);
-                    let container = document.getElementById(containerId);
-                    if (!container) {
-                        console.error("Achievement container not found:", containerId);
-                        return;
-                    }
-                    let uniqueId = `new-achievement-${Date.now()}`;
-                    let newAchievement = document.createElement("div");
-                    newAchievement.classList.add("achievement");
-                    newAchievement.id = uniqueId;
-                    newAchievement.innerHTML = `
-                        <input type="hidden" name="achievement_ids[]" value="new">
-                        <input type="text" name="achievements[]" placeholder="Title" required>
-                        <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                        <button type="button" onclick="removeAchievement('${uniqueId}')">Remove</button>
-                    `;
-                    container.appendChild(newAchievement);
-                };
-
-                // Add New Gallery Image
-                window.addGalleryImage = function (containerId) {
-                    console.log("Adding new Gallery Image to:", containerId);
-                    let container = document.getElementById(containerId);
-                    if (!container) {
-                        console.error("Gallery container not found:", containerId);
-                        return;
-                    }
-                    let uniqueId = `new-gallery-${Date.now()}`;
-                    let newImageDiv = document.createElement("div");
-                    newImageDiv.classList.add("gallery-item");
-                    newImageDiv.id = uniqueId;
-                    newImageDiv.innerHTML = `
-                        <input type="hidden" name="gallery_existing_ids[]" value="new">
-                        <input type="file" name="athlete_gallery[]" accept="image/*" required>
-                        <textarea name="gallery_descriptions[]" placeholder="Image Description" required></textarea>
-                        <button type="button" onclick="removeGalleryImage('${uniqueId}', '${containerId}')">Remove</button>
-                    `;
-                    container.appendChild(newImageDiv);
-                };
-            });
-
-            function confirmDelete(athleteId) {
-                if (confirm('Are you sure you want to delete this athlete? This action cannot be undone.')) {
-                    window.location.href = 'handle_athletes.php?delete_id=' + athleteId;
+                    // Remove from UI
+                    container.removeChild(lastItem);
                 }
             }
 
-            function toggleEditForm(id) {
-                var form = document.getElementById(id);
-                if (form.style.display === "none" || form.style.display === "") {
-                    form.style.display = "table-cell"; 
-                } else {
-                    form.style.display = "none";
-                }
-            }
 
             </script>
 

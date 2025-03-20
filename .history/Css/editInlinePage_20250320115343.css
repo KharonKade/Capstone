@@ -76,7 +76,7 @@ section {
     background: white;
     padding: 20px;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 900px;
     align-items: center;
 }
 
@@ -189,10 +189,6 @@ th, td {
 th {
     background: #2c3e50;
     color: #ecf0f1;
-}
-
-[id^="editRow"] td {
-    border: none !important;
 }
 
 .pagination {
@@ -324,9 +320,3 @@ th {
     margin-top: 20px; /* Add space above buttons */
 
 }
-.wrapped-text {
-    word-wrap: break-word;  /* Ensures long words break properly */
-    overflow-wrap: break-word; /* Ensures text wraps inside the container */
-    white-space: normal; /* Prevents text from staying on one long line */
-}
-

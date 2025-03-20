@@ -191,10 +191,6 @@ th {
     color: #ecf0f1;
 }
 
-[id^="editRow"] td {
-    border: none !important;
-}
-
 .pagination {
     text-align: center;
     margin-top: 20px;

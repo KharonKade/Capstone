@@ -181,7 +181,6 @@ table {
 }
 
 th, td {
-    border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
 }
@@ -189,10 +188,6 @@ th, td {
 th {
     background: #2c3e50;
     color: #ecf0f1;
-}
-
-[id^="editRow"] td {
-    border: none !important;
 }
 
 .pagination {

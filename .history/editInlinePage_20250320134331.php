@@ -343,22 +343,20 @@
                                 echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["name"]) . '</td>';
                                 echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["role"]) . '</td>';
                                 echo '<td>
-                                    <div style="display: flex; align-items: center; gap: 5px;">
-                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" style="height: 36px;">Edit</button>
-                                        <form method="POST" action="handle_leaders.php" style="margin: 0;">
+                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Edit</button>
+                                        <form method="POST" action="handle_leaders.php">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete" style="height: 36px;">Remove</button>
+                                            <button type="submit" name="delete">Remove</button>
                                         </form>
-                                    </div>
-                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
-                                        <input type="hidden" name="edit_id" value="' . $row['id'] . '">
-                                        <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
-                                        <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
-                                        <input type="file" name="image" style="width: 90%;">
-                                        <button type="submit">Update</button>
-                                        <button type="button" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Cancel</button>
-                                    </form>
-                                </td>';
+                                        <form id="editLeaderForm' . $row['id'] . '" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
+                                            <input type="hidden" name="edit_id" value="' . $row['id'] . '">
+                                            <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
+                                            <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
+                                            <input type="file" name="image" style="width: 90%;">
+                                            <button type="submit">Update</button>
+                                            <button type="button" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Cancel</button>
+                                        </form>
+                                    </td>';
                                 echo '</tr>';
                             }
                         } else {

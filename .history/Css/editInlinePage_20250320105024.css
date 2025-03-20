@@ -76,7 +76,7 @@ section {
     background: white;
     padding: 20px;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 900px;
     align-items: center;
 }
 
@@ -163,15 +163,12 @@ video, img {
 }
 
 /* Remove Button Styles */
-button[name="delete"],
-button.remove {
-    background-color: #f44336; /* Red background */
-    color: white;
+button[name="delete"] {
+    background-color: #f44336;
 }
 
-button[name="delete"]:hover,
-button.remove:hover {
-    background-color: #d32f2f; /* Darker red on hover */
+button[name="delete"]:hover {
+    background-color: #d32f2f;
 }
 
 table {
@@ -189,10 +186,6 @@ th, td {
 th {
     background: #2c3e50;
     color: #ecf0f1;
-}
-
-[id^="editRow"] td {
-    border: none !important;
 }
 
 .pagination {
@@ -265,24 +258,21 @@ th {
 }
 
 .edit-gallery-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow items to move to the next line */
-    justify-content: space-between; /* Distributes items evenly */
-    gap: 20px; /* Adds spacing between items */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ensures 2 per row */
+    gap: 15px; /* Space between items */
     max-width: 100%;
 }
 
 .edit-gallery-item {
-    background: #f8f8f8;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: calc(50% - 10px); /* 50% width to fit two per row */
-    box-sizing: border-box; /* Prevents padding from breaking layout */
+    text-align: center;
+    background: #f8f8f8; /* Light background */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .edit-gallery-item img {
@@ -293,9 +283,12 @@ th {
     margin-bottom: 8px;
 }
 
-.edit-gallery-item input[type="file"],
+.edit-gallery-item input[type="file"] {
+    margin: 5px 0;
+}
+
 .edit-gallery-item textarea {
-    width: 100%; /* Make form elements fill container */
+    width: 90%;
     min-height: 50px;
     resize: vertical;
     padding: 5px;
@@ -303,30 +296,4 @@ th {
     border: 1px solid #ccc;
 }
 
-.button-container {
-    display: flex;
-    justify-content: flex-end; /* Align buttons to the right */
-    gap: 10px; /* Space between buttons */
-    margin-top: 20px; /* Add space above buttons */
-    margin-bottom: 20px;
-}
-
-.edit-button {
-    display: flex;
-    gap: 10px; /* Space between buttons */
-    margin-top: 20px; /* Add space above buttons */
-}
-
-
-.achievement button {
-    display: flex;
-    gap: 10px; /* Space between buttons */
-    margin-top: 20px; /* Add space above buttons */
-
-}
-.wrapped-text {
-    word-wrap: break-word;  /* Ensures long words break properly */
-    overflow-wrap: break-word; /* Ensures text wraps inside the container */
-    white-space: normal; /* Prevents text from staying on one long line */
-}
 

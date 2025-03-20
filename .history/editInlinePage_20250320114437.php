@@ -45,7 +45,7 @@
                     <?php
                     $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
                     if ($row = $result->fetch_assoc()) {
-                        echo '<p class="wrapped-text">' . $row['content'] . '</p>';
+                        echo '<p>' . $row['content'] . '</p>';
                     } else {
                         echo "<p>About Us content not found.</p>";
                     }
@@ -60,7 +60,7 @@
 
             <section>
                 <label>Highlight Carousel</label>
-                <button onclick="showAddForm('addHighlightForm')">Add Highlight</button>
+                <button onclick="showAddForm('addHighlightForm')">Add</button>
                 <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight.php" enctype="multipart/form-data">
                     <input type="file" name="video" required>
                     <input type="text" name="title" placeholder="Title" required>
@@ -79,31 +79,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
+                        <?php
                         $result = $conn_content->query("SELECT id, video, title, description FROM highlight_carousel");
                         while ($row = $result->fetch_assoc()) {
-                            echo "<tr id='row{$row['id']}'>";
+                            echo "<tr>";
                             echo "<td>" . basename($row["video"]) . "</td>";
                             echo "<td>{$row['title']}</td>";
                             echo "<td>{$row['description']}</td>";
                             echo "<td>
-                                    <button onclick=\"toggleEditForm('editRow{$row['id']}')\">Edit</button>
-                                    <button class='remove' onclick='deleteItem(\"handle_highlight.php?delete_id={$row['id']}\")'>Remove</button>
+                                    <button onclick=\"showEditForm('editHighlightForm{$row['id']}')\">Edit</button>
+                                    <button onclick='deleteItem(\"handle_highlight.php?delete_id={$row['id']}\")'>Delete</button>
                                 </td>";
-                            
-                            // Edit form in a separate row
-                            echo "<tr id='editRow{$row['id']}' style='display:none;'>";
+                            echo "</tr>";
+
+                            // Hidden Edit Form (Appears when "Edit" is clicked)
+                            echo "<tr id='editHighlightForm{$row['id']}' style='display:none; background:#f9f9f9;'>";
                             echo "<td colspan='4'>
-                                    <form method='post' action='handle_highlight.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
+                                    <form method='post' action='handle_highlight.php' enctype='multipart/form-data'>
                                         <input type='hidden' name='id' value='{$row['id']}'>
-                                        <h3>Edit Video File:</h3>
+                                        <label>New Video File (optional):</label>
                                         <input type='file' name='video'>
-                                        <h3>Title:</h3>
+                                        <label>Title:</label>
                                         <input type='text' name='title' value='{$row['title']}' required>
-                                        <h3>Description:</h3>
+                                        <label>Description:</label>
                                         <textarea name='description' required>{$row['description']}</textarea>
                                         <button type='submit'>Update</button>
-                                        <button type='button' onclick=\"toggleEditForm('editRow{$row['id']}')\">Cancel</button>
+                                        <button type='button' onclick=\"hideForm('editHighlightForm{$row['id']}')\">Cancel</button>
                                     </form>
                                 </td>";
                             echo "</tr>";
@@ -117,7 +118,7 @@
 
             <section>
                 <label>Top Athletes:</label>
-                <button onclick="showAddForm('addAthleteForm')" style="margin-bottom: 20px";>Add Athlete</button>
+                <button onclick="showAddForm('addAthleteForm')" style="margin-bottom: 20px";>Add</button>
                 
                 <!-- Add Athlete Form -->
                 <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes.php" enctype="multipart/form-data">
@@ -228,10 +229,7 @@
                     echo "</section>";
 
                     // Edit Athlete Form
-                    echo "<div class='edit-button'>";
                     echo "<button onclick=\"showEditForm('editAthleteForm{$row['id']}')\">Edit</button>";
-                    echo "<button class='remove' onclick=\"confirmDelete({$row['id']})\">Delete</button>"; // Added delete button
-                    echo "</div>";
                     echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes.php' enctype='multipart/form-data'>";
                     echo "<input type='hidden' name='edit_id' value='{$row['id']}'>";
                     echo "<input type='hidden' name='page' value='$page'>";
@@ -254,7 +252,7 @@
                         echo "<input type='hidden' name='achievement_ids[]' value='{$ach['id']}'>";
                         echo "<input type='text' name='achievements[]' value='{$ach['title']}' required>";
                         echo "<textarea name='achievements_descriptions[]' required>{$ach['description']}</textarea>";
-                        echo "<button class='remove' type='button' onclick=\"removeAchievement('achievement-{$ach['id']}')\">Remove</button>";
+                        echo "<button type='button' onclick=\"removeAchievement('achievement-{$ach['id']}')\">Remove</button>";
                         echo "</div>";
                     }
                     echo "</div>";
@@ -269,13 +267,13 @@
                     $gallery = $conn_content->query("SELECT id, image, description FROM athlete_gallery WHERE athlete_id='{$row['id']}'");
 
                     while ($img = $gallery->fetch_assoc()) {
-                        echo "<div class='edit-gallery-item' id='gallery-{$img['id']}'>";
+                        echo "<div class='edit-gallery-item' id='gallery-{$img['id']}>";
                         echo "<input type='hidden' name='gallery_image_ids[]' value='{$img['id']}'>"; 
                         echo "<img src='{$img['image']}' alt='Athlete Gallery Image' width='100'>";
                         echo "<input type='hidden' name='gallery_existing_images[]' value='{$img['image']}'>"; 
                         echo "<input type='file' name='athlete_gallery[]'>"; 
                         echo "<textarea name='gallery_descriptions[]' required>{$img['description']}</textarea>";
-                        echo "<button class='remove' type='button' onclick=\"removeGalleryImage('gallery-{$img['id']}', '{$row['id']}')\">Remove</button>";
+                        echo "<button type='button' onclick=\"removeGalleryImage('gallery-{$img['id']}', '{$row['id']}')\">Remove</button>";
                         echo "</div>";
                         
                     }
@@ -339,26 +337,23 @@
                             while ($row = $result->fetch_assoc()) {
                                 $imageFileName = basename($row["image"]); // Extract file name
                                 echo '<tr>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($imageFileName) . '</td>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["name"]) . '</td>';
-                                echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["role"]) . '</td>';
+                                echo '<td>' . htmlspecialchars($imageFileName) . '</td>';
+                                echo '<td>' . htmlspecialchars($row["name"]) . '</td>';
+                                echo '<td>' . htmlspecialchars($row["role"]) . '</td>';
                                 echo '<td>
-                                    <div style="display: flex; align-items: center; gap: 5px;">
-                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" style="height: 36px;">Edit</button>
-                                        <form method="POST" action="handle_leaders.php" style="margin: 0;">
-                                            <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete" style="height: 36px;">Remove</button>
+                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Edit</button>
+                                        <form id="editLeaderForm' . $row['id'] . '" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
+                                            <input type="hidden" name="edit_id" value="' . $row['id'] . '">
+                                            <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required>
+                                            <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required>
+                                            <input type="file" name="image">
+                                            <button type="submit">Update</button>
                                         </form>
-                                    </div>
-                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
-                                        <input type="hidden" name="edit_id" value="' . $row['id'] . '">
-                                        <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
-                                        <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
-                                        <input type="file" name="image" style="width: 90%;">
-                                        <button type="submit">Update</button>
-                                        <button type="button" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Cancel</button>
-                                    </form>
-                                </td>';
+                                        <form method="POST" action="handle_leaders.php">
+                                            <input type="hidden" name="id" value="' . $row['id'] . '">
+                                            <button type="submit" name="delete">Remove</button>
+                                        </form>
+                                    </td>';
                                 echo '</tr>';
                             }
                         } else {
@@ -570,21 +565,6 @@
                     container.appendChild(newImageDiv);
                 };
             });
-
-            function confirmDelete(athleteId) {
-                if (confirm('Are you sure you want to delete this athlete? This action cannot be undone.')) {
-                    window.location.href = 'handle_athletes.php?delete_id=' + athleteId;
-                }
-            }
-
-            function toggleEditForm(id) {
-                var form = document.getElementById(id);
-                if (form.style.display === "none" || form.style.display === "") {
-                    form.style.display = "table-cell"; 
-                } else {
-                    form.style.display = "none";
-                }
-            }
 
             </script>
 
