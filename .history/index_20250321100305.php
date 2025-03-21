@@ -167,6 +167,17 @@
     </footer>
 
     <script src="jsScript/index.js"></script>
-</body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const carousel = document.querySelector(".news-carousel");
 
+        if (carousel) {
+            carousel.addEventListener("wheel", function (event) {
+                event.preventDefault(); // Prevent vertical scrolling
+                carousel.scrollLeft += event.deltaY * 2; // Adjust multiplier for speed
+            });
+        }
+    });
+    </script>
+</body>
 </html>

@@ -94,9 +94,6 @@ $gallery_result = $conn->query($gallery_query);
             <?php endwhile; ?>
         </div>
     </section>
-    <div class="return-container">
-        <button onclick="history.back()" class="return-btn">Go Back</button>
-    </div>
 
     
     <footer class="footer">

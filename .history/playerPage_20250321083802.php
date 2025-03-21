@@ -94,60 +94,11 @@ $gallery_result = $conn->query($gallery_query);
             <?php endwhile; ?>
         </div>
     </section>
-    <div class="return-container">
-        <button onclick="history.back()" class="return-btn">Go Back</button>
-    </div>
 
     
-    <footer class="footer">
-        <!-- BASF Logo Section -->
-        <div class="footer-section logo-section">
-            <img src="images/logo.png" alt="BASF Logo" class="footer-logo">
-        </div>
-    
-        <!-- Explore Us Section -->
-        <div class="footer-section explore-section">
-            <h3>Explore Us</h3>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="skateboard.html">Skateboarding</a></li>
-                <li><a href="inline.html">In-Line</a></li>
-                <li><a href="bmx.html">BMX</a></li>
-                <li><a href="spots.html">Spots</a></li>
-                <li><a href="event.html">Events</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="sponsorship.html">Sponsorship</a></li>
-                <li><a href="contactUs.html">Contact Us</a></li>
-            </ul>
-        </div>
-    
-        <!-- Contact Us Section -->
-        <div class="footer-section contact-section">
-            <h3>Contact Us</h3>
-            <ul>
-                <li>09094431201</li>
-                <li>09348913502</li>
-                <li>09761816282</li>
-                <li>basf@gmail.com</li>
-            </ul>
-        </div>
-    
-        <!-- Connect with Us Section -->
-        <div class="footer-section social-section">
-            <h3>Connect with us</h3>
-            <div class="social-icons">
-                <a href="https://facebook.com"><img src="images/fblogo.png" alt="Facebook"></a>
-                <a href="https://instagram.com"><img src="images/iglogo.png" alt="Instagram"></a>
-            </div>
-        </div>
-    
-        <!-- Supported by Section -->
-        <div class="footer-section supported-section">
-            <h3>Supported by</h3>
-            <img src="images/vanlogo.png" alt="Sponsor Logo" class="sponsor-logo">
-        </div>
+    <footer>
+        <p>&copy; 2025 Baguio Action Sports Federation. All rights reserved.</p>
     </footer>
-
     
 </body>
 </html>

@@ -131,23 +131,6 @@ h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.return-container {
-    text-align: center;
-    margin: 20px 0;
-}
-.return-btn {
-    background-color: gray;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.return-btn:hover {
-    background-color: #2980b9;
-}
-
 /* Footer Styling */
 .footer {
     display: flex;

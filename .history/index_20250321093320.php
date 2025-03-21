@@ -29,7 +29,7 @@
     <section class="container sports-container">
         <h1>Sports</h1>
         <div class="sports-buttons">
-            <button onclick="window.location.href='inline.php'">In-Line</button>
+            <button onclick="window.location.href='Inline_Page/inline.php/'">In-Line</button>
             <button onclick="window.location.href='skateboard.php'">Skateboard</button>
             <button onclick="window.location.href='bmx.php'">BMX</button>
         </div>
@@ -167,6 +167,17 @@
     </footer>
 
     <script src="jsScript/index.js"></script>
-</body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const carousel = document.querySelector(".news-carousel");
 
+        if (carousel) {
+            carousel.addEventListener("wheel", function (event) {
+                event.preventDefault(); // Prevent vertical scrolling
+                carousel.scrollLeft += event.deltaY * 2; // Adjust multiplier for speed
+            });
+        }
+    });
+    </script>
+</body>
 </html>
