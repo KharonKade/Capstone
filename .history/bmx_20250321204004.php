@@ -25,7 +25,7 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>BMX</h1>
+            <h1>Rollerblades</h1>
         </div>
     </section>
 
@@ -34,7 +34,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname_content = "basf_content_bmx";
+    $dbname_content = "basf_content";
     $dbname_events = "basf_events";
 
     $conn_content = new mysqli($servername, $username, $password, $dbname_content);
@@ -45,7 +45,7 @@
     }
     ?>
 
-    <section class="bmx-content">
+    <section class="inline-content">
         <div class="middle-content">
             <h2 id="about-us">About Us</h2>
             <?php
@@ -86,7 +86,7 @@
                 event_images i ON e.id = i.event_id
             WHERE 
                 e.status = 'active'   
-                AND (e.category = 'All' OR e.category = 'BMX')  -- Filter category
+                AND (e.category = 'All' OR e.category = 'Inline')  -- Filter category
             GROUP BY 
                 e.id
             ORDER BY 
