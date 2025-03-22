@@ -40,6 +40,6 @@ if (isset($_GET["delete_id"])) {
 }
 
 $conn->close();
-header("Location: editBmxPage.php");
+header("Location: editInlinePage.php");
 exit(); // Ensure script stops execution
 ?>

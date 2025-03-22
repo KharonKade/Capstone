@@ -25,7 +25,7 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>SkateBoard</h1>
+            <h1>Rollerblades</h1>
         </div>
     </section>
 
@@ -86,7 +86,7 @@
                 event_images i ON e.id = i.event_id
             WHERE 
                 e.status = 'active'   
-                AND (e.category = 'All' OR e.category = 'Skateboard')  -- Filter category
+                AND (e.category = 'All' OR e.category = 'SkateBoard')  -- Filter category
             GROUP BY 
                 e.id
             ORDER BY 
@@ -264,12 +264,12 @@
         <div class="footer-section explore-section">
             <h3>Explore Us</h3>
             <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="skateboard.php">Skateboarding</a></li>
-                <li><a href="inline.php">In-Line</a></li>
-                <li><a href="bmx.php">BMX</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="skateboard.html">Skateboarding</a></li>
+                <li><a href="inline.html">In-Line</a></li>
+                <li><a href="bmx.html">BMX</a></li>
                 <li><a href="spots.html">Spots</a></li>
-                <li><a href="event.php">Events</a></li>
+                <li><a href="event.html">Events</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="sponsorship.html">Sponsorship</a></li>
                 <li><a href="contactUs.html">Contact Us</a></li>

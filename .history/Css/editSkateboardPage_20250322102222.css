@@ -239,7 +239,6 @@ th {
     align-items: center;
     text-align: center;
     width: 100%; /* Ensures proper alignment */
-    margin-left: 10px;
 }
 
 .gallery-item img {

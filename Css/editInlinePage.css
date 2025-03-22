@@ -238,7 +238,8 @@ th {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 120px; /* Ensures proper alignment */
+    width: 100%; /* Ensures proper alignment */
+    margin-left: 10px;
 }
 
 .gallery-item img {

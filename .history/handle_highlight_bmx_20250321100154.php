@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "basf_content_bmx";
+$dbname = "basf_content";
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 
@@ -40,6 +40,6 @@ if (isset($_GET["delete_id"])) {
 }
 
 $conn->close();
-header("Location: editBmxPage.php");
+header("Location: editInlinePage.php");
 exit(); // Ensure script stops execution
 ?>
