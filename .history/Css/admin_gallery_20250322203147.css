@@ -213,21 +213,43 @@ form button:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 15px; /* Spacing between images */
     margin-top: 20px;
 }
 
-.gallery-container img {
-    width: 150px;
-    height: auto;
+/* Each gallery item */
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 150px; /* Max width but no fixed height */
+}
+
+/* Image settings */
+.gallery-item img {
+    max-width: 100%; /* Ensures image stays within div */
+    height: auto; /* Keeps original aspect ratio */
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease-in-out;
 }
 
-.gallery-container img:hover {
+.gallery-item img:hover {
     transform: scale(1.05);
 }
+
+/* Delete link styling */
+.gallery-item a {
+    margin-top: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    color: red;
+    font-weight: bold;
+}
+
+
+
 
 /* Button */
 .btn {

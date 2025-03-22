@@ -247,6 +247,16 @@ form button:hover {
     background: #2980b9;
 }
 
+.truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* Limits text to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px; /* Adjust as needed */
+    white-space: normal; /* Ensure wrapping */
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .view-container {

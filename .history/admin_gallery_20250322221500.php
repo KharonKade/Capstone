@@ -57,7 +57,7 @@ $result = $conn->query($sql);
                 <tr>
                     <td><img src="<?php echo 'images/uploads/' . basename($row['thumbnail']); ?>" width="100"></td>
                     <td style="word-wrap: break-word; max-width: 200px;"><?php echo $row['title']; ?></td>
-                    <td style="word-wrap: break-word; max-width: 200px;"><?php echo $row['description']; ?></td>
+                    <td class="truncate"><?php echo $row['description']; ?></td>
                     <td>
                         <a href="view_gallery.php?id=<?php echo $row['id']; ?>">View</a> | 
                         <a href="edit_gallery.php?id=<?php echo $row['id']; ?>">Edit</a> |

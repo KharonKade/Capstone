@@ -211,23 +211,49 @@ form button:hover {
 /* Gallery Images */
 .gallery-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+    flex-wrap: nowrap; /* Prevents items from stacking */
+    justify-content: center; /* Centers the images */
+    align-items: flex-start; /* Aligns images at the top */
+    gap: 15px; /* Adds spacing between images */
+    overflow-x: auto; /* Allows scrolling if items overflow */
+    padding: 10px;
+    white-space: nowrap; /* Prevents wrapping to the next line */
 }
 
-.gallery-container img {
-    width: 150px;
-    height: auto;
+/* Each gallery item */
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 150px; /* Ensures consistent width */
+}
+
+/* Image settings */
+.gallery-item img {
+    max-width: 100%; /* Ensures image stays within div */
+    height: auto; /* Keeps original aspect ratio */
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease-in-out;
 }
 
-.gallery-container img:hover {
+.gallery-item img:hover {
     transform: scale(1.05);
 }
+
+/* Delete link styling */
+.gallery-item a {
+    margin-top: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    color: red;
+    font-weight: bold;
+}
+
+
+
+
 
 /* Button */
 .btn {

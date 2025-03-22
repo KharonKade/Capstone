@@ -213,11 +213,19 @@ form button:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 15px; /* Increased spacing */
     margin-top: 20px;
 }
 
-.gallery-container img {
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 150px; /* Set a fixed width for alignment */
+}
+
+.gallery-item img {
     width: 150px;
     height: auto;
     border-radius: 5px;
@@ -225,9 +233,18 @@ form button:hover {
     transition: transform 0.3s ease-in-out;
 }
 
-.gallery-container img:hover {
+.gallery-item img:hover {
     transform: scale(1.05);
 }
+
+.gallery-item a {
+    margin-top: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    color: red;
+    font-weight: bold;
+}
+
 
 /* Button */
 .btn {

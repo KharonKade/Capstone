@@ -91,11 +91,9 @@ $conn->close();
     <div id="galleryDetails" class="gallery-details" style="display: none;">
         <h2 id="details-title"></h2>
         <p id="details-description"></p>
-        <div id="details-images" class="details-images">
-            <img id="details-thumbnail" class="details-thumbnail" alt="Thumbnail">
-        </div>
+        <img id="details-thumbnail" class="details-thumbnail" alt="Thumbnail">
+        <div id="details-images" class="details-images"></div>
     </div>
-
 
     <footer class="footer">
         <div class="footer-section logo-section">
@@ -141,28 +139,19 @@ $conn->close();
         function showDetails(item) {
             document.getElementById("details-title").innerText = item.title;
             document.getElementById("details-description").innerText = item.description;
-
+            document.getElementById("details-thumbnail").src = item.thumbnail;
+            
             let imageContainer = document.getElementById("details-images");
-            imageContainer.innerHTML = ""; // Clear previous images
-
-            // Add Thumbnail as the First Image
-            let thumbnailImg = document.createElement("img");
-            thumbnailImg.src = item.thumbnail;
-            thumbnailImg.className = "details-img"; // Ensure it follows the same class as other images
-            imageContainer.appendChild(thumbnailImg);
-
-            // Add Remaining Images
+            imageContainer.innerHTML = "";
             item.images.forEach(img => {
                 let imgTag = document.createElement("img");
                 imgTag.src = img;
                 imgTag.className = "details-img";
                 imageContainer.appendChild(imgTag);
             });
-
+            
             document.getElementById("galleryDetails").style.display = "block";
         }
-
-        
     </script>
 </body>
 </html>

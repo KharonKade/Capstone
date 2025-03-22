@@ -57,7 +57,14 @@ $result = $conn->query($sql);
                 <tr>
                     <td><img src="<?php echo 'images/uploads/' . basename($row['thumbnail']); ?>" width="100"></td>
                     <td style="word-wrap: break-word; max-width: 200px;"><?php echo $row['title']; ?></td>
-                    <td style="word-wrap: break-word; max-width: 200px;"><?php echo $row['description']; ?></td>
+                    <td style="word-wrap: break-word; max-width: 200px;">
+                    <?php 
+                        $description = strip_tags($row['description']); // Remove any HTML tags
+                        $words = explode(" ", $description);
+                        $short_desc = implode(" ", array_slice($words, 0, 10)); // Show first 10 words
+                        echo $short_desc . (count($words) > 10 ? "..." : ""); 
+                    ?>
+                    </td>
                     <td>
                         <a href="view_gallery.php?id=<?php echo $row['id']; ?>">View</a> | 
                         <a href="edit_gallery.php?id=<?php echo $row['id']; ?>">Edit</a> |

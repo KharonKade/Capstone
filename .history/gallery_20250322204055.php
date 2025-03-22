@@ -77,7 +77,7 @@ $conn->close();
         <h1 class="gallery-title">Our Gallery</h1>
         <div class="gallery-container">
             <?php foreach ($galleryItems as $item): ?>
-                <div class="gallery-item" onclick="showDetails(<?php echo htmlspecialchars(json_encode($item), ENT_QUOTES, 'UTF-8'); ?>)">
+                <div class="gallery-item" onclick="openModal(<?php echo $item['id']; ?>)">
                     <img src="<?php echo $item['thumbnail']; ?>" alt="<?php echo $item['title']; ?>">
                     <div class="gallery-overlay">
                         <p><?php echo $item['title']; ?></p>
@@ -87,20 +87,26 @@ $conn->close();
         </div>
     </div>
 
-    <!-- Details Section -->
-    <div id="galleryDetails" class="gallery-details" style="display: none;">
-        <h2 id="details-title"></h2>
-        <p id="details-description"></p>
-        <div id="details-images" class="details-images">
-            <img id="details-thumbnail" class="details-thumbnail" alt="Thumbnail">
+    <!-- Modal -->
+    <!-- Modal -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modal-thumbnail" class="modal-thumbnail" alt="Thumbnail"> <!-- Added thumbnail -->
+            <h2 id="modal-title"></h2>
+            <p id="modal-description"></p>
+            <div id="modal-images" class="modal-images"></div>
         </div>
     </div>
 
 
     <footer class="footer">
+        <!-- BASF Logo Section -->
         <div class="footer-section logo-section">
             <img src="images/logo.png" alt="BASF Logo" class="footer-logo">
         </div>
+
+        <!-- Explore Us Section -->
         <div class="footer-section explore-section">
             <h3>Explore Us</h3>
             <ul>
@@ -115,6 +121,8 @@ $conn->close();
                 <li><a href="contactUs.html">Contact Us</a></li>
             </ul>
         </div>
+
+        <!-- Contact Us Section -->
         <div class="footer-section contact-section">
             <h3>Contact Us</h3>
             <ul>
@@ -124,6 +132,8 @@ $conn->close();
                 <li>basf@gmail.com</li>
             </ul>
         </div>
+
+        <!-- Connect with Us Section -->
         <div class="footer-section social-section">
             <h3>Connect with us</h3>
             <div class="social-icons">
@@ -131,6 +141,8 @@ $conn->close();
                 <a href="https://instagram.com"><img src="images/iglogo.png" alt="Instagram"></a>
             </div>
         </div>
+
+        <!-- Supported by Section -->
         <div class="footer-section supported-section">
             <h3>Supported by</h3>
             <img src="images/vanlogo.png" alt="Sponsor Logo" class="sponsor-logo">
@@ -138,31 +150,29 @@ $conn->close();
     </footer>
 
     <script>
-        function showDetails(item) {
-            document.getElementById("details-title").innerText = item.title;
-            document.getElementById("details-description").innerText = item.description;
+        let galleryItems = <?php echo json_encode($galleryItems); ?>;
 
-            let imageContainer = document.getElementById("details-images");
-            imageContainer.innerHTML = ""; // Clear previous images
-
-            // Add Thumbnail as the First Image
-            let thumbnailImg = document.createElement("img");
-            thumbnailImg.src = item.thumbnail;
-            thumbnailImg.className = "details-img"; // Ensure it follows the same class as other images
-            imageContainer.appendChild(thumbnailImg);
-
-            // Add Remaining Images
-            item.images.forEach(img => {
-                let imgTag = document.createElement("img");
-                imgTag.src = img;
-                imgTag.className = "details-img";
-                imageContainer.appendChild(imgTag);
-            });
-
-            document.getElementById("galleryDetails").style.display = "block";
+        function openModal(id) {
+            let item = galleryItems.find(g => g.id === id);
+            if (item) {
+                document.getElementById("modal-title").innerText = item.title;
+                document.getElementById("modal-description").innerText = item.description;
+                let imageContainer = document.getElementById("modal-images");
+                imageContainer.innerHTML = "";
+                item.images.forEach(img => {
+                    let imgTag = document.createElement("img");
+                    imgTag.src = img;
+                    imgTag.className = "modal-img";
+                    imageContainer.appendChild(imgTag);
+                });
+                document.getElementById("galleryModal").style.display = "block";
+            }
         }
 
-        
+        function closeModal() {
+            document.getElementById("galleryModal").style.display = "none";
+        }
     </script>
+
 </body>
 </html>

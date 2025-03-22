@@ -211,23 +211,54 @@ form button:hover {
 /* Gallery Images */
 .gallery-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+    flex-wrap: nowrap; /* Keeps images in a single row */
+    justify-content: flex-start; /* Aligns items to the left */
+    align-items: center; /* Keeps them aligned */
+    gap: 15px; /* Spacing between images */
+    overflow-x: auto; /* Allows horizontal scrolling */
+    white-space: nowrap; /* Prevents images from breaking into a new line */
+    padding: 10px;
+    max-width: 100%; /* Ensures it stays within parent div */
 }
 
-.gallery-container img {
-    width: 150px;
-    height: auto;
+/* Each gallery item */
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 150px; /* Ensures consistent size */
+    max-width: 150px; /* Prevents stretching */
+}
+
+/* Image settings */
+.gallery-item img {
+    width: 100%; /* Adjusts to fit container */
+    height: auto; /* Keeps original aspect ratio */
+    max-height: 150px; /* Prevents overly tall images */
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease-in-out;
+    object-fit: cover; /* Ensures uniform image display */
 }
 
-.gallery-container img:hover {
+.gallery-item img:hover {
     transform: scale(1.05);
 }
+
+/* Delete link styling */
+.gallery-item a {
+    margin-top: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    color: red;
+    font-weight: bold;
+}
+
+
+
+
+
 
 /* Button */
 .btn {

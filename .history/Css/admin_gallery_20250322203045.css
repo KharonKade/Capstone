@@ -213,21 +213,41 @@ form button:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 15px; /* Spacing between images */
     margin-top: 20px;
 }
 
-.gallery-container img {
-    width: 150px;
-    height: auto;
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 150px; /* Fixed width */
+    height: 200px; /* Fixed height */
+}
+
+.gallery-item img {
+    width: 100%; /* Ensures all images take full width */
+    height: 150px; /* Fixed height */
+    object-fit: cover; /* Ensures uniform sizing without stretching */
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease-in-out;
 }
 
-.gallery-container img:hover {
+.gallery-item img:hover {
     transform: scale(1.05);
 }
+
+.gallery-item a {
+    margin-top: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    color: red;
+    font-weight: bold;
+}
+
+
 
 /* Button */
 .btn {
