@@ -32,7 +32,7 @@ $result = $conn->query($sql);
             <h2>Admin Dashboard</h2>
             <ul>
                 <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="create_event.html">Create Event</a></li>
+                <li><a href="admin.html">Create Event</a></li>
                 <li><a href="manage_upcoming.php">Manage Events</a></li>
                 <li><a href="archived_events.php">Archived Events</a></li>
                 <li><a href="create_news.html">Create News & Announcements</a></li>

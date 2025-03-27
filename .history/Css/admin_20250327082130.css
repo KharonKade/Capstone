@@ -63,8 +63,6 @@ body {
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin-left: 280px;
-    align-items: center;
 }
 
 .content h2 {
@@ -239,16 +237,52 @@ input[type="checkbox"]:checked::after {
     }
 
     .content {
-        margin: 0;  /* Remove extra margin */
+        margin: 10px;
         padding: 20px;
-        width: 100%; /* Ensure it takes full width */
     }
 
     form {
         padding: 0 10px;
-        max-width: 100%; /* Make sure it doesn't shrink too much */
     }
 }
 
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px; /* Reduce sidebar width */
+    }
 
+    .content {
+        padding: 20px;
+        margin-left: 200px; /* Adjust margin to match sidebar width */
+    }
+
+    form {
+        margin-right: 0; /* Remove excessive right margin */
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column; /* Stack sidebar and content */
+    }
+
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+        padding: 10px;
+        box-shadow: none;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    form {
+        max-width: 100%;
+        padding: 10px;
+    }
+}
 

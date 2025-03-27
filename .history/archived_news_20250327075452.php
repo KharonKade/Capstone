@@ -32,12 +32,12 @@ $result = $conn->query($sql);
             <h2>Admin Dashboard</h2>
             <ul>
                 <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="create_event.html">Create Event</a></li>
+                <li><a href="admin.html">Create Event</a></li>
                 <li><a href="manage_upcoming.php">Manage Events</a></li>
                 <li><a href="archived_events.php">Archived Events</a></li>
-                <li><a href="create_news.php">Create News & Announcements</a></li>
+                <li><a href="create_news.html">Create News & Announcements</a></li>
                 <li><a href="manage_news.php">Manage News & Announcements</a></li>
-                <li><a href="archived_news.php">Archived Inquiries</a></li>
+                <li><a href="archived_news.php">Archived News</a></li>
                 <li><a href="view_inquiries.php">Inquiries</a></li>
                 <li><a href="archived_inquiries.php">Archived Inquiries</a></li>
                 <li><a href="/logout">Logout</a></li>
@@ -73,7 +73,7 @@ $result = $conn->query($sql);
                                 <td><?php echo $row['publish_date']; ?></td>
                                 <td>
                                     <a href="view_news.php?id=<?php echo $row['news_id']; ?>">View</a> |
-                                    <a href="delete_news.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Are you sure you want to delete this news item?');">Delete</a> |
+                                    <a href="delete_archiveNews.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Are you sure you want to delete this news item?');">Delete</a> |
                                     <a href="restore_news.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Are you sure you want to restore this news item?');">Restore</a>
                                 </td>
                             </tr>
