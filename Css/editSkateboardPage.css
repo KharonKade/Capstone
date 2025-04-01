@@ -223,25 +223,33 @@ th {
     font-weight: bold;
 }
 
-.gallery-container {
+.gallery {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    overflow-x: auto;
-    padding: 10px 0;
-    max-width: 100%;
-    white-space: wrap;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
 }
 
+/* Flexbox for horizontal alignment & wrapping */
+.gallery-container {
+    display: flex;
+    flex-wrap: wrap; /* Ensures images wrap to next row when space is full */
+    justify-content: center; /* Centers images in the container */
+    gap: 15px;
+    max-width: 90%;
+}
+
+/* Gallery items (each image & description) */
 .gallery-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 100%; /* Ensures proper alignment */
-    margin-left: 10px;
+    width: 120px; /* Controls how many images fit in a row */
 }
 
+/* Image styles */
 .gallery-item img {
     width: 100px;
     height: 100px;
@@ -249,20 +257,18 @@ th {
     border-radius: 5px;
 }
 
+/* Description under image */
 .gallery-item p {
-    color: black; /* White text */
+    color: black;
     padding: 5px;
     margin-top: 5px;
     border-radius: 5px;
-    max-width: 100%;
     text-align: center;
-    max-width: 12ch;
-    word-wrap: break-word; 
+    max-width: 100px;
+    word-wrap: break-word;
     overflow-wrap: break-word;
-    white-space: normal; 
+    white-space: normal;
     min-height: 40px;
-    align-items: center;
-    justify-content: center;
 }
 
 .edit-gallery-container {
