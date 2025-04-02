@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Event</title>
-    <link rel="stylesheet" href="Css/editInlinePage.css">
+    <link rel="stylesheet" href="Css/editSkateboardPage.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -34,14 +34,14 @@
                 $servername = "localhost";
                 $username = "root";
                 $password = "";
-                $dbname_content = "basf_content";
+                $dbname_content = "basf_content_skateboard";
 
-                $conn_content = new mysqli($servername, $username, $password, "basf_content");
+                $conn_content = new mysqli($servername, $username, $password, "basf_content_skateboard");
 
                 if ($conn_content->connect_error) {
                     die("Connection failed: " . $conn_content->connect_error);
                 }
-                include 'handle_athletes.php';
+                include 'handle_athletes_skateboard.php';
             ?>
             <h2>Manage Inline Page</h2>
             <section>
@@ -55,7 +55,7 @@
                     }
                     ?>
                     <button onclick="showEditForm('aboutUsForm')">Edit</button>
-                    <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus.php">
+                    <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus_skateboard.php">
                         <textarea name="about_us" required></textarea>
                         <button type="submit">Update</button>
                         <button type="button" onclick="hideForm('aboutUsForm')">Cancel</button>
@@ -65,7 +65,7 @@
             <section>
                 <label>Highlight Carousel</label>
                 <button onclick="showAddForm('addHighlightForm')">Add Highlight</button>
-                <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight.php" enctype="multipart/form-data">
+                <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight_skateboard.php" enctype="multipart/form-data">
                     <input type="file" name="video" required>
                     <input type="text" name="title" placeholder="Title" required>
                     <textarea name="description" placeholder="Description" required></textarea>
@@ -92,13 +92,13 @@
                             echo "<td>{$row['description']}</td>";
                             echo "<td>
                                     <button onclick=\"toggleEditForm('editRow{$row['id']}')\">Edit</button>
-                                    <button class='remove' onclick='deleteItem(\"handle_highlight.php?delete_id={$row['id']}\")'>Remove</button>
+                                    <button class='remove' onclick='deleteItem(\"handle_highlight_skateboard.php?delete_id={$row['id']}\")'>Remove</button>
                                 </td>";
                             
                             // Edit form in a separate row
                             echo "<tr id='editRow{$row['id']}' style='display:none;'>";
                             echo "<td colspan='4'>
-                                    <form method='post' action='handle_highlight.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
+                                    <form method='post' action='handle_highlight_skateboard.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
                                         <input type='hidden' name='id' value='{$row['id']}'>
                                         <h3>Edit Video File:</h3>
                                         <input type='file' name='video'>
@@ -124,7 +124,7 @@
                 <button onclick="showAddForm('addAthleteForm')" style="margin-bottom: 20px";>Add Athlete</button>
                 
                 <!-- Add Athlete Form -->
-                <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes.php" enctype="multipart/form-data">
+                <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes_skateboard.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Athlete Name" required>
                     <textarea name="bio" placeholder="Bio" required></textarea>
                     <textarea name="description" placeholder="Description" required></textarea>
@@ -236,7 +236,7 @@
                     echo "<button onclick=\"showEditForm('editAthleteForm{$row['id']}')\">Edit</button>";
                     echo "<button class='remove' onclick=\"confirmDelete({$row['id']})\">Delete</button>"; // Added delete button
                     echo "</div>";
-                    echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes.php' enctype='multipart/form-data'>";
+                    echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes_skateboard.php' enctype='multipart/form-data'>";
                     echo "<input type='hidden' name='edit_id' value='{$row['id']}'>";
                     echo "<input type='hidden' name='page' value='$page'>";
                     echo "<input type='text' name='name' value='{$row['name']}' required>";
@@ -319,7 +319,7 @@
                 <label class="section-heading">Community Leaders:</label>
                 <button onclick="toggleForm('addLeaderForm')">Add Leader</button>
 
-                <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
+                <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders_skateboard.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="role" placeholder="Role" required>
                     <input type="file" name="image" required>
@@ -349,12 +349,12 @@
                                 echo '<td>
                                     <div style="display: flex; align-items: center; gap: 5px;">
                                         <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" style="height: 36px;">Edit</button>
-                                        <form method="POST" action="handle_leaders.php" style="margin: 0;">
+                                        <form method="POST" action="handle_leaders_skateboard.php" style="margin: 0;">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
                                             <button type="submit" name="delete" style="height: 36px;">Remove</button>
                                         </form>
                                     </div>
-                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
+                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders_skateboard.php" enctype="multipart/form-data">
                                         <input type="hidden" name="edit_id" value="' . $row['id'] . '">
                                         <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
                                         <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
@@ -380,7 +380,7 @@
                 <label>Partners & Sponsors:</label>
                 <button onclick="toggleForm('addPartnerForm')">Add Partner</button>
 
-                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships.php" enctype="multipart/form-data">
+                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships_skateboard.php" enctype="multipart/form-data">
                     <input type="file" name="logo" required>
                     <button type="submit">Add</button>
                     <button type="button" onclick="hideForm('addPartnerForm')">Cancel</button>
@@ -402,7 +402,7 @@
                                 echo '<tr>';
                                 echo '<td>' . htmlspecialchars($logoFileName) . '</td>';
                                 echo '<td>
-                                        <form method="POST" action="handle_partnerships.php">
+                                        <form method="POST" action="handle_partnerships_skateboard.php">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
                                             <button type="submit" name="delete">Remove</button>
                                         </form>

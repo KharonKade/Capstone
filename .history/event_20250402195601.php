@@ -17,7 +17,7 @@
                     <li><a href="index.php">Home</a></li>
                     <li><a href="spots.html">Spots</a></li>
                     <li><a href="event.php">Events</a></li>
-                    <li><a href="gallery.php">Gallery</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
                     <li><a href="sponsorship.html">Sponsorship</a></li>
                     <li><a href="contactUs.html">Contact Us</a></li>
                 </ul>

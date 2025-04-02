@@ -132,7 +132,7 @@
                 <li><a href="inline.php">In-Line</a></li>
                 <li><a href="bmx.php">BMX</a></li>
                 <li><a href="spots.html">Spots</a></li>
-                <li><a href="event.php">Events</a></li>
+                <li><a href="event.html">Events</a></li>
                 <li><a href="gallery.php">Gallery</a></li>
                 <li><a href="sponsorship.html">Sponsorship</a></li>
                 <li><a href="contactUs.html">Contact Us</a></li>

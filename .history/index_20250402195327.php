@@ -127,13 +127,13 @@
         <div class="footer-section explore-section">
             <h3>Explore Us</h3>
             <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="skateboard.php">Skateboarding</a></li>
-                <li><a href="inline.php">In-Line</a></li>
-                <li><a href="bmx.php">BMX</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="skateboard.html">Skateboarding</a></li>
+                <li><a href="inline.html">In-Line</a></li>
+                <li><a href="bmx.html">BMX</a></li>
                 <li><a href="spots.html">Spots</a></li>
-                <li><a href="event.php">Events</a></li>
-                <li><a href="gallery.php">Gallery</a></li>
+                <li><a href="event.html">Events</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="sponsorship.html">Sponsorship</a></li>
                 <li><a href="contactUs.html">Contact Us</a></li>
             </ul>
