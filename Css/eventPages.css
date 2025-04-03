@@ -92,8 +92,10 @@ header {
 /* Left Section */
 .left-section {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center;
+  position: relative;
+  justify-content: center;
 }
 
 .event-poster {
@@ -102,34 +104,41 @@ header {
   border-radius: 10px;
 }
 
-/* Swiper container style */
-.swiper-container {
-  width: 100%; /* Ensure it fits within the parent container */
-  max-width: 500px; /* Limit the width */
-  height: auto; /* Adjust height to maintain image aspect ratio */
-  border-radius: 10px; /* Optional: Rounded corners */
-  overflow: hidden;
+.swiper-wrapper-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
 }
 
+/* Swiper container style */
+.swiper-container {
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative; /* Ensures pagination stays inside */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .swiper-slide img {
-  width: 50%;
+  width: 100%;
   height: auto;
   cursor: pointer; /* Make the cursor a pointer to indicate clickability */
   border-radius: 10px; 
   display: block;
-  margin: 0 auto;
 }
 
 .swiper-pagination {
-  position: absolute; /* Position relative to swiper container */
-  bottom: 10px; /* Align to bottom of the container */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Ensure perfect horizontal centering */
-  width: 50%; /* Match image width */
-  display: flex; /* Flexbox to center pagination dots */
+  width: 100%;
+  display: flex;
   justify-content: center;
+  margin-top: 25px; /* Ensure it sits below */
 }
+
 
 .swiper-pagination-bullet {
   background-color: black; /* Set dot color */

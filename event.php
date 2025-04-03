@@ -78,7 +78,7 @@
             GROUP BY 
                 e.id
             ORDER BY 
-                s.event_date ASC";
+                e.id DESC";
         
             $result = $conn->query($sql);
 

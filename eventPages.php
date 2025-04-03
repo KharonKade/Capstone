@@ -137,24 +137,26 @@ if ($event_id > 0) {
     <div class="event-page">
         <!-- Left Section (Image Carousel) -->
         <div class="left-section">
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    <?php
-                    // Display event images
-                    if (!empty($images)) {
-                        foreach ($images as $image) {
-                            echo '<div class="swiper-slide">
-                                    <img src="' . $image['image_path'] . '" alt="Event Poster" class="event-poster" onclick="openModal(\'' . $image['image_path'] . '\')">
-                                  </div>';
+            <!-- Wrapper around swiper-container -->
+            <div class="swiper-wrapper-container">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <?php
+                        if (!empty($images)) {
+                            foreach ($images as $image) {
+                                echo '<div class="swiper-slide">
+                                        <img src="' . $image['image_path'] . '" alt="Event Poster" class="event-poster" onclick="openModal(\'' . $image['image_path'] . '\')">
+                                    </div>';
+                            }
+                        } else {
+                            echo "<p>No images available for this event.</p>";
                         }
-                    } else {
-                        echo "<p>No images available for this event.</p>";
-                    }
-                    ?>
+                        ?>
+                    </div>
                 </div>
-                <!-- Pagination dots (optional) -->
-                <div class="swiper-pagination"></div>
             </div>
+            <!-- Pagination moved outside swiper-container -->
+            <div class="swiper-pagination"></div>
         </div>
 
         <!-- Right Section (Event Details) -->
