@@ -241,16 +241,15 @@ if ($event_id > 0) {
                 <button type="submit">Submit</button>
             </form>
         </div>
-        <div id="resendFormContainer">
-        <h3>Didn't get the verification email?</h3>
+    </div>
+    <div id="resendFormContainer">
+        <h3>Didn’t get the verification email?</h3>
         <form action="resend_verification.php" method="POST">
             <label for="resendEmail">Enter your email:</label>
             <input type="email" id="resendEmail" name="email" required>
             <button type="submit">Resend Verification Email</button>
         </form>
     </div>
-    </div>
-
 
 
     <!-- Modal for Image Preview -->
