@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // reCAPTCHA verification
-$recaptcha_secret = '6LezuAorAAAAADinMO5ygVph7jNNtovpEL2t42Tj';
+$recaptcha_secret = 'YOUR_SECRET_KEY_HERE';
 $recaptcha_response = $_POST['g-recaptcha-response'];
 
 $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret}&response={$recaptcha_response}");

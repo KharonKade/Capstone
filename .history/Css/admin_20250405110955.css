@@ -61,14 +61,6 @@ body {
 
 }
 
-/* Indent the second line */
-.sidebar ul li a {
-    padding-left: 45px; /* Add padding to the left for the first line */
-    text-indent: -15px; /* Negative indent to pull the first line back */
-}
-
-
-
 .sidebar ul li a:hover {
     background: #34495e;
 }

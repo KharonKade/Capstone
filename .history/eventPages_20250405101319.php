@@ -240,7 +240,7 @@ if ($event_id > 0) {
                 </select>
 
                 <!-- reCAPTCHA widget -->
-                <div class="g-recaptcha" data-sitekey="6LezuAorAAAAAN_jcei_sHBW0gNq_im-TA4oZ8wI"></div>
+                <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY_HERE"></div>
 
                 <button type="submit">Submit</button>
             </form>

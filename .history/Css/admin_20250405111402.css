@@ -67,7 +67,16 @@ body {
     text-indent: -15px; /* Negative indent to pull the first line back */
 }
 
-
+/* This will create a visual indent for the second line */
+.sidebar ul li a::after {
+    content: ''; /* Empty content for the pseudo-element */
+    display: block; /* Make it a block element */
+    height: 0; /* No height */
+    margin-top: 5px; /* Space between lines */
+    text-indent: 15px; /* Indent for the second line */
+    position: relative; /* Position it relative to the anchor */
+    left: 15px; /* Align it with the text */
+}
 
 .sidebar ul li a:hover {
     background: #34495e;

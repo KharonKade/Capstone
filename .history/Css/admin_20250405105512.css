@@ -30,6 +30,8 @@ body {
 
 .sidebar i {
     margin-right: 10px; /* Adds space between icon and text */
+    flex-shrink: 0; /* Prevents icon from shrinking */
+    align-self: flex-start;
 }
 
 
@@ -53,26 +55,21 @@ body {
     text-decoration: none;
     color: #ecf0f1;
     padding: 10px 15px;
-    display: block;
+    display: flex;
+    flex-direction: column; /* Allow the text to wrap and align properly */
+    align-items: flex-start; /* Align icon with the top of the text */
     border-radius: 5px;
     transition: background 0.3s;
-    position: relative; /* Required for the pseudo-element */
-    overflow-wrap: break-word; /* Ensures long words break */
-
 }
-
-/* Indent the second line */
-.sidebar ul li a {
-    padding-left: 45px; /* Add padding to the left for the first line */
-    text-indent: -15px; /* Negative indent to pull the first line back */
-}
-
-
 
 .sidebar ul li a:hover {
     background: #34495e;
 }
 
+.sidebar ul li a span {
+    margin-left: 30px; /* Indentation for wrapped text */
+    display: inline-block; /* Make the span behave like an inline block */
+}
 
 /* Main Content */
 .content {

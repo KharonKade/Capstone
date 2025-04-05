@@ -63,11 +63,17 @@ body {
 
 /* Indent the second line */
 .sidebar ul li a {
-    padding-left: 45px; /* Add padding to the left for the first line */
-    text-indent: -15px; /* Negative indent to pull the first line back */
+    padding-left: 15px; /* Add padding to the left for the first line */
 }
 
-
+.sidebar ul li a::before {
+    content: ''; /* Empty content for the pseudo-element */
+    display: inline-block; /* Make it an inline-block element */
+    width: 15px; /* Width of the indent */
+    height: 0; /* No height */
+    margin-right: -15px; /* Pull it back to align with the text */
+    vertical-align: middle; /* Align it vertically with the text */
+}
 
 .sidebar ul li a:hover {
     background: #34495e;

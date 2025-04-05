@@ -30,6 +30,7 @@ body {
 
 .sidebar i {
     margin-right: 10px; /* Adds space between icon and text */
+    flex-shrink: 0; /* Prevents icon from shrinking */
 }
 
 
@@ -56,23 +57,17 @@ body {
     display: block;
     border-radius: 5px;
     transition: background 0.3s;
-    position: relative; /* Required for the pseudo-element */
-    overflow-wrap: break-word; /* Ensures long words break */
-
+    align-items: center; /* Aligns icon and text */
 }
-
-/* Indent the second line */
-.sidebar ul li a {
-    padding-left: 45px; /* Add padding to the left for the first line */
-    text-indent: -15px; /* Negative indent to pull the first line back */
-}
-
-
 
 .sidebar ul li a:hover {
     background: #34495e;
 }
 
+.sidebar ul li a span {
+    word-wrap: break-word;
+    word-break: break-word;
+}
 
 /* Main Content */
 .content {
