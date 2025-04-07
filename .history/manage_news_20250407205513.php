@@ -1,6 +1,6 @@
 <?php
 // Database connection
-$conn = new mysqli("localhost", "root", "", "basf_events");
+$conn = new mysqli("localhost", "root", "", "basf_news");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -8,23 +8,23 @@ if ($conn->connect_error) {
 // Handle Archive Action
 if (isset($_GET['archive_id'])) {
     $archive_id = intval($_GET['archive_id']);
-    $archive_sql = "UPDATE upcoming_events SET status = 'archived' WHERE id = $archive_id";
+    $archive_sql = "UPDATE news_announcements SET status = 'archived' WHERE news_id = $archive_id";
 
     if ($conn->query($archive_sql)) {
-        header("Location: manage_upcoming.php?message=Event archived successfully");
+        header("Location: manage_news.php?message=News archived successfully");
         exit();
     } else {
-        die("Error archiving event: " . $conn->error);
+        die("Error archiving news: " . $conn->error);
     }
 }
 
 $sql = "
     SELECT 
         @rownum := @rownum + 1 AS row_num, 
-        id, event_name, location, category, registration, registration_limit
-    FROM upcoming_events, (SELECT @rownum := 0) r 
+        news_id, news_title, category, publish_date 
+    FROM news_announcements, (SELECT @rownum := 0) r 
     WHERE status = 'active'
-    ORDER BY id DESC
+    ORDER BY news_id DESC
 ";
 $result = $conn->query($sql);
 ?>
@@ -34,9 +34,8 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Upcoming Events</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="Css/manage_event.css">
+    <title>Manage News & Announcements</title>
+    <link rel="stylesheet" href="Css/manage_event.css"> <!-- You can reuse the existing stylesheet -->
 </head>
 <body>
     <div class="admin-container">
@@ -60,18 +59,15 @@ $result = $conn->query($sql);
             </ul>
         </nav>
         <main class="content">
-            <h2>Manage Upcoming Events</h2>
+            <h2>Manage News & Announcements</h2>
             <?php if ($result->num_rows > 0): ?>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Event Name</th>
-                        <th>Location</th>
+                        <th>News Title</th>
                         <th>Category</th>
-                        <th>Registration</th>
-                        <th>Limit</th>
-                        <th>Schedules</th>
+                        <th>Publish Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -82,39 +78,21 @@ $result = $conn->query($sql);
                     while ($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row_num++; ?></td> <!-- Display the row number -->
-                        <td><?php echo $row['event_name']; ?></td>
-                        <td><?php echo $row['location']; ?></td>
+                        <td><?php echo $row['news_title']; ?></td>
                         <td><?php echo ucfirst($row['category']); ?></td>
-                        <td><?php echo $row['registration'] == 1 ? 'Enabled' : 'Disabled'; ?></td>
-                        <td><?php echo $row['registration_limit'] ?? 'Unlimited'; ?></td>
+                        <td><?php echo $row['publish_date']; ?></td>
                         <td>
-                            <?php
-                            // Fetch schedules for the event
-                            $schedule_sql = "SELECT * FROM event_schedules WHERE event_id = " . $row['id'];
-                            $schedule_result = $conn->query($schedule_sql);
-                            if ($schedule_result->num_rows > 0) {
-                                while ($schedule = $schedule_result->fetch_assoc()) {
-                                    echo "Date: " . $schedule['event_date'] . "<br>";
-                                    echo "Start: " . $schedule['start_time'] . "<br>";
-                                    echo "End: " . $schedule['end_time'] . "<br><hr>";
-                                }
-                            } else {
-                                echo "No schedules found.";
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <a href="view_event.php?id=<?php echo $row['id']; ?>">View</a> |
-                            <a href="edit_event.php?id=<?php echo $row['id']; ?>">Edit</a> |
-                            <a href="delete_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a> |
-                            <a href="archive_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Archive this event?')">Archive</a>
+                            <a href="view_news.php?id=<?php echo $row['news_id']; ?>">View</a> |
+                            <a href="edit_news.php?id=<?php echo $row['news_id']; ?>">Edit</a> |
+                            <a href="delete_news.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Are you sure you want to delete this news item?');">Delete</a> |
+                            <a href="archive_news.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Archive this news item?')">Archive</a>
                         </td>
                     </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
             <?php else: ?>
-            <p>No upcoming events found.</p>
+            <p>No news found.</p>
             <?php endif; ?>
         </main>
     </div>
