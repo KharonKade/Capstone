@@ -43,7 +43,7 @@ $registration_sql = "INSERT INTO event_registrations (event_id, name, email, pho
 
 if ($conn->query($registration_sql) === TRUE) {
     echo "<script type='text/javascript'>
-            alert('Registration successful! Your token is: $token');
+            alert('Registration successful!');
             window.location.href = 'eventPages.php?id=' + $event_id;
           </script>";
 } else {

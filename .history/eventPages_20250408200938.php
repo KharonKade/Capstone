@@ -247,17 +247,7 @@ if ($event_id > 0) {
             </form>
         </div>
     </div>
-    
-    <div id="tokenModal" class="token-modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeTokenModal()">&times;</span>
-            <h2>Enter Your Token</h2>
-            <form id="tokenForm" action="manage_registration.php" method="POST">
-                <input type="text" id="token" name="token" required placeholder="Enter your token here">
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    </div>
+
     
 
 
@@ -369,14 +359,6 @@ if ($event_id > 0) {
         }
     };
 });
-
-function showTokenModal() {
-    document.getElementById('tokenModal').style.display = 'block';
-}
-
-function closeTokenModal() {
-    document.getElementById('tokenModal').style.display = 'none';
-}
 
 </script>
 </body>

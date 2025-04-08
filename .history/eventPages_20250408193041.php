@@ -184,7 +184,7 @@ if ($event_id > 0) {
                     <div class="event-popularity">
                         <span class="popularity-badge" style="background-color: #4CAF50;"><strong><?php echo $popularity_status; ?> - <?php echo $registration_count; ?> Participants Registered</strong></span>
                     </div>
-                    <a href="#" onclick="showTokenModal()">Manage Registration</a>
+                    <p><a href="#" id="manageRegistrationLink">Manage your registration</a></p>
                 <?php endif; ?>
             </div>
 
@@ -247,18 +247,13 @@ if ($event_id > 0) {
             </form>
         </div>
     </div>
-    
-    <div id="tokenModal" class="token-modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeTokenModal()">&times;</span>
-            <h2>Enter Your Token</h2>
-            <form id="tokenForm" action="manage_registration.php" method="POST">
-                <input type="text" id="token" name="token" required placeholder="Enter your token here">
-                <button type="submit">Submit</button>
-            </form>
-        </div>
+
+    <!-- Manage Registration Form -->
+    <div id="tokenForm" style="display:none;">
+        <label for="token">Enter your token:</label>
+        <input type="text" id="token" name="token" required>
+        <button onclick="manageRegistration()">Submit</button>
     </div>
-    
 
 
     <!-- Add this script before closing body -->
@@ -369,15 +364,6 @@ if ($event_id > 0) {
         }
     };
 });
-
-function showTokenModal() {
-    document.getElementById('tokenModal').style.display = 'block';
-}
-
-function closeTokenModal() {
-    document.getElementById('tokenModal').style.display = 'none';
-}
-
 </script>
 </body>
 </html>

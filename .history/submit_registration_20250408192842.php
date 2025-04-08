@@ -31,19 +31,20 @@ $age = $_POST['age'] ?? '';
 $gender = $_POST['gender'] ?? '';
 $category = $_POST['category'] ?? '';
 $event_id = $_POST['event_id'] ?? 0;
+$token = bin2hex(random_bytes(16));
 
 // Validate required fields
 if (empty($name) || empty($email) || empty($phone) || empty($age) || empty($gender) || empty($category) || empty($event_id)) {
     die("Error: Please fill all the required fields.");
 }
-$token = bin2hex(random_bytes(16));
+
 // Insert registration data into the database
 $registration_sql = "INSERT INTO event_registrations (event_id, name, email, phone, age, gender, category, token) 
                      VALUES ('$event_id', '$name', '$email', '$phone', '$age', '$gender', '$category', '$token')";
 
 if ($conn->query($registration_sql) === TRUE) {
     echo "<script type='text/javascript'>
-            alert('Registration successful! Your token is: $token');
+            alert('Registration successful!');
             window.location.href = 'eventPages.php?id=' + $event_id;
           </script>";
 } else {

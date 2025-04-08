@@ -370,14 +370,6 @@ if ($event_id > 0) {
     };
 });
 
-function showTokenModal() {
-    document.getElementById('tokenModal').style.display = 'block';
-}
-
-function closeTokenModal() {
-    document.getElementById('tokenModal').style.display = 'none';
-}
-
 </script>
 </body>
 </html>
