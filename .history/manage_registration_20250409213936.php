@@ -73,13 +73,11 @@ $conn->close();
         <?php else: ?>
             <p style="color: red;">Invalid token or no registration found.</p>
         <?php endif; ?>
-        <?php if (isset($event_id)): ?>
-            <div class="return-btn">
-                <a href="eventPages.php?id=<?= $event_id; ?>">
-                    Return to Event Page
-                </a>
-            </div>
-        <?php endif; ?>
+        <div class="return-btn">
+            <a href="eventPages.php?id=<?= $event_id; ?>">
+                Return to Event Page
+            </a>
+        </div>
     </div>
 </body>
 </html>

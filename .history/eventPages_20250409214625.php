@@ -204,8 +204,9 @@ if ($event_id > 0) {
         </div>
     </div>
 
-    <button onclick="window.location.href='event.php';" class="return-btn">Return</button>
+    <button onclick="history.back()" class="return-btn">Return</button>
 
+    
 
    <!-- Registration Form Modal -->
     <div id="registrationModal" class="registration-modal" style="display:none;">

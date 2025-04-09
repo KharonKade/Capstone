@@ -14,22 +14,6 @@ $registration_sql = "SELECT * FROM event_registrations WHERE token = '$token'";
 $registration_result = $conn->query($registration_sql);
 $registration = $registration_result->fetch_assoc();
 
-if ($registration) {
-    // Fetch event ID based on registration ID
-    $event_query = "SELECT event_id FROM event_registrations WHERE id = ?";
-    $stmt = $conn->prepare($event_query);
-    $stmt->bind_param("i", $registration['id']);
-    $stmt->execute();
-    $event_result = $stmt->get_result();
-
-    if ($event_result->num_rows > 0) {
-        $event = $event_result->fetch_assoc();
-        $event_id = $event['event_id'];  // Define $event_id
-    } else {
-        die("Event not found.");
-    }
-}
-
 $conn->close();
 ?>
 
@@ -73,13 +57,11 @@ $conn->close();
         <?php else: ?>
             <p style="color: red;">Invalid token or no registration found.</p>
         <?php endif; ?>
-        <?php if (isset($event_id)): ?>
-            <div class="return-btn">
-                <a href="eventPages.php?id=<?= $event_id; ?>">
-                    Return to Event Page
-                </a>
-            </div>
-        <?php endif; ?>
+        <div class="return-btn">
+            <a href="eventPages.php?id=<?= $event_id; ?>">
+                Return to Event Page
+            </a>
+        </div>
     </div>
 </body>
 </html>

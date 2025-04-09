@@ -181,11 +181,10 @@ if ($event_id > 0) {
                 <?php if ($event['registration'] == 1): ?>
                     <button id="registerBtn" class="register-btn">Register</button>
                     <br></br>
-                    <a href="#" onclick="showTokenModal()">Already Registered? Click Here!</a>
-                    <br></br>
                     <div class="event-popularity">
                         <span class="popularity-badge" style="background-color: #4CAF50;"><strong><?php echo $popularity_status; ?> - <?php echo $registration_count; ?> Participants Registered</strong></span>
                     </div>
+                    <a href="#" onclick="showTokenModal()">Manage Registration</a>
                 <?php endif; ?>
             </div>
 
@@ -204,8 +203,9 @@ if ($event_id > 0) {
         </div>
     </div>
 
-    <button onclick="window.location.href='event.php';" class="return-btn">Return</button>
+    <button onclick="history.back()" class="return-btn">Return</button>
 
+    
 
    <!-- Registration Form Modal -->
     <div id="registrationModal" class="registration-modal" style="display:none;">
@@ -248,8 +248,8 @@ if ($event_id > 0) {
         </div>
     </div>
     
-    <div id="tokenModal" class="registration-modal" style="display:none;" onclick="closeTokenModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation();">
+    <div id="tokenModal" class="token-modal" style="display:none;">
+        <div class="modal-content">
             <span class="close" onclick="closeTokenModal()">&times;</span>
             <h2>Enter Your Token</h2>
             <form id="tokenForm" action="manage_registration.php" method="POST">
@@ -374,12 +374,9 @@ function showTokenModal() {
     document.getElementById('tokenModal').style.display = 'block';
 }
 
-function closeTokenModal(event) {
-        // Check if the click was outside the modal content (on the overlay)
-        if (event.target === document.getElementById('tokenModal')) {
-            document.getElementById('tokenModal').style.display = 'none';
-        }
-    }
+function closeTokenModal() {
+    document.getElementById('tokenModal').style.display = 'none';
+}
 
 </script>
 </body>

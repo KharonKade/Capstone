@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($stmt->execute()) {
             echo "<script>
                     alert('Registration updated successfully!');
-                    window.location.href = 'manage_registration.php?id=" . $registration['event_id'] . "';
+                    window.location.href = 'view_event.php?id=" . $registration['event_id'] . "';
                   </script>";
         } else {
             echo "Error updating record: " . $conn->error;
