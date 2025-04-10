@@ -5,16 +5,19 @@ body {
     color: #333;
 }
 
-/* Admin Container */
 .admin-container {
-    display: flex;
-    min-height: 100vh;
+    max-width: 900px;
+    margin: 0 auto; /* centers the container */
+    padding: 20px;
+    background-color: #f9f9f9; /* light background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Main Content */
 .main-content {
     flex: 1;
-    padding: 30px;
+    padding: 50px;
     background-color: white;
     overflow-y: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -36,7 +39,7 @@ table {
     border-collapse: collapse;
     margin-top: 20px;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 th, td {
@@ -71,10 +74,9 @@ td a:hover {
 
 /* Message Content Styling */
 .message-content {
-    background-color: #fafafa;
+    background-color: white;
     padding: 15px;
     border-radius: 8px;
-    color: #555;
     font-size: 14px;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -107,6 +109,26 @@ td a:hover {
 tr:hover {
     background-color: #f1f1f1;
     cursor: pointer;
+}
+
+/* Button styles */
+button {
+    padding: 12px 25px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 150px;
+    margin: 20px auto;
+}
+
+
+button:hover {
+    background-color: #d32f2f;
 }
 
 /* Responsive Design */

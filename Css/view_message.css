@@ -5,7 +5,14 @@ body {
     color: #333;
 }
 
-
+.admin-container {
+    max-width: 900px;
+    margin: 0 auto; /* centers the container */
+    padding: 20px;
+    background-color: #f9f9f9; /* light background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
 /* Main Content */
 .main-content {
@@ -67,10 +74,9 @@ td a:hover {
 
 /* Message Content Styling */
 .message-content {
-    background-color: #fafafa;
+    background-color: white;
     padding: 15px;
     border-radius: 8px;
-    color: #555;
     font-size: 14px;
     white-space: pre-wrap;
     word-wrap: break-word;

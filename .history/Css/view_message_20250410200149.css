@@ -5,12 +5,19 @@ body {
     color: #333;
 }
 
-
+.admin-container {
+    max-width: 1000px;
+    margin: 0 auto; /* centers the container */
+    padding: 20px;
+    background-color: #f9f9f9; /* light background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
 /* Main Content */
 .main-content {
     flex: 1;
-    padding: 30px;
+    padding: 50px;
     background-color: white;
     overflow-y: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -32,7 +39,7 @@ table {
     border-collapse: collapse;
     margin-top: 20px;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 th, td {

@@ -79,44 +79,66 @@ header {
     font-weight: 300;
 }
 
-/* First Section */
+/* Dark overlay on top of video */
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+
+  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* darkens the video so text is readable */
+    z-index: -1;
+  }
+
+/* First Section with content in front of video */
 .first-section {
-    background-color: #f4f4f4;
-    text-align: center;
-    padding: 40px 20px;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+    color: white;
+  }
+
+.first-section-content {
+    z-index: 1;
+    max-width: 800px;
 }
 
 .subheading {
-    font-size: 30px;
+    font-size: 2rem;
     font-weight: bold;
-}
-
-.autoplay-video {
-    width: 100%;
-    height: auto;
-    max-width: 500px;
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 
 .bold-text {
-    font-weight: bold;
-    font-size: 18px;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
 }
 
 .sponsor-button {
-    display: inline-block;
     background-color: #008CBA;
     color: white;
     padding: 15px 30px;
     font-size: 18px;
     text-decoration: none;
     border-radius: 5px;
-    margin-top: 20px;
 }
+
 
 /* Second Section */
 .second-section {

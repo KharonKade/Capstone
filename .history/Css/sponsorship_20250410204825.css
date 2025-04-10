@@ -191,10 +191,11 @@ header {
 .footer {
     display: flex;
     justify-content: space-around;
-    padding: 20px;
-    background-color: #333;
+    padding: 30px;
+    background-color: #111;
     color: #fff;
-    flex-wrap: wrap; /* Ensures it wraps on smaller screens */
+    flex-wrap: wrap;
+    position: relative;
 }
 
 .footer-section {
@@ -204,8 +205,8 @@ header {
 }
 
 .footer-section h3 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
+    font-size: 1.4em;
+    margin-bottom: 15px;
     color: #f2f2f2;
 }
 
@@ -215,7 +216,7 @@ header {
 }
 
 .footer-section li {
-    margin: 5px 0;
+    margin: 8px 0;
 }
 
 .footer-section a {
@@ -230,36 +231,39 @@ header {
 
 .footer-logo {
     width: 200px;
-    margin-top: 90px;
+    margin-top: 20px;
 }
 
 .social-icons img {
     width: 40px;
     height: 40px;
-    margin: 0 5px;
+    margin: 0 10px;
 }
 
 .sponsor-logo {
-    width: 100px;
+    width: 120px;
     margin-top: 10px;
 }
 
+/* Custom Wave (Skate Ramp Style) */
 .footer-wave {
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
     height: 100px;
-    background: #fff; /* background of the body or section before the footer */
+    background: #222;
     overflow: hidden;
 }
 
 .footer-wave::before {
     content: "";
     position: absolute;
-    top: -60px;
+    bottom: -40px; /* Adjust to control the wave height */
     left: 0;
     width: 200%;
-    height: 200px;
-    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%23333" fill-opacity="1" d="M0,192C240,200,480,130,720,144C960,158,1200,224,1440,193V320H0V192Z"></path></svg>') no-repeat center;
+    height: 120px;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%23222" d="M0,128L48,144C96,160,192,192,288,181.3C384,171,480,117,576,106.7C672,96,768,128,864,144C960,160,1056,160,1152,170.7C1248,181,1344,203,1392,213.3L1440,224V320H0V128Z"></path></svg>') no-repeat center;
     background-size: cover;
 }
 
@@ -269,4 +273,15 @@ header {
         flex-direction: column;
         text-align: center;
     }
+}
+
+/* Optional - Grunge Effect */
+.footer-section {
+    background-color: rgba(0, 0, 0, 0.5); /* Add a slight background to give a grunge feel */
+    padding: 20px;
+}
+
+.footer-section h3 {
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
 }
