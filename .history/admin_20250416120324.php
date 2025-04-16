@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create News & Announcements</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Create Event</title>
     <link rel="stylesheet" href="Css/admin.css?v=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -14,7 +14,7 @@
             <h2>Admin Dashboard</h2>
             <ul>
                 <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="create_event.html.html"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="admin.html"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
                 <li><a href="manage_upcoming.php"><i class="fas fa-calendar-check"></i> Manage Events</a></li>
                 <li><a href="archived_events.php"><i class="fas fa-archive"></i> Archived Events</a></li>
                 <li><a href="create_news.html"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
@@ -29,33 +29,8 @@
                 <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
-        <main class="content" id="create_news">
-            <h2>Create News & Announcements</h2>
-            <div class="form-container">
-            <form action="store_news.php" method="post" enctype="multipart/form-data">
-                <label for="news_title">News Title:</label>
-                <input type="text" name="news_title" id="news_title" required>
-
-                <label for="description">Description:</label>
-                <textarea name="description" id="description" rows="5" required></textarea>
-
-                <label for="category">Category:</label>
-                <select name="category" id="category" required>
-                    <option value="skateboard">Skateboard</option>
-                    <option value="inline">Inline</option>
-                    <option value="bmx">BMX</option>
-                    <option value="all">All</option>
-                </select>
-
-                <label for="news_date">News Date:</label>
-                <input type="date" name="news_date" id="news_date" required>
-
-                <label for="image">News Image:</label>
-                <input type="file" name="image[]" id="image" required>
-
-                <button type="submit">Create News</button>
-            </form>
-            </div>
+        <main class="content" id="dashboard">
+            
         </main>
     </div>
 </body>
