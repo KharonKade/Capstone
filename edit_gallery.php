@@ -65,6 +65,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Css/admin_gallery.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <title>Edit Gallery Item</title>
 </head>
 <body>
@@ -76,7 +77,7 @@ $conn->close();
         <input type="text" name="title" value="<?php echo htmlspecialchars($row['title']); ?>" required><br>
         
         <label>Description:</label>
-        <textarea name="description" required><?php echo htmlspecialchars($row['description']); ?></textarea><br>
+        <textarea id="description" name="description"><?php echo htmlspecialchars($row['description']); ?></textarea><br>
         
         <label>Thumbnail Image:</label>
         <input type="file" name="thumbnail"><br>
@@ -96,7 +97,32 @@ $conn->close();
         
         <button type="submit">Update Gallery Item</button>
     </form>
+    
     <script>
+        let editorInstance;
+
+        ClassicEditor
+        .create(document.querySelector('#description'))
+        .then(editor => {
+            // Show the textarea once CKEditor is fully initialized
+            editor.ui.view.editable.element.parentElement.style.display = 'block';
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+
+        // Listen for form submission and sync the editor content
+        document.querySelector('form').addEventListener('submit', function (e) {
+            try {
+                if (editorInstance) {
+                    document.querySelector('#description').value = editorInstance.getData();
+                }
+            } catch (error) {
+                console.error("CKEditor content sync failed:", error);
+            }
+        });
+
         function removeElement(button) {
             button.parentElement.remove();
         }

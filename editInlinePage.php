@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="Css/editInlinePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 </head>
 <body>
     <div class="admin-container">
@@ -46,21 +47,25 @@
             ?>
             <h2>Manage Inline Page</h2>
             <section>
-                    <label>About Us:</label>
-                    <?php
-                    $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
-                    if ($row = $result->fetch_assoc()) {
-                        echo '<p class="wrapped-text">' . $row['content'] . '</p>';
-                    } else {
-                        echo "<p>About Us content not found.</p>";
-                    }
-                    ?>
-                    <button onclick="showEditForm('aboutUsForm')">Edit</button>
-                    <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus.php">
-                        <textarea name="about_us" required></textarea>
-                        <button type="submit">Update</button>
-                        <button type="button" onclick="hideForm('aboutUsForm')">Cancel</button>
-                    </form>
+                <label>About Us:</label>
+                <?php
+                $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
+                $aboutUsContent = "";
+                if ($row = $result->fetch_assoc()) {
+                    $aboutUsContent = $row['content'];
+                    echo '<p class="wrapped-text">' . $row['content'] . '</p>';
+                } else {
+                    echo "<p>About Us content not found.</p>";
+                }
+                ?>
+                
+                <button onclick="showEditForm('aboutUsForm')">Edit</button>
+
+                <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus.php">
+                    <textarea name="about_us" id="about_us_editor"><?php echo htmlspecialchars($aboutUsContent); ?></textarea>
+                    <button type="submit">Update</button>
+                    <button type="button" onclick="hideForm('aboutUsForm')">Cancel</button>
+                </form>
             </section>
 
             <section>
@@ -420,6 +425,30 @@
 
 
             <script>
+            let editorInstance;
+
+            ClassicEditor
+            .create(document.querySelector('#about_us_editor'))
+            .then(editor => {
+                // Show the textarea once CKEditor is fully initialized
+                editor.ui.view.editable.element.parentElement.style.display = 'block';
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+
+            // Listen for form submission and sync the editor content
+            document.querySelector('form').addEventListener('submit', function (e) {
+                try {
+                    if (editorInstance) {
+                        document.querySelector('#description').value = editorInstance.getData();
+                    }
+                } catch (error) {
+                    console.error("CKEditor content sync failed:", error);
+                }
+            });
+
             function showEditForm(id) {
                 document.getElementById(id).style.display = 'block';
             }

@@ -27,6 +27,7 @@ $sponsors = $conn->query("SELECT * FROM sponsor_logos WHERE event_id = $event_id
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Event</title>
     <link rel="stylesheet" href="Css/edit_event.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 </head>
 <body>
     <div class="admin-container">
@@ -48,7 +49,7 @@ $sponsors = $conn->query("SELECT * FROM sponsor_logos WHERE event_id = $event_id
             </select>
 
             <label>Description:</label>
-            <textarea name="description" required><?php echo $event['description']; ?></textarea>
+            <textarea name="description" id="description"><?php echo $event['description']; ?></textarea>
 
             <label>Registration:
             <input type="checkbox" name="registration" <?php if ($event['registration']) echo "checked"; ?>>
@@ -125,6 +126,30 @@ $sponsors = $conn->query("SELECT * FROM sponsor_logos WHERE event_id = $event_id
         function removeElement(button) {
             button.parentElement.remove();
         }
+
+        let editorInstance;
+
+        ClassicEditor
+        .create(document.querySelector('#description'))
+        .then(editor => {
+            // Show the textarea once CKEditor is fully initialized
+            editor.ui.view.editable.element.parentElement.style.display = 'block';
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+
+        // Listen for form submission and sync the editor content
+        document.querySelector('form').addEventListener('submit', function (e) {
+            try {
+                if (editorInstance) {
+                    document.querySelector('#description').value = editorInstance.getData();
+                }
+            } catch (error) {
+                console.error("CKEditor content sync failed:", error);
+            }
+        });
     </script>
 </body>
 </html>

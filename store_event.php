@@ -8,7 +8,7 @@ if ($conn->connect_error) {
 $event_name = $_POST['event_name'] ?? '';
 $location = $_POST['location'] ?? '';
 $description = $_POST['description'] ?? '';
-$category = $_POST['category'] ?? 'All'; // Default to "All" category
+$category = $_POST['category'] ?? 'all'; // Default to "All" category
 $registration = isset($_POST['registration']) ? 1 : 0; // 1 for enabled, 0 for disabled
 $registration_limit = isset($_POST['registration_limit']) ? (int)$_POST['registration_limit'] : NULL;
 

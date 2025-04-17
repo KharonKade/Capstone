@@ -145,7 +145,8 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit News & Announcements</title>
-    <link rel="stylesheet" href="Css/edit_news.css"> <!-- Use existing styles -->
+    <link rel="stylesheet" href="Css/edit_news.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 </head>
 <body>
     <div class="admin-container">
@@ -156,7 +157,7 @@ $conn->close();
                 <input type="text" id="news_title" name="news_title" value="<?php echo $news['news_title']; ?>" required>
 
                 <label for="description">News Content:</label>
-                <textarea id="description" name="description" required><?php echo $news['news_content']; ?></textarea>
+                <textarea id="description" name="description" ><?php echo $news['news_content']; ?></textarea>
 
                 <label for="category">Category:</label>
                 <select id="category" name="category">
@@ -190,6 +191,31 @@ $conn->close();
         </main>
     </div>
     <script>
+
+    let editorInstance;
+
+    ClassicEditor
+    .create(document.querySelector('#description'))
+    .then(editor => {
+        // Show the textarea once CKEditor is fully initialized
+        editor.ui.view.editable.element.parentElement.style.display = 'block';
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+
+    // Listen for form submission and sync the editor content
+    document.querySelector('form').addEventListener('submit', function (e) {
+        try {
+            if (editorInstance) {
+                document.querySelector('#description').value = editorInstance.getData();
+            }
+        } catch (error) {
+            console.error("CKEditor content sync failed:", error);
+        }
+    });
+    
     function removeElement(button) {
         button.parentElement.remove();
     }

@@ -143,7 +143,7 @@ $conn->close();
     <script>
         function showDetails(item) {
             document.getElementById("details-title").innerText = item.title;
-            document.getElementById("details-description").innerText = item.description;
+            document.getElementById("details-description").innerHTML = item.description;
 
             let imageContainer = document.getElementById("details-images");
             imageContainer.innerHTML = ""; // Clear previous images
