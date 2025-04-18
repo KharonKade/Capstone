@@ -27,9 +27,9 @@
     </header>
 
     <!-- First Container -->
-    <section class="container sports-container animate-on-scroll">
+    <section class="container sports-container">
         <h1>Sports</h1>
-        <div class="sports-buttons animate-on-scroll">
+        <div class="sports-buttons">
             <button onclick="window.location.href='inline.php'">In-Line</button>
             <button onclick="window.location.href='skateboard.php'">Skateboard</button>
             <button onclick="window.location.href='bmx.php'">BMX</button>
@@ -38,7 +38,7 @@
 
     <!-- Second Container -->
     <!-- News Section -->
-        <section class="news-container animate-on-scroll">
+        <section class="news-container">
             <h2>News & Announcements</h2>
             <div class="news-carousel-wrapper">
                 <div class="news-carousel">
@@ -98,7 +98,7 @@
 
 
         <!-- Advertisement Section -->
-        <div class="advertisement animate-on-scroll">
+        <div class="advertisement">
             <a id="ad-link" href="#" target="_blank">
                 <div class="ad-container">
                     <img id="ad-image" src="" alt="Advertisement">
@@ -108,7 +108,7 @@
         </div>
     </section>
 
-    <section class="partnership-section animate-on-scroll">
+    <section class="partnership-section">
         <h2>In Partnership With</h2>
         <div class="partner-logos">
             <img src="images/vanlogo.png" alt="Partner 1" class="partner-logo">
@@ -118,20 +118,20 @@
         </div>
     </section>
 
-    <div class="footer-ramp-icons animate-on-scroll">
+    <div class="footer-ramp-icons">
         <img src="images/ramp.png" alt="Left Ramp" class="ramp-icon left">
         <img src="images/pyramid.png" alt="Center Pyramid Ramp" class="ramp-icon center">
         <img src="images/rampright.png" alt="Right Ramp" class="ramp-icon right">
     </div>
 
-    <footer class="footer animate-on-scroll">
+    <footer class="footer">
         <!-- BASF Logo Section -->
         <div class="footer-section logo-section">
             <img src="images/whitelogo.png" alt="BASF Logo" class="footer-logo">
         </div>
 
         <!-- Explore Us Section -->
-        <div class="footer-section explore-section ">
+        <div class="footer-section explore-section">
             <h3>Explore Us</h3>
             <ul>
                 <li><a href="index.php">Home</a></li>
@@ -213,44 +213,6 @@
             });
         }
     });
-
-    document.addEventListener("DOMContentLoaded", function () {
-    const elements = document.querySelectorAll('.animate-on-scroll');
-
-    elements.forEach(el => {
-        el._fadeTimeout = null; // custom property for tracking timeout
-    });
-
-    function toggleVisibility() {
-        elements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
-
-            if (inView) {
-                clearTimeout(el._fadeTimeout); // cancel any pending hide
-                el.classList.add('visible');
-            } else {
-                // fade out first, then hide after transition
-                el.classList.remove('visible');
-                clearTimeout(el._fadeTimeout);
-                el._fadeTimeout = setTimeout(() => {
-                    el.style.visibility = 'hidden';
-                }, 600); // must match transition duration
-            }
-
-            // Always reset visibility to visible if showing
-            if (inView) {
-                el.style.visibility = 'visible';
-            }
-        });
-    }
-
-    window.addEventListener('scroll', toggleVisibility);
-    window.addEventListener('resize', toggleVisibility);
-    toggleVisibility(); // Run on load
-});
-
-
     </script>
 </body>
 </html>

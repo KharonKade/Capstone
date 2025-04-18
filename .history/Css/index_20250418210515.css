@@ -1,8 +1,9 @@
 /* Reset Styles */
-body {
+body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: background-color 0.5s ease-in-out;
 }
 
 /* Header Styling */
@@ -173,6 +174,7 @@ header {
 
 /* News Section */
 .news-container {
+    background-color: white;
     padding: 40px;
     text-align: center;
 }
@@ -303,6 +305,7 @@ header {
 .partnership-section {
     text-align: center;
     padding: 40px 0;
+    background-color: white; 
 }
 
 .partnership-section h2 {
@@ -436,20 +439,3 @@ header {
         width: 70px; 
     }
 }
-
-/* Basic animation setup */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    visibility: hidden;
-    transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-}
-
-
-

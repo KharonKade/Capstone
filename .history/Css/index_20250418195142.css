@@ -1,5 +1,5 @@
 /* Reset Styles */
-body {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -50,7 +50,7 @@ header {
     display: flex;
     justify-content: center;
     flex-grow: 1;
-    margin-right: 140px;
+    margin-right: 50px;
 }
 
 .nav-links a:hover {
@@ -91,57 +91,21 @@ header {
 }
 
 .sports-buttons button {
-    font-family: 'Permanent Marker', cursive;
-    font-size: 2rem;
-    letter-spacing: 3px; /* Increased spacing for more street-style look */
-    text-transform: uppercase; /* Makes the text bold and all caps */
-    text-shadow: 
-        1px 1px 2px rgba(0,0,0,0.6), 
-        2px 2px 4px rgba(0,0,0,0.6), 
-        3px 3px 6px rgba(0,0,0,0.6); /* Multiple shadows for a sprayed look */
     padding: 40px 70px;
-    background: linear-gradient(135deg, #555, #777);
-    border: none;
-    border-radius: 25px;
+    background-color: gray;
+    border: 2px solid gray;
+    border-radius: 25px; 
     color: white;
+    font-size: 2.5rem;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     width: 100%;
     max-width: 300px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    background-color: rgba(0, 0, 0, 0.3); /* Slightly darker background */
-    border-radius: 20px; /* Slightly sharper corners */
+    text-align: center;          /* ensures text is centered */
+    display: flex;               /* flex to help center */
+    justify-content: center;     /* horizontal center */
+    align-items: center;  
 }
-
-.sports-buttons button::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-    animation: shine 3s infinite linear;
-    z-index: 0;
-}
-
-
-@keyframes shine {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-    100% {
-        transform: translate(50%, 50%) rotate(360deg);
-    }
-}
-
 
 @media screen and (max-width: 768px) {
     .sports-container h1 {
@@ -161,18 +125,14 @@ header {
 }
 
 .sports-buttons button:hover {
-    background: linear-gradient(135deg, #888, #aaa);
-    transform: scale(1.05);
-    box-shadow: 0 12px 25px rgba(255, 255, 255, 0.2);
-}
-
-.sports-buttons button:active {
-    transform: scale(0.98);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
 }
 
 
 /* News Section */
 .news-container {
+    background-color: white;
     padding: 40px;
     text-align: center;
 }
@@ -303,6 +263,7 @@ header {
 .partnership-section {
     text-align: center;
     padding: 40px 0;
+    background-color: #f9f9f9; 
 }
 
 .partnership-section h2 {
@@ -436,20 +397,3 @@ header {
         width: 70px; 
     }
 }
-
-/* Basic animation setup */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    visibility: hidden;
-    transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-}
-
-
-

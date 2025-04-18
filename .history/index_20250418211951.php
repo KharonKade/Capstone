@@ -29,7 +29,7 @@
     <!-- First Container -->
     <section class="container sports-container animate-on-scroll">
         <h1>Sports</h1>
-        <div class="sports-buttons animate-on-scroll">
+        <div class="sports-buttons">
             <button onclick="window.location.href='inline.php'">In-Line</button>
             <button onclick="window.location.href='skateboard.php'">Skateboard</button>
             <button onclick="window.location.href='bmx.php'">BMX</button>
@@ -118,7 +118,7 @@
         </div>
     </section>
 
-    <div class="footer-ramp-icons animate-on-scroll">
+    <div class="footer-ramp-icons">
         <img src="images/ramp.png" alt="Left Ramp" class="ramp-icon left">
         <img src="images/pyramid.png" alt="Center Pyramid Ramp" class="ramp-icon center">
         <img src="images/rampright.png" alt="Right Ramp" class="ramp-icon right">
@@ -214,43 +214,17 @@
         }
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-    const elements = document.querySelectorAll('.animate-on-scroll');
+    window.addEventListener('scroll', function() {
+        const body = document.body;
+        const scrollPosition = window.scrollY;
 
-    elements.forEach(el => {
-        el._fadeTimeout = null; // custom property for tracking timeout
+        // Add 'visible' class when scroll position is greater than 0
+        if (scrollPosition > 0) {
+        body.classList.add('visible');
+        } else {
+        body.classList.remove('visible');
+        }
     });
-
-    function toggleVisibility() {
-        elements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
-
-            if (inView) {
-                clearTimeout(el._fadeTimeout); // cancel any pending hide
-                el.classList.add('visible');
-            } else {
-                // fade out first, then hide after transition
-                el.classList.remove('visible');
-                clearTimeout(el._fadeTimeout);
-                el._fadeTimeout = setTimeout(() => {
-                    el.style.visibility = 'hidden';
-                }, 600); // must match transition duration
-            }
-
-            // Always reset visibility to visible if showing
-            if (inView) {
-                el.style.visibility = 'visible';
-            }
-        });
-    }
-
-    window.addEventListener('scroll', toggleVisibility);
-    window.addEventListener('resize', toggleVisibility);
-    toggleVisibility(); // Run on load
-});
-
-
     </script>
 </body>
 </html>

@@ -215,39 +215,29 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-    const elements = document.querySelectorAll('.animate-on-scroll');
+    const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+    
+    function checkVisibility() {
+        const windowHeight = window.innerHeight;
+        elementsToAnimate.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementBottom = element.getBoundingClientRect().bottom;
 
-    elements.forEach(el => {
-        el._fadeTimeout = null; // custom property for tracking timeout
-    });
-
-    function toggleVisibility() {
-        elements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
-
-            if (inView) {
-                clearTimeout(el._fadeTimeout); // cancel any pending hide
-                el.classList.add('visible');
+            // Add 'visible' class when the element is in the viewport
+            if (elementTop <= windowHeight * 0.8 && elementBottom >= 0) { // trigger animation if element is 80% into the viewport
+                element.classList.add('visible');
+                element.classList.remove('fade-out'); // In case it had faded out previously
             } else {
-                // fade out first, then hide after transition
-                el.classList.remove('visible');
-                clearTimeout(el._fadeTimeout);
-                el._fadeTimeout = setTimeout(() => {
-                    el.style.visibility = 'hidden';
-                }, 600); // must match transition duration
-            }
-
-            // Always reset visibility to visible if showing
-            if (inView) {
-                el.style.visibility = 'visible';
+                // Fade out the element when it's out of the viewport
+                element.classList.add('fade-out');
+                element.classList.remove('visible');
             }
         });
     }
 
-    window.addEventListener('scroll', toggleVisibility);
-    window.addEventListener('resize', toggleVisibility);
-    toggleVisibility(); // Run on load
+    // Trigger the check visibility on page load and scroll
+    checkVisibility();
+    window.addEventListener('scroll', checkVisibility);
 });
 
 

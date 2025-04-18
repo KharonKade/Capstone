@@ -438,17 +438,29 @@ header {
 }
 
 /* Basic animation setup */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    visibility: hidden;
-    transition: opacity 1.5s ease, transform 1.5s ease;
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Move up a little */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Final position */
+    }
 }
 
-.animate-on-scroll.visible {
+/* Hide initially */
+.animate-on-scroll {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-out;
+}
+
+/* Trigger the fade-in-up animation */
+.visible {
     opacity: 1;
-    transform: translateY(0);
     visibility: visible;
+    animation: fadeInUp 1s forwards; /* Trigger animation */
 }
 
 

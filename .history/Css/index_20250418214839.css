@@ -440,9 +440,9 @@ header {
 /* Basic animation setup */
 .animate-on-scroll {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
     visibility: hidden;
-    transition: opacity 1.5s ease, transform 1.5s ease;
+    transition: opacity 2s ease, transform 2s ease;
 }
 
 .animate-on-scroll.visible {

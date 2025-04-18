@@ -217,30 +217,15 @@
     document.addEventListener("DOMContentLoaded", function () {
     const elements = document.querySelectorAll('.animate-on-scroll');
 
-    elements.forEach(el => {
-        el._fadeTimeout = null; // custom property for tracking timeout
-    });
-
     function toggleVisibility() {
         elements.forEach(el => {
             const rect = el.getBoundingClientRect();
             const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
 
             if (inView) {
-                clearTimeout(el._fadeTimeout); // cancel any pending hide
                 el.classList.add('visible');
             } else {
-                // fade out first, then hide after transition
-                el.classList.remove('visible');
-                clearTimeout(el._fadeTimeout);
-                el._fadeTimeout = setTimeout(() => {
-                    el.style.visibility = 'hidden';
-                }, 600); // must match transition duration
-            }
-
-            // Always reset visibility to visible if showing
-            if (inView) {
-                el.style.visibility = 'visible';
+                el.classList.remove('visible'); // triggers fade out
             }
         });
     }
@@ -249,7 +234,6 @@
     window.addEventListener('resize', toggleVisibility);
     toggleVisibility(); // Run on load
 });
-
 
     </script>
 </body>

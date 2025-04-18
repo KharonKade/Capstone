@@ -1,8 +1,20 @@
 /* Reset Styles */
-body {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(45deg, #f39c12, #d35400); /* Gradient background */
+    background-size: 400% 400%; /* Increase the size for smooth animation */
+    animation: move 15s ease infinite; /* Apply the animation */
+}
+
+/* Keyframe for the animation */
+@keyframes move {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
 }
 
 /* Header Styling */
@@ -173,6 +185,7 @@ header {
 
 /* News Section */
 .news-container {
+    background-color: white;
     padding: 40px;
     text-align: center;
 }
@@ -303,6 +316,7 @@ header {
 .partnership-section {
     text-align: center;
     padding: 40px 0;
+    background-color: #f9f9f9; 
 }
 
 .partnership-section h2 {
@@ -436,20 +450,3 @@ header {
         width: 70px; 
     }
 }
-
-/* Basic animation setup */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    visibility: hidden;
-    transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-}
-
-
-

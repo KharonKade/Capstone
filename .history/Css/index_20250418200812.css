@@ -1,5 +1,5 @@
 /* Reset Styles */
-body {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -91,47 +91,44 @@ header {
 }
 
 .sports-buttons button {
-    font-family: 'Permanent Marker', cursive;
-    font-size: 2rem;
-    letter-spacing: 3px; /* Increased spacing for more street-style look */
-    text-transform: uppercase; /* Makes the text bold and all caps */
-    text-shadow: 
-        1px 1px 2px rgba(0,0,0,0.6), 
-        2px 2px 4px rgba(0,0,0,0.6), 
-        3px 3px 6px rgba(0,0,0,0.6); /* Multiple shadows for a sprayed look */
     padding: 40px 70px;
-    background: linear-gradient(135deg, #555, #777);
-    border: none;
-    border-radius: 25px;
-    color: white;
+    background: linear-gradient(135deg, #1f1f1f, #333); 
+    border: 3px solid #ff4f4f;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 2.5rem;
+    font-family: 'Bebas Neue', sans-serif; /* edgy font vibe */
+    letter-spacing: 2px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease;
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
     z-index: 1;
-    background-color: rgba(0, 0, 0, 0.3); /* Slightly darker background */
-    border-radius: 20px; /* Slightly sharper corners */
+    transition: all 0.3s ease-in-out;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    box-shadow: 0 6px 15px rgba(255, 79, 79, 0.4);
 }
 
 .sports-buttons button::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: -50%;
-    left: -50%;
+    top: 0;
+    left: -100%;
     width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-    animation: shine 3s infinite linear;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 79, 79, 0.1),
+        rgba(255, 79, 79, 0.1) 10px,
+        transparent 10px,
+        transparent 20px
+    );
     z-index: 0;
+    transition: left 0.5s ease;
 }
 
+.sports-buttons button:hover::before {
+    left: 0;
+}
 
 @keyframes shine {
     0% {
@@ -173,6 +170,7 @@ header {
 
 /* News Section */
 .news-container {
+    background-color: white;
     padding: 40px;
     text-align: center;
 }
@@ -303,6 +301,7 @@ header {
 .partnership-section {
     text-align: center;
     padding: 40px 0;
+    background-color: #f9f9f9; 
 }
 
 .partnership-section h2 {
@@ -436,20 +435,3 @@ header {
         width: 70px; 
     }
 }
-
-/* Basic animation setup */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    visibility: hidden;
-    transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-}
-
-
-

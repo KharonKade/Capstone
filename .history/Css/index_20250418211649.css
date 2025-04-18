@@ -436,20 +436,3 @@ header {
         width: 70px; 
     }
 }
-
-/* Basic animation setup */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    visibility: hidden;
-    transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-}
-
-
-

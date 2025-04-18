@@ -1,8 +1,52 @@
 /* Reset Styles */
-body {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Body with Grunge Background */
+body {
+    background: #333;
+    color: #fff;
+    position: relative;
+}
+
+/* Grunge Overlay */
+body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('path/to/grunge-overlay.png') repeat;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Spray Paint Effect */
+.spray {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: sprayAnim 3s infinite;
+}
+
+@keyframes sprayAnim {
+    0% {
+        top: 0;
+        left: 0;
+        opacity: 0.9;
+    }
+    100% {
+        top: 90%;
+        left: 90%;
+        opacity: 0.3;
+    }
 }
 
 /* Header Styling */
@@ -173,6 +217,7 @@ header {
 
 /* News Section */
 .news-container {
+    background-color: white;
     padding: 40px;
     text-align: center;
 }
@@ -303,6 +348,7 @@ header {
 .partnership-section {
     text-align: center;
     padding: 40px 0;
+    background-color: white; 
 }
 
 .partnership-section h2 {
@@ -436,20 +482,3 @@ header {
         width: 70px; 
     }
 }
-
-/* Basic animation setup */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    visibility: hidden;
-    transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-}
-
-
-

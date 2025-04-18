@@ -29,7 +29,7 @@
     <!-- First Container -->
     <section class="container sports-container animate-on-scroll">
         <h1>Sports</h1>
-        <div class="sports-buttons animate-on-scroll">
+        <div class="sports-buttons">
             <button onclick="window.location.href='inline.php'">In-Line</button>
             <button onclick="window.location.href='skateboard.php'">Skateboard</button>
             <button onclick="window.location.href='bmx.php'">BMX</button>
@@ -118,7 +118,7 @@
         </div>
     </section>
 
-    <div class="footer-ramp-icons animate-on-scroll">
+    <div class="footer-ramp-icons">
         <img src="images/ramp.png" alt="Left Ramp" class="ramp-icon left">
         <img src="images/pyramid.png" alt="Center Pyramid Ramp" class="ramp-icon center">
         <img src="images/rampright.png" alt="Right Ramp" class="ramp-icon right">
@@ -215,42 +215,28 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-    const elements = document.querySelectorAll('.animate-on-scroll');
+        const scrollElements = document.querySelectorAll('.animate-on-scroll');
 
-    elements.forEach(el => {
-        el._fadeTimeout = null; // custom property for tracking timeout
+        function checkVisibility() {
+            scrollElements.forEach(function (element) {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                    element.classList.add('visible');
+                } else {
+                    element.classList.remove('visible');
+                }
+            });
+        }
+
+        // Check visibility when the page loads
+        checkVisibility();
+
+        // Check visibility on scroll
+        window.addEventListener('scroll', checkVisibility);
+
+        // Optionally, also trigger visibility check on resize (for responsiveness)
+        window.addEventListener('resize', checkVisibility);
     });
-
-    function toggleVisibility() {
-        elements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
-
-            if (inView) {
-                clearTimeout(el._fadeTimeout); // cancel any pending hide
-                el.classList.add('visible');
-            } else {
-                // fade out first, then hide after transition
-                el.classList.remove('visible');
-                clearTimeout(el._fadeTimeout);
-                el._fadeTimeout = setTimeout(() => {
-                    el.style.visibility = 'hidden';
-                }, 600); // must match transition duration
-            }
-
-            // Always reset visibility to visible if showing
-            if (inView) {
-                el.style.visibility = 'visible';
-            }
-        });
-    }
-
-    window.addEventListener('scroll', toggleVisibility);
-    window.addEventListener('resize', toggleVisibility);
-    toggleVisibility(); // Run on load
-});
-
-
     </script>
 </body>
 </html>
