@@ -74,6 +74,7 @@
                 <p>5</p>
             </div>
         </div>
+        </div>
 
         <div class="chart-section">
             <h3>Event Forecast (Past & Predicted)</h3>

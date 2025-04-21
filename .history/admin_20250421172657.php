@@ -73,6 +73,17 @@
                 <h3>New Inquiries</h3>
                 <p>5</p>
             </div>
+
+            <div class="chart-section">
+                <h3>Event Forecast (Past & Predicted)</h3>
+                <canvas id="forecastChart" width="400" height="200"></canvas>
+            </div>
+
+
+            <div class="chart-section">
+                <h3>Event Stats Overview</h3>
+                <canvas id="eventChart" width="200" height="100"></canvas>
+            </div>
         </div>
 
         <div class="chart-section">

@@ -52,27 +52,6 @@
                 <h3>New Inquiries</h3>
                 <p>5</p>
             </div>
-
-            <div class="card">
-                <i class="fas fa-calendar-plus"></i>
-                <h3>Total Events</h3>
-                <p>25</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-newspaper"></i>
-                <h3>News Articles</h3>
-                <p>12</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-images"></i>
-                <h3>Gallery Items</h3>
-                <p>48</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-question-circle"></i>
-                <h3>New Inquiries</h3>
-                <p>5</p>
-            </div>
         </div>
 
         <div class="chart-section">
@@ -134,55 +113,6 @@
             }
         });
     </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const ctx = document.getElementById('forecastChart').getContext('2d');
-
-            const pastData = [5, 7, 6, 9];
-            const avg = Math.round((pastData.slice(-3).reduce((a, b) => a + b, 0)) / 3);
-            const predictedData = [avg, avg + 1, avg + 2];
-
-            const forecastChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                    datasets: [
-                        {
-                            label: 'Past Events',
-                            data: pastData,
-                            borderColor: '#2980b9',
-                            backgroundColor: 'transparent',
-                            borderWidth: 2
-                        },
-                        {
-                            label: 'Predicted Events',
-                            data: [...new Array(pastData.length).fill(null), ...predictedData],
-                            borderColor: '#e67e22',
-                            borderDash: [5, 5],
-                            backgroundColor: 'transparent',
-                            borderWidth: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        });
-    </script>
-
-
 
 </body>
 </html>

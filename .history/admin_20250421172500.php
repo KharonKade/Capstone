@@ -52,27 +52,6 @@
                 <h3>New Inquiries</h3>
                 <p>5</p>
             </div>
-
-            <div class="card">
-                <i class="fas fa-calendar-plus"></i>
-                <h3>Total Events</h3>
-                <p>25</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-newspaper"></i>
-                <h3>News Articles</h3>
-                <p>12</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-images"></i>
-                <h3>Gallery Items</h3>
-                <p>48</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-question-circle"></i>
-                <h3>New Inquiries</h3>
-                <p>5</p>
-            </div>
         </div>
 
         <div class="chart-section">
