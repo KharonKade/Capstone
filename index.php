@@ -1,3 +1,5 @@
+<?php include_once 'visit_tracker.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

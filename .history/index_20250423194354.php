@@ -1,3 +1,5 @@
+<?php include_once 'visit_tracker.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,18 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="stylesheet" href="Css/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
         <nav class="navbar">
-            <img src="images/logo.png" alt="BASF Logo" class="logo">
+            <img src="images/basflogo.png" alt="BASF Logo" class="logo">
             <div class="nav-center">
                 <ul class="nav-links">
                     <li><a href="index.php">Home</a></li>
                     <li><a href="spots.html">Spots</a></li>
                     <li><a href="event.php">Events</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="gallery.php">Gallery</a></li>
                     <li><a href="sponsorship.html">Sponsorship</a></li>
                     <li><a href="contactUs.html">Contact Us</a></li>
                 </ul>
@@ -26,9 +29,9 @@
     </header>
 
     <!-- First Container -->
-    <section class="container sports-container">
+    <section class="container sports-container animate-on-scroll">
         <h1>Sports</h1>
-        <div class="sports-buttons">
+        <div class="sports-buttons animate-on-scroll">
             <button onclick="window.location.href='inline.php'">In-Line</button>
             <button onclick="window.location.href='skateboard.php'">Skateboard</button>
             <button onclick="window.location.href='bmx.php'">BMX</button>
@@ -37,7 +40,7 @@
 
     <!-- Second Container -->
     <!-- News Section -->
-        <section class="news-container">
+        <section class="news-container animate-on-scroll">
             <h2>News & Announcements</h2>
             <div class="news-carousel-wrapper">
                 <div class="news-carousel">
@@ -97,17 +100,17 @@
 
 
         <!-- Advertisement Section -->
-        <div class="advertisement">
-            <a href="https://www.vans.com/en-us/shoes-c00081/old-skool-shoe-pvn000d3hy28" target="_blank">
+        <div class="advertisement animate-on-scroll">
+            <a id="ad-link" href="#" target="_blank">
                 <div class="ad-container">
-                    <img src="images/vansads.png" alt="Advertisement">
+                    <img id="ad-image" src="" alt="Advertisement">
                     <span class="ad-label">Ads</span>
                 </div>
             </a>
         </div>
     </section>
 
-    <section class="partnership-section">
+    <section class="partnership-section animate-on-scroll">
         <h2>In Partnership With</h2>
         <div class="partner-logos">
             <img src="images/vanlogo.png" alt="Partner 1" class="partner-logo">
@@ -117,23 +120,29 @@
         </div>
     </section>
 
-    <footer class="footer">
+    <div class="footer-ramp-icons animate-on-scroll">
+        <img src="images/ramp.png" alt="Left Ramp" class="ramp-icon left">
+        <img src="images/pyramid.png" alt="Center Pyramid Ramp" class="ramp-icon center">
+        <img src="images/rampright.png" alt="Right Ramp" class="ramp-icon right">
+    </div>
+
+    <footer class="footer animate-on-scroll">
         <!-- BASF Logo Section -->
         <div class="footer-section logo-section">
-            <img src="images/logo.png" alt="BASF Logo" class="footer-logo">
+            <img src="images/whitelogo.png" alt="BASF Logo" class="footer-logo">
         </div>
 
         <!-- Explore Us Section -->
-        <div class="footer-section explore-section">
+        <div class="footer-section explore-section ">
             <h3>Explore Us</h3>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="skateboard.html">Skateboarding</a></li>
-                <li><a href="inline.html">In-Line</a></li>
-                <li><a href="bmx.html">BMX</a></li>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="skateboard.php">Skateboarding</a></li>
+                <li><a href="inline.php">In-Line</a></li>
+                <li><a href="bmx.php">BMX</a></li>
                 <li><a href="spots.html">Spots</a></li>
-                <li><a href="event.html">Events</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="event.php">Events</a></li>
+                <li><a href="gallery.php">Gallery</a></li>
                 <li><a href="sponsorship.html">Sponsorship</a></li>
                 <li><a href="contactUs.html">Contact Us</a></li>
             </ul>
@@ -154,18 +163,46 @@
         <div class="footer-section social-section">
             <h3>Connect with us</h3>
             <div class="social-icons">
-                <a href="https://facebook.com"><img src="images/fblogo.png" alt="Facebook"></a>
-                <a href="https://instagram.com"><img src="images/iglogo.png" alt="Instagram"></a>
+                <a href="https://facebook.com"><img src="images/fbwhite.png" alt="Facebook"></a>
+                <a href="https://instagram.com"><img src="images/igwhite.png" alt="Instagram"></a>
             </div>
         </div>
 
         <!-- Supported by Section -->
         <div class="footer-section supported-section">
             <h3>Supported by</h3>
-            <img src="images/vanlogo.png" alt="Sponsor Logo" class="sponsor-logo">
+            <img src="images/vanswhite.png" alt="Sponsor Logo" class="sponsor-logo">
         </div>
     </footer>
 
+    <script>
+        const ads = [
+            {
+                image: 'images/vansads.png',
+                link: 'https://www.vans.com/en-us/shoes-c00081/old-skool-shoe-pvn000d3hy28'
+            },
+            {
+                image: 'images/nikead.webp',
+                link: 'https://www.nike.com/ph/'
+            },
+            {
+                image: 'images/redbullad.png',
+                link: 'https://www.redbull.com/ph-en'
+            }
+        ];
+
+        let currentAd = 0;
+
+        function rotateAd() {
+            const ad = ads[currentAd];
+            document.getElementById('ad-image').src = ad.image;
+            document.getElementById('ad-link').href = ad.link;
+            currentAd = (currentAd + 1) % ads.length;
+        }
+
+        rotateAd(); // Initial
+        setInterval(rotateAd, 3000); // Change every 8 seconds
+    </script>
     <script src="jsScript/index.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -178,6 +215,44 @@
             });
         }
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+
+    elements.forEach(el => {
+        el._fadeTimeout = null; // custom property for tracking timeout
+    });
+
+    function toggleVisibility() {
+        elements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
+
+            if (inView) {
+                clearTimeout(el._fadeTimeout); // cancel any pending hide
+                el.classList.add('visible');
+            } else {
+                // fade out first, then hide after transition
+                el.classList.remove('visible');
+                clearTimeout(el._fadeTimeout);
+                el._fadeTimeout = setTimeout(() => {
+                    el.style.visibility = 'hidden';
+                }, 600); // must match transition duration
+            }
+
+            // Always reset visibility to visible if showing
+            if (inView) {
+                el.style.visibility = 'visible';
+            }
+        });
+    }
+
+    window.addEventListener('scroll', toggleVisibility);
+    window.addEventListener('resize', toggleVisibility);
+    toggleVisibility(); // Run on load
+});
+
+
     </script>
 </body>
 </html>
