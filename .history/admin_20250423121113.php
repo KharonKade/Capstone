@@ -31,50 +31,51 @@ $visit_conn->query("INSERT INTO visit_counter (visited_at) VALUES (NOW())"); // 
 $visit_result = $visit_conn->query("SELECT COUNT(*) as total FROM visit_counter");
 $visit_count = $visit_result->fetch_assoc()['total'];
 
-// Get Monday to Sunday of current week
+// Get Monday and Sunday of current week
 $monday = new DateTime('monday this week');
 $monday->setTime(0, 0, 0);
 $sunday = new DateTime('sunday this week');
 $sunday->setTime(23, 59, 59);
 
+// Format for SQL
 $start_date = $monday->format('Y-m-d H:i:s');
 $end_date = $sunday->format('Y-m-d H:i:s');
 
+// Get all activity from each table within the week range
 $activities = [];
 
-// Collect events
 $result_events = $conn_events->query("SELECT event_name AS title, created_at AS time FROM upcoming_events WHERE status = 'active' AND created_at BETWEEN '$start_date' AND '$end_date'");
 while ($row = $result_events->fetch_assoc()) {
-    $activities[] = ['type' => 'Event', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '✅'];
+    $activities[] = ['type' => 'Event', 'title' => $row['title'], 'time' => $row['time']];
 }
 
-// Collect news
 $result_news = $conn_news->query("SELECT news_title AS title, publish_date AS time FROM news_announcements WHERE status = 'active' AND publish_date BETWEEN '$start_date' AND '$end_date'");
 while ($row = $result_news->fetch_assoc()) {
-    $activities[] = ['type' => 'News', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '📰'];
+    $activities[] = ['type' => 'News', 'title' => $row['title'], 'time' => $row['time']];
 }
 
-// Collect gallery
 $result_gallery = $conn_gallery->query("SELECT title, uploaded_at AS time FROM gallery WHERE uploaded_at BETWEEN '$start_date' AND '$end_date'");
 while ($row = $result_gallery->fetch_assoc()) {
-    $activities[] = ['type' => 'Gallery', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '📸'];
+    $activities[] = ['type' => 'Gallery Upload', 'title' => $row['title'], 'time' => $row['time']];
 }
 
-// Collect inquiries
 $result_inquiry = $conn_contact->query("SELECT full_name AS title, submitted_at AS time FROM contact_inquiries WHERE archived = 0 AND submitted_at BETWEEN '$start_date' AND '$end_date'");
 while ($row = $result_inquiry->fetch_assoc()) {
-    $activities[] = ['type' => 'Inquiry', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '❓'];
+    $activities[] = ['type' => 'Inquiry', 'title' => $row['title'], 'time' => $row['time']];
 }
 
-// Sort all activities by time DESC
-usort($activities, fn($a, $b) => strtotime($b['time']) - strtotime($a['time']));
+// Sort by time DESC
+usort($activities, function($a, $b) {
+    return strtotime($b['time']) - strtotime($a['time']);
+});
 
-// Group by day (Monday–Sunday)
+// Group by date
 $grouped = [];
 foreach ($activities as $activity) {
-    $date = date('l, F j', strtotime($activity['time']));
+    $date = date('l, F j', strtotime($activity['time'])); // e.g., "Monday, April 21"
     $grouped[$date][] = $activity;
 }
+
 ?>
 
 
@@ -149,41 +150,16 @@ foreach ($activities as $activity) {
             <ul>
                 <?php foreach ($grouped as $date => $activities): ?>
                     <li>
+                        <strong><?php echo $date; ?></strong>
                         <ul>
-                            <!-- First 5 activities -->
-                            <?php for ($i = 0; $i < min(5, count($activities)); $i++): ?>
-                                <li>
-                                    <?php
-                                        $a = $activities[$i];
-                                        echo $a['emoji'] . ' ' . $a['type'] . ' "' . htmlspecialchars($a['title']) . '" was added on ' . date("M d, Y", strtotime($a['time']));
-                                    ?>
-                                </li>
-                            <?php endfor; ?>
-
-                            <!-- Extra activities toggle -->
-                            <?php if (count($activities) > 5): ?>
-                                <div class="toggle-container">
-                                    <button onclick="toggleActivities(this)">⬇ Show More</button>
-                                    <ul class="extra-activities" style="display: none;">
-                                        <?php for ($i = 5; $i < count($activities); $i++): ?>
-                                            <li>
-                                                <?php
-                                                    $a = $activities[$i];
-                                                    echo $a['emoji'] . ' ' . $a['type'] . ' "' . htmlspecialchars($a['title']) . '" was added on ' . date("M d, Y", strtotime($a['time']));
-                                                ?>
-                                            </li>
-                                        <?php endfor; ?>
-                                    </ul>
-                                </div>
-                            <?php endif; ?>
+                            <?php foreach ($activities as $activity): ?>
+                                <li><?php echo $activity['type'] . ' "' . $activity['title'] . '"'; ?></li>
+                            <?php endforeach; ?>
                         </ul>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </div>
-
-
-
 
         </main>
     </div>

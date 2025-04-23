@@ -149,23 +149,22 @@ foreach ($activities as $activity) {
             <ul>
                 <?php foreach ($grouped as $date => $activities): ?>
                     <li>
+                        <strong><?php echo $date; ?></strong>
                         <ul>
-                            <!-- First 5 activities -->
-                            <?php for ($i = 0; $i < min(5, count($activities)); $i++): ?>
-                                <li>
-                                    <?php
-                                        $a = $activities[$i];
-                                        echo $a['emoji'] . ' ' . $a['type'] . ' "' . htmlspecialchars($a['title']) . '" was added on ' . date("M d, Y", strtotime($a['time']));
-                                    ?>
-                                </li>
-                            <?php endfor; ?>
+                            <!-- First activity -->
+                            <li>
+                                <?php
+                                    $a = $activities[0];
+                                    echo $a['emoji'] . ' ' . $a['type'] . ' "' . htmlspecialchars($a['title']) . '" was added on ' . date("M d, Y", strtotime($a['time']));
+                                ?>
+                            </li>
 
                             <!-- Extra activities toggle -->
-                            <?php if (count($activities) > 5): ?>
+                            <?php if (count($activities) > 1): ?>
                                 <div class="toggle-container">
                                     <button onclick="toggleActivities(this)">⬇ Show More</button>
                                     <ul class="extra-activities" style="display: none;">
-                                        <?php for ($i = 5; $i < count($activities); $i++): ?>
+                                        <?php for ($i = 1; $i < count($activities); $i++): ?>
                                             <li>
                                                 <?php
                                                     $a = $activities[$i];
@@ -181,7 +180,6 @@ foreach ($activities as $activity) {
                 <?php endforeach; ?>
             </ul>
         </div>
-
 
 
 

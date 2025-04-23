@@ -149,6 +149,7 @@ foreach ($activities as $activity) {
             <ul>
                 <?php foreach ($grouped as $date => $activities): ?>
                     <li>
+                        <strong><?php echo $date; ?></strong>
                         <ul>
                             <!-- First 5 activities -->
                             <?php for ($i = 0; $i < min(5, count($activities)); $i++): ?>

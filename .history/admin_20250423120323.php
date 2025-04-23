@@ -31,50 +31,52 @@ $visit_conn->query("INSERT INTO visit_counter (visited_at) VALUES (NOW())"); // 
 $visit_result = $visit_conn->query("SELECT COUNT(*) as total FROM visit_counter");
 $visit_count = $visit_result->fetch_assoc()['total'];
 
-// Get Monday to Sunday of current week
-$monday = new DateTime('monday this week');
-$monday->setTime(0, 0, 0);
-$sunday = new DateTime('sunday this week');
-$sunday->setTime(23, 59, 59);
 
-$start_date = $monday->format('Y-m-d H:i:s');
-$end_date = $sunday->format('Y-m-d H:i:s');
+// Get current week's Monday and Sunday
+$today = new DateTime();
+$monday = clone $today;
+$monday->modify('this week monday');
+$sunday = clone $monday;
+$sunday->modify('+6 days');
 
-$activities = [];
+$start_of_week = $monday->format('Y-m-d') . " 00:00:00";
+$end_of_week = $sunday->format('Y-m-d') . " 23:59:59";
 
-// Collect events
-$result_events = $conn_events->query("SELECT event_name AS title, created_at AS time FROM upcoming_events WHERE status = 'active' AND created_at BETWEEN '$start_date' AND '$end_date'");
-while ($row = $result_events->fetch_assoc()) {
-    $activities[] = ['type' => 'Event', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '✅'];
-}
+// Most recent events (this week)
+$recent_event = $conn_events->query("
+    SELECT event_name, created_at 
+    FROM upcoming_events 
+    WHERE status = 'active' 
+    AND created_at BETWEEN '$start_of_week' AND '$end_of_week' 
+    ORDER BY created_at DESC
+");
 
-// Collect news
-$result_news = $conn_news->query("SELECT news_title AS title, publish_date AS time FROM news_announcements WHERE status = 'active' AND publish_date BETWEEN '$start_date' AND '$end_date'");
-while ($row = $result_news->fetch_assoc()) {
-    $activities[] = ['type' => 'News', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '📰'];
-}
+// Gallery items this week
+$recent_gallery = $conn_gallery->query("
+    SELECT title, uploaded_at 
+    FROM gallery 
+    WHERE uploaded_at BETWEEN '$start_of_week' AND '$end_of_week' 
+    ORDER BY uploaded_at DESC
+");
 
-// Collect gallery
-$result_gallery = $conn_gallery->query("SELECT title, uploaded_at AS time FROM gallery WHERE uploaded_at BETWEEN '$start_date' AND '$end_date'");
-while ($row = $result_gallery->fetch_assoc()) {
-    $activities[] = ['type' => 'Gallery', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '📸'];
-}
+// News this week
+$recent_news = $conn_news->query("
+    SELECT news_title, publish_date 
+    FROM news_announcements 
+    WHERE status = 'active' 
+    AND publish_date BETWEEN '$start_of_week' AND '$end_of_week' 
+    ORDER BY publish_date DESC
+");
 
-// Collect inquiries
-$result_inquiry = $conn_contact->query("SELECT full_name AS title, submitted_at AS time FROM contact_inquiries WHERE archived = 0 AND submitted_at BETWEEN '$start_date' AND '$end_date'");
-while ($row = $result_inquiry->fetch_assoc()) {
-    $activities[] = ['type' => 'Inquiry', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '❓'];
-}
+// Inquiries this week
+$recent_inquiry = $conn_contact->query("
+    SELECT full_name, submitted_at 
+    FROM contact_inquiries 
+    WHERE archived = 0 
+    AND submitted_at BETWEEN '$start_of_week' AND '$end_of_week' 
+    ORDER BY submitted_at DESC
+");
 
-// Sort all activities by time DESC
-usort($activities, fn($a, $b) => strtotime($b['time']) - strtotime($a['time']));
-
-// Group by day (Monday–Sunday)
-$grouped = [];
-foreach ($activities as $activity) {
-    $date = date('l, F j', strtotime($activity['time']));
-    $grouped[$date][] = $activity;
-}
 ?>
 
 
@@ -145,44 +147,47 @@ foreach ($activities as $activity) {
         </div>
 
         <div class="recent-activity">
-            <h3>Recent Activity (<?= $monday->format('F j') ?> – <?= $sunday->format('F j, Y') ?>)</h3>
-            <ul>
-                <?php foreach ($grouped as $date => $activities): ?>
-                    <li>
-                        <ul>
-                            <!-- First 5 activities -->
-                            <?php for ($i = 0; $i < min(5, count($activities)); $i++): ?>
-                                <li>
-                                    <?php
-                                        $a = $activities[$i];
-                                        echo $a['emoji'] . ' ' . $a['type'] . ' "' . htmlspecialchars($a['title']) . '" was added on ' . date("M d, Y", strtotime($a['time']));
-                                    ?>
-                                </li>
-                            <?php endfor; ?>
+            <h3>Recent Activities (Week of <?= $monday->format('F j') ?> – <?= $sunday->format('F j') ?>)</h3>
+            
+            <!-- EVENTS -->
+            <div class="activity-section">
+                <button class="toggle-btn">🗓️ Events ▼</button>
+                <ul class="activity-list" style="display: none;">
+                    <?php while($event = $recent_event->fetch_assoc()): ?>
+                        <li><strong><?= $event['event_name'] ?></strong> — <?= date("F j, Y", strtotime($event['created_at'])) ?></li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
 
-                            <!-- Extra activities toggle -->
-                            <?php if (count($activities) > 5): ?>
-                                <div class="toggle-container">
-                                    <button onclick="toggleActivities(this)">⬇ Show More</button>
-                                    <ul class="extra-activities" style="display: none;">
-                                        <?php for ($i = 5; $i < count($activities); $i++): ?>
-                                            <li>
-                                                <?php
-                                                    $a = $activities[$i];
-                                                    echo $a['emoji'] . ' ' . $a['type'] . ' "' . htmlspecialchars($a['title']) . '" was added on ' . date("M d, Y", strtotime($a['time']));
-                                                ?>
-                                            </li>
-                                        <?php endfor; ?>
-                                    </ul>
-                                </div>
-                            <?php endif; ?>
-                        </ul>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+            <div class="activity-section">
+                <button class="toggle-btn">🗓️ Events ▼</button>
+                <ul class="activity-list" style="display: none;">
+                    <?php while($event = $recent_event->fetch_assoc()): ?>
+                        <li><strong><?= $event['event_name'] ?></strong> — <?= date("F j, Y", strtotime($event['created_at'])) ?></li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
+
+            <div class="activity-section">
+                <button class="toggle-btn">🗓️ Events ▼</button>
+                <ul class="activity-list" style="display: none;">
+                    <?php while($event = $recent_event->fetch_assoc()): ?>
+                        <li><strong><?= $event['event_name'] ?></strong> — <?= date("F j, Y", strtotime($event['created_at'])) ?></li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
+
+            <div class="activity-section">
+                <button class="toggle-btn">🗓️ Events ▼</button>
+                <ul class="activity-list" style="display: none;">
+                    <?php while($event = $recent_event->fetch_assoc()): ?>
+                        <li><strong><?= $event['event_name'] ?></strong> — <?= date("F j, Y", strtotime($event['created_at'])) ?></li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
+
+            <!-- Repeat similar blocks for Gallery, News, Inquiries -->
         </div>
-
-
 
 
         </main>
@@ -198,6 +203,16 @@ foreach ($activities as $activity) {
                 button.textContent = "⬇ Show More";
             }
         }
+
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const list = button.nextElementSibling;
+            list.style.display = (list.style.display === 'none') ? 'block' : 'none';
+            button.textContent = button.textContent.includes('▼') ? 
+                                 button.textContent.replace('▼', '▲') : 
+                                 button.textContent.replace('▲', '▼');
+        });
+    });
         </script>
 </body>
 </html>
