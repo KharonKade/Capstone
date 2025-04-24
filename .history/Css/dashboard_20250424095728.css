@@ -255,7 +255,9 @@ body {
     padding-bottom: 10px;
 }
 
-
-
-
+.fc-event {
+    color: black !important;
+    text-decoration: none !important;
+    font-weight: bold;
+}
 

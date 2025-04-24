@@ -255,7 +255,13 @@ body {
     padding-bottom: 10px;
 }
 
-
+.fc-daygrid-event {
+    color: black !important;            /* Change event title color to black */
+    text-decoration: none !important;   /* Remove the underline */
+    font-weight: bold;                  /* Optional: make the text bold */
+    background-color: transparent !important; /* Remove any background color */
+    border: none !important;            /* Remove any border */
+}
 
 
 

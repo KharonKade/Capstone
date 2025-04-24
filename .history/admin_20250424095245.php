@@ -191,8 +191,8 @@ foreach ($activities as $activity) {
             </div>
         </div>
         <div class=calendar>
-            <h3>Events Calendar</h3>
-            <div id="calendar"></div>
+        <h3>Events Calendar</h3>
+        <div id="calendar"></div>
         </div>
 
         <div class="recent-activity">

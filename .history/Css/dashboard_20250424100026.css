@@ -255,7 +255,13 @@ body {
     padding-bottom: 10px;
 }
 
-
+.fc-daygrid-event {
+    color: black !important;            /* Text color */
+    background-color: transparent !important; /* Background transparency */
+    border: none !important;            /* No border */
+    text-decoration: none !important;   /* No underline */
+    font-weight: bold;                  /* Optional bold */
+}
 
 
 

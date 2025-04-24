@@ -92,7 +92,6 @@ body {
     padding-bottom: 10px;
 }
 
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .admin-container {
@@ -240,22 +239,9 @@ body {
 
 #calendar {
     max-width: 900px;
-    margin: 20px auto;
-    background: white;
-    padding: 10px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
     border-radius: 8px;
   }
-
-  .calendar h3 {
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    color: #2c3e50;
-    text-align: start;
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 10px;
-}
-
-
-
-
 

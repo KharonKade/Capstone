@@ -25,30 +25,6 @@ $inquiry_count = $inquiry_result->fetch_assoc()['total'];
 $registration_result = $conn_events->query("SELECT COUNT(*) as total FROM event_registrations");
 $registration_count = $registration_result->fetch_assoc()['total'];
 
-// Analyze registrations for predictive analysis
-$day_freq = [];
-$month_freq = [];
-
-$day_query = $conn_events->query("SELECT registration_date FROM event_registrations");
-while ($row = $day_query->fetch_assoc()) {
-    $date = new DateTime($row['registration_date']);
-    $day = $date->format('l');      // Full weekday name
-    $month = $date->format('F');    // Full month name
-
-    // Count frequency
-    $day_freq[$day] = ($day_freq[$day] ?? 0) + 1;
-    $month_freq[$month] = ($month_freq[$month] ?? 0) + 1;
-}
-
-// Sort to get top active days and months
-arsort($day_freq);
-arsort($month_freq);
-
-// Get top 2 days and top 3 months
-$top_days = array_slice(array_keys($day_freq), 0, 2);
-$top_months = array_slice(array_keys($month_freq), 0, 3);
-
-
 // Track visits
 $visit_conn = new mysqli("localhost", "root", "", "basf_visits");
 
@@ -117,10 +93,6 @@ foreach ($activities as $activity) {
     <link rel="stylesheet" href="Css/dashboard.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="fullcalendar-6.1.17/dist/index.global.min.js" rel="stylesheet">
-    <script src="fullcalendar-6.1.17/dist/index.global.js"></script>
-
-
 </head>
 <body>
     <div class="admin-container">
@@ -178,23 +150,6 @@ foreach ($activities as $activity) {
         </div>
         </div>
 
-        <div class="dashboard-cards">
-            <div class="card">
-                <i class="fas fa-calendar-day"></i>
-                <h3>Most Active Days</h3>
-                <p><?php echo implode(' and ', $top_days); ?></p>
-            </div>
-            <div class="card">
-                <i class="fas fa-calendar-alt"></i>
-                <h3>Peak Months</h3>
-                <p><?php echo implode(', ', $top_months); ?></p>
-            </div>
-        </div>
-        <div class=calendar>
-            <h3>Events Calendar</h3>
-            <div id="calendar"></div>
-        </div>
-
         <div class="recent-activity">
             <h3>Recent Activity (<?= $monday->format('F j') ?> – <?= $sunday->format('F j, Y') ?>)</h3>
             <ul>
@@ -245,17 +200,6 @@ foreach ($activities as $activity) {
                 button.textContent = "⬇ Show More";
             }
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const calendarEl = document.getElementById('calendar');
-
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            events: 'calendar_event.php' // this should return JSON
-            });
-
-            calendar.render();
-        });
-    </script>
+        </script>
 </body>
 </html>

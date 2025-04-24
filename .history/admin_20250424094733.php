@@ -190,10 +190,8 @@ foreach ($activities as $activity) {
                 <p><?php echo implode(', ', $top_months); ?></p>
             </div>
         </div>
-        <div class=calendar>
-            <h3>Events Calendar</h3>
-            <div id="calendar"></div>
-        </div>
+
+        <div id="calendar"></div>
 
         <div class="recent-activity">
             <h3>Recent Activity (<?= $monday->format('F j') ?> – <?= $sunday->format('F j, Y') ?>)</h3>

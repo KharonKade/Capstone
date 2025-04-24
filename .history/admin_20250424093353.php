@@ -117,9 +117,8 @@ foreach ($activities as $activity) {
     <link rel="stylesheet" href="Css/dashboard.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="fullcalendar-6.1.17/dist/index.global.min.js" rel="stylesheet">
-    <script src="fullcalendar-6.1.17/dist/index.global.js"></script>
-
+    <link href="fullcalendar/index.global.css" rel="stylesheet">
+    <script src="fullcalendar/index.global.js"></script>
 
 </head>
 <body>
@@ -190,10 +189,8 @@ foreach ($activities as $activity) {
                 <p><?php echo implode(', ', $top_months); ?></p>
             </div>
         </div>
-        <div class=calendar>
-            <h3>Events Calendar</h3>
-            <div id="calendar"></div>
-        </div>
+
+        <div id="calendar"></div>
 
         <div class="recent-activity">
             <h3>Recent Activity (<?= $monday->format('F j') ?> – <?= $sunday->format('F j, Y') ?>)</h3>
