@@ -212,3 +212,66 @@ h2 {
         text-align: center;
     }
 }
+
+/* Ramp Icons */
+.footer-ramp-icons {
+    position: relative;
+    height: 60px;
+    width: 100%;
+    background: transparent;
+    z-index: 2;
+}
+
+.ramp-icon {
+    position: absolute;
+    bottom: 0;
+    width: auto;
+    height: 200px;
+    z-index: 3;
+}
+
+.ramp-icon.left {
+    left: 0;
+}
+
+.ramp-icon.right {
+    right: 0;
+}
+
+.ramp-icon.center {
+    left: 50%;
+    transform: translateX(-50%);
+    height: 50px;
+    width: 200px;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .ramp-icon {
+        width: 60px;
+    }
+
+    .ramp-icon.center {
+        width: 70px; 
+    }
+}
+
+/* Basic animation setup */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    visibility: hidden;
+    transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
