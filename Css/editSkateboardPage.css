@@ -83,7 +83,7 @@ body {
 .content h2 {
     margin-bottom: 20px;
     font-size: 1.8rem;
-    color: #2c3e50;
+    color: #1e293b;
     text-align: center;
     border-bottom: 2px solid #ecf0f1;
     padding-bottom: 10px;
@@ -204,7 +204,7 @@ th, td {
 }
 
 th {
-    background: #2c3e50;
+    background: #1e293b;
     color: #ecf0f1;
 }
 
