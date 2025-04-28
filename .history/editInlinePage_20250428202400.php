@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Event</title>
-    <link rel="stylesheet" href="Css/editBmxPage.css">
+    <link rel="stylesheet" href="Css/editInlinePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
@@ -36,16 +36,16 @@
                 $servername = "localhost";
                 $username = "root";
                 $password = "";
-                $dbname_content = "basf_content_bmx";
+                $dbname_content = "basf_content";
 
-                $conn_content = new mysqli($servername, $username, $password, "basf_content_bmx");
+                $conn_content = new mysqli($servername, $username, $password, "basf_content");
 
                 if ($conn_content->connect_error) {
                     die("Connection failed: " . $conn_content->connect_error);
                 }
-                include 'handle_athletes_bmx.php';
+                include 'handle_athletes.php';
             ?>
-            <h2>Manage BMX Page</h2>
+            <h2>Manage Inline Page</h2>
             <section>
                 <label>About Us:</label>
                 <?php
@@ -120,7 +120,7 @@
                             // Edit form in a separate row
                             echo "<tr id='editRow{$row['id']}' style='display:none;'>";
                             echo "<td colspan='4'>
-                                    <form method='post' action='handle_highlight_bmx.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
+                                    <form method='post' action='handle_highlight.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
                                         <input type='hidden' name='id' value='{$row['id']}'>
                                         <h3>Edit Video File:</h3>
                                         <input type='file' name='video'>
@@ -276,7 +276,7 @@
                             <i class='fa fa-trash'></i> Delete
                         </button>"; // Added delete button
                     echo "</div>";
-                    echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes_bmx.php' enctype='multipart/form-data'>";
+                    echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes.php' enctype='multipart/form-data'>";
                     echo "<input type='hidden' name='edit_id' value='{$row['id']}'>";
                     echo "<input type='hidden' name='page' value='$page'>";
                     echo "<input type='text' name='name' value='{$row['name']}' required>";
@@ -345,7 +345,6 @@
                         </button>";
                     echo "</div>";
                     echo "</form></div>";
-
                 }
                 ?>
                 <div class="pagination">
@@ -437,23 +436,14 @@
                 </table>
             </section>
 
-
-
-
             <section>
                 <label>Partners & Sponsors:</label>
-                <button onclick="toggleForm('addPartnerForm')">
-                    <i class="fa fa-handshake"></i> Add Partner
-                </button>
+                <button onclick="toggleForm('addPartnerForm')">Add Partner</button>
 
-                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships_bmx.php" enctype="multipart/form-data">
+                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships.php" enctype="multipart/form-data">
                     <input type="file" name="logo" required>
-                    <button type="submit" style="padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
-                        <i class="fa fa-plus"></i> Add
-                    </button>
-                    <button type="button" onclick="hideForm('addPartnerForm')" style="padding: 10px; background-color: #f44336; color: white; border-radius: 5px;">
-                        <i class="fa fa-times"></i> Cancel
-                    </button>
+                    <button type="submit">Add</button>
+                    <button type="button" onclick="hideForm('addPartnerForm')">Cancel</button>
                 </form>
 
                 <table border="1">
@@ -472,12 +462,9 @@
                                 echo '<tr>';
                                 echo '<td>' . htmlspecialchars($logoFileName) . '</td>';
                                 echo '<td>
-                                        <form method="POST" action="handle_partnerships_bmx.php" style="margin: 0;">
+                                        <form method="POST" action="handle_partnerships.php">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete" style="display: none;"></button>
-                                            <a href="javascript:void(0);" onclick="this.closest(\'form\').querySelector(\'button[type=submit]\').click();" title="Remove">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
+                                            <button type="submit" name="delete">Remove</button>
                                         </form>
                                     </td>';
                                 echo '</tr>';
@@ -564,7 +551,7 @@
                 newAchievement.innerHTML = `
                     <input type="text" name="achievements[]" placeholder="Achievement Title" required>
                     <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                    <button type="button" onclick="this.parentNode.remove()" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>Remove</button>
+                    <button type="button" onclick="this.parentNode.remove()">Remove</button>
                 `;
                 container.appendChild(newAchievement);
             }
@@ -573,11 +560,11 @@
                 const container = document.getElementById('gallery-container');
                 if (!container) return;
                 const newGalleryItem = document.createElement('div');
-                newGalleryItem.classList.add('new-gallery-item');
+                newGalleryItem.classList.add('gallery-item');
                 newGalleryItem.innerHTML = `
                     <input type="file" name="athlete_gallery[]" accept="image/*" required>
                     <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
-                    <button type="button" onclick="this.parentNode.remove()" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>Remove</button>
+                    <button type="button" onclick="this.parentNode.remove()">Remove</button>
                 `;
                 container.appendChild(newGalleryItem);
             }
@@ -639,13 +626,13 @@
                     }
                     let uniqueId = `new-achievement-${Date.now()}`;
                     let newAchievement = document.createElement("div");
-                    newAchievement.classList.add("achievement",);
+                    newAchievement.classList.add("achievement");
                     newAchievement.id = uniqueId;
                     newAchievement.innerHTML = `
                         <input type="hidden" name="achievement_ids[]" value="new">
                         <input type="text" name="achievements[]" placeholder="Title" required>
                         <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                        <button type="button" onclick="removeAchievement('${uniqueId}')" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>Remove</button>
+                        <button type="button" onclick="removeAchievement('${uniqueId}')">Remove</button>
                     `;
                     container.appendChild(newAchievement);
                 };
@@ -660,13 +647,13 @@
                     }
                     let uniqueId = `new-gallery-${Date.now()}`;
                     let newImageDiv = document.createElement("div");
-                    newImageDiv.classList.add("gallery-item", "edit-gallery-item");
+                    newImageDiv.classList.add("gallery-item");
                     newImageDiv.id = uniqueId;
                     newImageDiv.innerHTML = `
                         <input type="hidden" name="gallery_existing_ids[]" value="new">
                         <input type="file" name="athlete_gallery[]" accept="image/*" required>
                         <textarea name="gallery_descriptions[]" placeholder="Image Description" required></textarea>
-                        <button type="button" onclick="removeGalleryImage('${uniqueId}', '${containerId}')" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>Remove</button>
+                        <button type="button" onclick="removeGalleryImage('${uniqueId}', '${containerId}')">Remove</button>
                     `;
                     container.appendChild(newImageDiv);
                 };

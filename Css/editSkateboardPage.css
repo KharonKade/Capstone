@@ -197,6 +197,18 @@ table {
     margin-top: 20px;
 }
 
+table td a {
+    margin: 0 5px;
+    color: #333;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+    text-decoration: none; /* Remove underline */
+}
+
+table td a:hover {
+    color: #ff4500; /* hover color */
+}
+
 th, td {
     border: 1px solid #ddd;
     padding: 10px;
