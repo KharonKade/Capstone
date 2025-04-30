@@ -247,6 +247,8 @@ if ($event_id > 0) {
             </form>
         </div>
     </div>
+
+    <!-- Token Display Modal -->
     <!-- Token Display Modal -->
     <div id="tokenSuccessModal" class="registration-modal" style="display:none;" onclick="closeTokenSuccessModal(event)">
         <div class="modal-content" onclick="event.stopPropagation();">
@@ -438,97 +440,48 @@ function closeTokenModal(event) {
     });
 </script>
 <script>
-    document.getElementById("registrationForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent normal form submission
+document.getElementById("registrationForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // prevent normal form submission
 
-        const form = event.target;
-        const formData = new FormData(form);
+    const form = event.target;
+    const formData = new FormData(form);
 
-        fetch("submit_registration.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(async response => {
-            const text = await response.text(); // Get raw response text
-            console.log("Raw response:", text); // Log it for debugging
-
-            try {
-                const data = JSON.parse(text); // Try to parse it
-                console.log("Parsed response:", data); // Log the parsed response to check its structure
-                if (data.success) {
-                    showTokenSuccessModal(data.token);
-                    closeRegistrationModal(); // Close registration modal after success
-                } else {
-                    // If the registration failed, show the token modal with a failure message instead of an alert
-                    showTokenFailureModal(data.message || "Registration failed.");
-                }
-            } catch (e) {
-                console.error("JSON parse error:", e, "Original response:", text);
-                showTokenFailureModal("Something went wrong. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Fetch error:", error);
-            showTokenFailureModal("Something went wrong. Please try again.");
-        });
+    fetch("submit_registration.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showTokenSuccessModal(data.token);
+            closeRegistrationModal();
+        } else {
+            alert(data.message || "Registration failed.");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
     });
+});
 
+function showTokenSuccessModal(token) {
+    document.getElementById('generatedTokenText').textContent = token;
+    document.getElementById('tokenSuccessModal').style.display = 'block';
+}
 
-    // Show the token success modal and set the token
-    function showTokenSuccessModal(token) {
-        document.getElementById('generatedTokenText').textContent = token;
-        document.getElementById('tokenSuccessModal').style.display = 'block';
-    }
+function closeTokenSuccessModal() {
+    document.getElementById('tokenSuccessModal').style.display = 'none';
+}
 
-    // Close the token success modal
-    function closeTokenSuccessModal() {
-        document.getElementById('tokenSuccessModal').style.display = 'none';
-    }
-
-    // Copy the generated token to clipboard
-    function copyGeneratedToken() {
-        const token = document.getElementById('generatedTokenText').textContent;
-        navigator.clipboard.writeText(token).then(() => {
-            alert("Token copied to clipboard!");
-        }).catch(() => {
-            alert("Failed to copy token.");
-        });
-    }
-
-    // Registration modal functionality
-    document.addEventListener("DOMContentLoaded", function() {
-        const registerBtn = document.getElementById('registerBtn');
-        const registrationModal = document.getElementById('registrationModal');
-        const closeModalBtn = document.querySelector('.close');
-
-        if (registerBtn) {
-            registerBtn.onclick = function() {
-                registrationModal.style.display = 'block';
-            };
-        }
-
-        if (closeModalBtn) {    
-            closeModalBtn.onclick = function() {
-                registrationModal.style.display = 'none';
-            };
-        }
-
-        // If the user clicks anywhere outside the modal, close it
-        window.onclick = function(event) {
-            if (event.target === registrationModal) {
-                registrationModal.style.display = 'none';
-            }
-        };
+function copyGeneratedToken() {
+    const token = document.getElementById('generatedTokenText').textContent;
+    navigator.clipboard.writeText(token).then(() => {
+        alert("Token copied to clipboard!");
+    }).catch(() => {
+        alert("Failed to copy token.");
     });
-
-    // Modal close on clicking outside the modal content
-    function closeTokenModal(event) {
-        // Check if the click was outside the modal content (on the overlay)
-        if (event.target === document.getElementById('tokenModal')) {
-            document.getElementById('tokenModal').style.display = 'none';
-        }
-    }
-
+}
 </script>
 </body>
 </html>

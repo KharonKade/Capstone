@@ -1,7 +1,12 @@
 <?php
+// Set strict headers and error logging
 header('Content-Type: application/json');
-ob_start(); // Prevent accidental output
+ini_set('display_errors', 0); // Don't display errors
+ini_set('log_errors', 1);     // Log errors to PHP error log
+error_reporting(E_ALL);
+ob_clean(); // Clear any accidental output before headers
 
+// Your DB connection, reCAPTCHA, and logic here...
 
 // Establish a connection to the database
 $servername = "localhost";
@@ -70,15 +75,12 @@ if ($conn->query($registration_sql) === TRUE) {
         "success" => true,
         "token" => $token
     ]);
-    exit; // <- THIS is crucial
 } else {
     echo json_encode([
         "success" => false,
         "message" => "Database error: " . $conn->error
     ]);
-    exit; // <- ALSO needed here
 }
-ob_end_clean();
 $conn->close();
 
 ?>

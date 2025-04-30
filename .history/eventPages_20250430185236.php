@@ -454,25 +454,23 @@ function closeTokenModal(event) {
 
             try {
                 const data = JSON.parse(text); // Try to parse it
-                console.log("Parsed response:", data); // Log the parsed response to check its structure
                 if (data.success) {
+                    // Show token modal on success
                     showTokenSuccessModal(data.token);
                     closeRegistrationModal(); // Close registration modal after success
                 } else {
-                    // If the registration failed, show the token modal with a failure message instead of an alert
-                    showTokenFailureModal(data.message || "Registration failed.");
+                    alert(data.message || "Registration failed.");
                 }
             } catch (e) {
                 console.error("JSON parse error:", e, "Original response:", text);
-                showTokenFailureModal("Something went wrong. Please try again.");
+                alert("Something went wrong. Please try again.");
             }
         })
         .catch(error => {
             console.error("Fetch error:", error);
-            showTokenFailureModal("Something went wrong. Please try again.");
+            alert("Something went wrong. Please try again.");
         });
     });
-
 
     // Show the token success modal and set the token
     function showTokenSuccessModal(token) {

@@ -70,15 +70,12 @@ if ($conn->query($registration_sql) === TRUE) {
         "success" => true,
         "token" => $token
     ]);
-    exit; // <- THIS is crucial
 } else {
     echo json_encode([
         "success" => false,
         "message" => "Database error: " . $conn->error
     ]);
-    exit; // <- ALSO needed here
 }
-ob_end_clean();
 $conn->close();
 
 ?>

@@ -78,7 +78,7 @@ if ($conn->query($registration_sql) === TRUE) {
     ]);
     exit; // <- ALSO needed here
 }
-ob_end_clean();
+
 $conn->close();
 
 ?>

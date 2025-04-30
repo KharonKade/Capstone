@@ -1,8 +1,4 @@
 <?php
-header('Content-Type: application/json');
-ob_start(); // Prevent accidental output
-
-
 // Establish a connection to the database
 $servername = "localhost";
 $username = "root";
@@ -21,15 +17,11 @@ $recaptcha_secret = '6LezuAorAAAAADinMO5ygVph7jNNtovpEL2t42Tj';
 $recaptcha_response = $_POST['g-recaptcha-response'];
 
 $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret}&response={$recaptcha_response}");
+$response_data = json_decode($verify);
 
-    if ($verify === false) {
-        echo json_encode([
-            "success" => false,
-            "message" => "Unable to verify reCAPTCHA. Please try again later."
-        ]);
-        exit;
-    }
-    
+if (!$response_data->success) {
+    die("reCAPTCHA verification failed. Please go back and try again.");
+}
 
 // Get form data
 $name = $_POST['name'] ?? '';
@@ -42,11 +34,7 @@ $event_id = $_POST['event_id'] ?? 0;
 
 // Validate required fields
 if (empty($name) || empty($email) || empty($phone) || empty($age) || empty($gender) || empty($category) || empty($event_id)) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Please fill all the required fields."
-    ]);
-    exit;
+    die("Error: Please fill all the required fields.");
 }
 
 function generateToken($length = 6) {
@@ -66,19 +54,13 @@ $registration_sql = "INSERT INTO event_registrations (event_id, name, email, pho
                      VALUES ('$event_id', '$name', '$email', '$phone', '$age', '$gender', '$category', '$token')";
 
 if ($conn->query($registration_sql) === TRUE) {
-    echo json_encode([
-        "success" => true,
-        "token" => $token
-    ]);
-    exit; // <- THIS is crucial
+    echo "<script type='text/javascript'>
+            alert('Registration successful! Your token is: $token');
+            window.location.href = 'eventPages.php?id=' + $event_id;
+          </script>";
 } else {
-    echo json_encode([
-        "success" => false,
-        "message" => "Database error: " . $conn->error
-    ]);
-    exit; // <- ALSO needed here
+    echo "Error: " . $conn->error;
 }
-ob_end_clean();
-$conn->close();
 
+$conn->close();
 ?>
