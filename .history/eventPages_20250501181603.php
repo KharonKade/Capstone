@@ -203,16 +203,13 @@ if ($event_id > 0) {
                 <p><strong>Description:</strong> <?php echo isset($event['description']) ? $event['description'] : 'Not available'; ?></p>
                 <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
 
-                <?php if ($event['registration'] == 1): ?>
-                    <?php if ($registration_limit == 0 || $registration_count < $registration_limit): ?>
-                        <button id="registerBtn" class="register-btn">Register</button>
-                    <?php endif; ?>
-
-                    <br><br>
+                <?php if ($event['registration'] == 1 && ($registration_limit == 0 || $registration_count < $registration_limit)): ?>
+                    <button id="registerBtn" class="register-btn">Register</button>
+                <?php endif; ?>
+                    <br></br>
                     <a href="#" onclick="showTokenModal()">Already Registered? Click Here!</a>
-                    <br><br>
-
-                    <?php if ($registration_limit > 0 && $registration_count >= $registration_limit): ?>
+                    <br></br>
+                    <?php if ($event['registration'] == 1 && $registration_limit > 0 && $registration_count >= $registration_limit): ?>
                         <div class="event-popularity">
                             <span class="popularity-badge" style="background-color: <?php echo $popularity_color; ?>;">
                                 <strong>Registration Closed - Event is Full</strong>
@@ -232,8 +229,6 @@ if ($event_id > 0) {
                                 </strong>
                             </span>
                         </div>
-                    <?php endif; ?>
-
                     <?php endif; ?>
             </div>
 

@@ -33,7 +33,7 @@ if ($event_id > 0) {
     }
 
     // Fetch the registration count and registration limit for the event
-    $event_sql = "SELECT registration_limit FROM upcoming_events WHERE id = $event_id";
+    $event_sql = "SELECT registration_limit FROM events WHERE event_id = $event_id";
     $event_result = $conn->query($event_sql);
     $event_data = $event_result->fetch_assoc();
 
@@ -61,11 +61,11 @@ if ($event_id > 0) {
 
         if ($registration_count >= 0.75 * $registration_limit) {
             $popularity_status = 'Filling Fast';
-            $popularity_color = '#f39c12';
+            $popularity_color = 'yellow';
         }
         if ($registration_count >= $registration_limit) {
             $popularity_status = 'Almost Full';
-            $popularity_color = '#c0392b';
+            $popularity_color = 'red';
         }
     } else {
         // If no registration_limit is set, just show the number of registered participants
@@ -204,37 +204,24 @@ if ($event_id > 0) {
                 <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
 
                 <?php if ($event['registration'] == 1): ?>
-                    <?php if ($registration_limit == 0 || $registration_count < $registration_limit): ?>
-                        <button id="registerBtn" class="register-btn">Register</button>
-                    <?php endif; ?>
-
-                    <br><br>
+                    <button id="registerBtn" class="register-btn">Register</button>
+                    <br></br>
                     <a href="#" onclick="showTokenModal()">Already Registered? Click Here!</a>
-                    <br><br>
-
-                    <?php if ($registration_limit > 0 && $registration_count >= $registration_limit): ?>
-                        <div class="event-popularity">
-                            <span class="popularity-badge" style="background-color: <?php echo $popularity_color; ?>;">
-                                <strong>Registration Closed - Event is Full</strong>
-                            </span>
-                        </div>
-                    <?php else: ?>
-                        <div class="event-popularity">
-                            <span class="popularity-badge" style="background-color: <?php echo $popularity_color; ?>;">
-                                <strong>
-                                    <?php
-                                        if ($registration_limit > 0) {
-                                            echo "$popularity_status - $slots_left Slots Left";
-                                        } else {
-                                            echo "$popularity_status - $registration_count Participants Registered";
-                                        }
-                                    ?>
-                                </strong>
-                            </span>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php endif; ?>
+                    <br></br>
+                    <div class="event-popularity">
+                        <span class="popularity-badge" style="background-color: #4CAF50;">
+                            <strong>
+                                <?php
+                                    if ($registration_limit > 0) {
+                                        echo "$popularity_status - $slots_left Slots Left";
+                                    } else {
+                                        echo "$popularity_status - $registration_count Participants Registered";
+                                    }
+                                ?>
+                            </strong>
+                        </span>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <h2>Partners & Sponsors</h2>
