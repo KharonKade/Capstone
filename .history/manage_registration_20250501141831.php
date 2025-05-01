@@ -11,33 +11,30 @@ if ($conn->connect_error) {
 
 $token = $_POST['token'] ?? null;
 $registration_id = $_GET['id'] ?? null;
+$event_id = $_GET['event_id'] ?? null;
 
+$registration = null;
 
-if ($token) {
-    // Search using token
-    $registration_sql = "SELECT * FROM event_registrations WHERE token = ?";
+if ($token && $event_id) {
+    // Ensure the token matches a registration from the specified event
+    $registration_sql = "SELECT * FROM event_registrations WHERE token = ? AND event_id = ?";
     $stmt = $conn->prepare($registration_sql);
-    $stmt->bind_param("s", $token);
+    $stmt->bind_param("si", $token, $event_id);
     $stmt->execute();
     $registration_result = $stmt->get_result();
     $registration = $registration_result->fetch_assoc();
 } elseif ($registration_id) {
-    // Search using ID
+    // Admin or direct access via ID
     $registration_sql = "SELECT * FROM event_registrations WHERE id = ?";
     $stmt = $conn->prepare($registration_sql);
     $stmt->bind_param("i", $registration_id);
     $stmt->execute();
     $registration_result = $stmt->get_result();
     $registration = $registration_result->fetch_assoc();
-} else {
-    $registration = null;
+    if ($registration) {
+        $event_id = $registration['event_id']; // Assign event ID for the back button
+    }
 }
-
-// Fetch event_id if registration is found
-if ($registration) {
-    $event_id = $registration['event_id'];
-}
-
 
 $conn->close();
 ?>

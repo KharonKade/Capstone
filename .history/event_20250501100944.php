@@ -92,7 +92,7 @@
                 event_registrations r
             WHERE 
                 r.event_id = " . $row['id'] . "
-                AND r.registration_time > NOW() - INTERVAL 7 DAY
+                AND r.registration_time > NOW() - INTERVAL 1 DAY
             ";
             $trend_result = $conn->query($trend_sql);
             $trend_row = $trend_result->fetch_assoc();
@@ -108,9 +108,6 @@
                     <a href="eventPages.php?id=' . $row['id'] . '">
                         <div class="flip-card">
                             <div class="flip-card-inner">
-                                <!-- Trending Now Tag -->
-                                ' . ($is_trending ? '<span class="trending-tag">Trending Now</span>' : '') . '
-
                                 <div class="flip-card-front">
                                     <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
                                 </div>
@@ -118,11 +115,15 @@
                                     <div class="back-content">
                                         <p>' . $row["event_name"] . '</p>
                                         <p>Category: ' . $row["category"] . '</p>';
-
+            
                                         // Convert the event_date to a more readable format
                                         $event_date = new DateTime($row["event_date"]);
                                         $formatted_date = $event_date->format('l, F j, Y'); // E.g., "Monday, May 1, 2025"
                                         echo '<p>Date: ' . $formatted_date . '</p>';
+            
+                                        if ($is_trending) {
+                                            echo '<span class="trending-tag">Trending Now</span>';
+                                        }
             
                                         echo '<br>
                                         <p>Click for more...</p>

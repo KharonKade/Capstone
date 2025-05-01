@@ -664,6 +664,8 @@ function closeTokenModal(event) {
             alert('Something went wrong. Please try again.');
         });
     });
+
+    
 </script>
 </body>
 </html>

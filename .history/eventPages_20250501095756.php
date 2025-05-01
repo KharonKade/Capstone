@@ -163,6 +163,7 @@ if ($event_id > 0) {
         <div class="right-section animate-on-scroll">
             <div class="event-details">
                 <strong>Dates & Times:</strong>
+                <ul>
                     <?php
                     // Display event schedules
                     if (!empty($schedules)) {
@@ -185,6 +186,7 @@ if ($event_id > 0) {
                         echo "<li>No schedule available for this event.</li>";
                     }
                     ?>
+                </ul>
                 <p><strong>Description:</strong> <?php echo isset($event['description']) ? $event['description'] : 'Not available'; ?></p>
                 <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
 
@@ -478,16 +480,16 @@ function closeTokenModal(event) {
         })
         .then(async response => {
             const text = await response.text(); // Get raw response text
-            console.log("Raw response:", text); // Log raw response
+            console.log("Raw response:", text); // Log it for debugging
 
             try {
-                const data = JSON.parse(text); // Try to parse the response
-                console.log("Parsed response:", data); // Log parsed response
-
+                const data = JSON.parse(text); // Try to parse it
+                console.log("Parsed response:", data); // Log the parsed response to check its structure
                 if (data.success) {
-                    showTokenSuccessModal(data.token);  // Show the token modal
-                    closeRegistrationModal();  // Close registration modal
+                    showTokenSuccessModal(data.token);
+                    closeRegistrationModal(); // Close registration modal after success
                 } else {
+                    // If the registration failed, show the token modal with a failure message instead of an alert
                     showTokenFailureModal(data.message || "Registration failed.");
                 }
             } catch (e) {
@@ -503,13 +505,15 @@ function closeTokenModal(event) {
 
 
     // Show the token success modal and set the token
-    // Show the token success modal and set the token
     function showTokenSuccessModal(token) {
-        // Set the token in the modal
         document.getElementById('generatedTokenText').textContent = token;
-
-        // Show the success modal
         document.getElementById('tokenSuccessModal').style.display = 'block';
+    }
+
+    // Close the token success modal
+    function closeTokenSuccessModal() {
+        // Close the token modal
+        document.getElementById('tokenSuccessModal').style.display = 'none';
 
         // Close the registration modal
         document.getElementById('registrationModal').style.display = 'none';
@@ -518,54 +522,18 @@ function closeTokenModal(event) {
         const form = document.getElementById('registrationForm');
         if (form) {
             form.reset();
-            form.querySelector('[name="event_id"]').value = ''; // Optional
+
+            // Optional: Reset hidden event_id if you're dynamically setting it
+            form.querySelector('[name="event_id"]').value = '';
         }
 
-        // Reset reCAPTCHA if available
+        // Optional: Hide any flash message
+        document.getElementById('flashMessage').style.display = 'none';
+
         if (typeof grecaptcha !== "undefined") {
             grecaptcha.reset();
         }
-
-        // Clear flash message if any
-        const flash = document.getElementById('flashMessage');
-        if (flash) flash.style.display = 'none';
     }
-
-    // Close the token success modal and ensure everything resets
-    function closeTokenSuccessModal() {
-        // Hide the success modal
-        document.getElementById('tokenSuccessModal').style.display = 'none';
-
-        // Also make sure the registration modal is hidden
-        document.getElementById('registrationModal').style.display = 'none';
-
-        // Reset both forms if needed
-        const registrationForm = document.getElementById('registrationForm');
-        if (registrationForm) {
-            registrationForm.reset();
-            registrationForm.querySelector('[name="event_id"]').value = ''; // Optional
-        }
-
-        const tokenForm = document.getElementById('tokenForm');
-        if (tokenForm) {
-            tokenForm.reset();
-        }
-
-        const forgotForm = document.getElementById('retrieveTokenForm');
-        if (forgotForm) {
-            forgotForm.reset();
-        }
-
-        // Reset reCAPTCHA if available
-        if (typeof grecaptcha !== "undefined") {
-            grecaptcha.reset();
-        }
-
-        // Hide flash messages if present
-        const flash = document.getElementById('flashMessage');
-        if (flash) flash.style.display = 'none';
-    }
-
 
 
     // Copy the generated token to clipboard
@@ -617,6 +585,10 @@ function closeTokenModal(event) {
         }
     }
 
+    function showTokenSuccessModal(token) {
+        document.getElementById('retrievedToken').textContent = token;
+        document.getElementById('tokenSuccessModal').style.display = 'block';
+    }
 
     function closeTokenSuccessModal() {
         document.getElementById('tokenSuccessModal').style.display = 'none';
@@ -664,6 +636,8 @@ function closeTokenModal(event) {
             alert('Something went wrong. Please try again.');
         });
     });
+
+    
 </script>
 </body>
 </html>

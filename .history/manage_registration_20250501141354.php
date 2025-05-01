@@ -12,7 +12,6 @@ if ($conn->connect_error) {
 $token = $_POST['token'] ?? null;
 $registration_id = $_GET['id'] ?? null;
 
-
 if ($token) {
     // Search using token
     $registration_sql = "SELECT * FROM event_registrations WHERE token = ?";

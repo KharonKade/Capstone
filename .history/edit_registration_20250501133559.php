@@ -6,7 +6,7 @@ if ($conn->connect_error) {
 }
 
 // Get registration ID from URL
-$registration_id = $_GET['id'] ?? null;
+$registration_id = $_POST['id'] ?? $_GET['id'] ?? null;
 
 if (!$registration_id) {
     die("Invalid registration ID.");
@@ -43,10 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bind_param("ssssssi", $name, $email, $phone, $age, $gender, $category, $registration_id);
 
         if ($stmt->execute()) {
+            $event_id = $_POST['event_id'] ?? $registration['event_id'];
             echo "<script>
                     alert('Registration updated successfully!');
-                    window.location.href = 'manage_registration.php?id=" . $registration_id . "';
-                  </script>";
+                    window.location.href = 'manage_registration.php?id=" . $event_id . "';
+                </script>";
         } else {
             echo "Error updating record: " . $conn->error;
         }
@@ -68,6 +69,9 @@ $conn->close();
     <form method="post">
         <h2>Edit Registration</h2>
         <label>Name:</label>
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($registration_id); ?>">
+        <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($registration['event_id']); ?>">
+
         <input type="text" name="name" value="<?php echo htmlspecialchars($registration['name']); ?>" required><br>
 
         <label>Email:</label>

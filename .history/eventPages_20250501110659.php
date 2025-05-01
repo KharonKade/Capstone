@@ -32,8 +32,15 @@ if ($event_id > 0) {
         exit;
     }
 
+   // Fetch the registration count and registration limit for the event
+    $event_sql = "SELECT registration_limit FROM upcoming_events WHERE event_id = $event_id";
+    $event_result = $conn->query($event_sql);
+    $event_data = $event_result->fetch_assoc();
+
+    $registration_limit = $event_data['registration_limit'];
+
     // Fetch the registration count for the event
-    $registration_count_sql = "SELECT COUNT(*) AS total FROM event_registrations WHERE event_id = $event_id";
+    $registration_count_sql = "SELECT COUNT(*) AS total FROM event_registrations WHERE id = $event_id";
     $registration_count_result = $conn->query($registration_count_sql);
 
     if ($registration_count_result && $registration_count_result->num_rows > 0) {
@@ -44,19 +51,27 @@ if ($event_id > 0) {
     }
 
     // Determine the event's popularity
-    $max_capacity = 100; // Define a max capacity for the event (you can adjust this number)
     $popularity_status = 'Available';
     $popularity_color = 'green';
+    $slots_left = 0;
 
-    if ($registration_count >= 0.75 * $max_capacity) {
-        $popularity_status = 'Filling Fast';
-        $popularity_color = 'yellow';
-    } 
-    if ($registration_count >= $max_capacity) {
-        $popularity_status = 'Almost Full';
-        $popularity_color = 'red';
+    if ($registration_limit > 0) {
+        // If registration_limit is set, calculate slots left
+        $slots_left = $registration_limit - $registration_count;
+
+        if ($registration_count >= 0.75 * $registration_limit) {
+            $popularity_status = 'Filling Fast';
+            $popularity_color = 'yellow';
+        }
+        if ($registration_count >= $registration_limit) {
+            $popularity_status = 'Almost Full';
+            $popularity_color = 'red';
+        }
+    } else {
+        // If no registration_limit is set, just show the number of registered participants
+        $popularity_status = 'Available';
+        $popularity_color = 'green';
     }
-
 
     // Fetch event schedules based on the event ID
     $schedule_sql = "SELECT event_date, start_time, end_time FROM event_schedules WHERE event_id = $event_id";
@@ -194,7 +209,17 @@ if ($event_id > 0) {
                     <a href="#" onclick="showTokenModal()">Already Registered? Click Here!</a>
                     <br></br>
                     <div class="event-popularity">
-                        <span class="popularity-badge" style="background-color: #4CAF50;"><strong><?php echo $popularity_status; ?> - <?php echo $registration_count; ?> Participants Registered</strong></span>
+                        <span class="popularity-badge" style="background-color: #4CAF50;">
+                            <strong>
+                                <?php
+                                    if ($registration_limit > 0) {
+                                        echo "$popularity_status - $slots_left Slots Left";
+                                    } else {
+                                        echo "$popularity_status - $registration_count Participants Registered";
+                                    }
+                                ?>
+                            </strong>
+                        </span>
                     </div>
                 <?php endif; ?>
             </div>
@@ -478,16 +503,16 @@ function closeTokenModal(event) {
         })
         .then(async response => {
             const text = await response.text(); // Get raw response text
-            console.log("Raw response:", text); // Log raw response
+            console.log("Raw response:", text); // Log it for debugging
 
             try {
-                const data = JSON.parse(text); // Try to parse the response
-                console.log("Parsed response:", data); // Log parsed response
-
+                const data = JSON.parse(text); // Try to parse it
+                console.log("Parsed response:", data); // Log the parsed response to check its structure
                 if (data.success) {
-                    showTokenSuccessModal(data.token);  // Show the token modal
-                    closeRegistrationModal();  // Close registration modal
+                    showTokenSuccessModal(data.token);
+                    closeRegistrationModal(); // Close registration modal after success
                 } else {
+                    // If the registration failed, show the token modal with a failure message instead of an alert
                     showTokenFailureModal(data.message || "Registration failed.");
                 }
             } catch (e) {
@@ -503,13 +528,15 @@ function closeTokenModal(event) {
 
 
     // Show the token success modal and set the token
-    // Show the token success modal and set the token
     function showTokenSuccessModal(token) {
-        // Set the token in the modal
         document.getElementById('generatedTokenText').textContent = token;
-
-        // Show the success modal
         document.getElementById('tokenSuccessModal').style.display = 'block';
+    }
+
+    // Close the token success modal
+    function closeTokenSuccessModal() {
+        // Close the token modal
+        document.getElementById('tokenSuccessModal').style.display = 'none';
 
         // Close the registration modal
         document.getElementById('registrationModal').style.display = 'none';
@@ -518,54 +545,18 @@ function closeTokenModal(event) {
         const form = document.getElementById('registrationForm');
         if (form) {
             form.reset();
-            form.querySelector('[name="event_id"]').value = ''; // Optional
+
+            // Optional: Reset hidden event_id if you're dynamically setting it
+            form.querySelector('[name="event_id"]').value = '';
         }
 
-        // Reset reCAPTCHA if available
+        // Optional: Hide any flash message
+        document.getElementById('flashMessage').style.display = 'none';
+
         if (typeof grecaptcha !== "undefined") {
             grecaptcha.reset();
         }
-
-        // Clear flash message if any
-        const flash = document.getElementById('flashMessage');
-        if (flash) flash.style.display = 'none';
     }
-
-    // Close the token success modal and ensure everything resets
-    function closeTokenSuccessModal() {
-        // Hide the success modal
-        document.getElementById('tokenSuccessModal').style.display = 'none';
-
-        // Also make sure the registration modal is hidden
-        document.getElementById('registrationModal').style.display = 'none';
-
-        // Reset both forms if needed
-        const registrationForm = document.getElementById('registrationForm');
-        if (registrationForm) {
-            registrationForm.reset();
-            registrationForm.querySelector('[name="event_id"]').value = ''; // Optional
-        }
-
-        const tokenForm = document.getElementById('tokenForm');
-        if (tokenForm) {
-            tokenForm.reset();
-        }
-
-        const forgotForm = document.getElementById('retrieveTokenForm');
-        if (forgotForm) {
-            forgotForm.reset();
-        }
-
-        // Reset reCAPTCHA if available
-        if (typeof grecaptcha !== "undefined") {
-            grecaptcha.reset();
-        }
-
-        // Hide flash messages if present
-        const flash = document.getElementById('flashMessage');
-        if (flash) flash.style.display = 'none';
-    }
-
 
 
     // Copy the generated token to clipboard
@@ -617,6 +608,10 @@ function closeTokenModal(event) {
         }
     }
 
+    function showTokenSuccessModal(token) {
+        document.getElementById('retrievedToken').textContent = token;
+        document.getElementById('tokenSuccessModal').style.display = 'block';
+    }
 
     function closeTokenSuccessModal() {
         document.getElementById('tokenSuccessModal').style.display = 'none';
@@ -664,6 +659,8 @@ function closeTokenModal(event) {
             alert('Something went wrong. Please try again.');
         });
     });
+
+    
 </script>
 </body>
 </html>

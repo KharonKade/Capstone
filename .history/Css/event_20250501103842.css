@@ -249,11 +249,6 @@ a {
     /* No flipping effect applied here */
 }
 
-/* Hide Trending Tag on Flip */
-.flip-card:hover .trending-tag {
-    display: none;
-}
-
 
 /* Back of the card */
 .flip-card-back {

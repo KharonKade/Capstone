@@ -92,7 +92,7 @@
                 event_registrations r
             WHERE 
                 r.event_id = " . $row['id'] . "
-                AND r.registration_time > NOW() - INTERVAL 7 DAY
+                AND r.registration_time > NOW() - INTERVAL 1 DAY
             ";
             $trend_result = $conn->query($trend_sql);
             $trend_row = $trend_result->fetch_assoc();

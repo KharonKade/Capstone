@@ -162,29 +162,19 @@ if ($event_id > 0) {
         <!-- Right Section (Event Details) -->
         <div class="right-section animate-on-scroll">
             <div class="event-details">
-                <strong>Dates & Times:</strong>
+            <strong>Dates & Times:</strong>
+                <ul>
                     <?php
                     // Display event schedules
                     if (!empty($schedules)) {
                         foreach ($schedules as $schedule) {
-                            // Convert event_date to a readable format
-                            $event_date = new DateTime($schedule['event_date']);
-                            $formatted_date = $event_date->format('l, F j, Y'); // E.g., "Monday, May 1, 2025"
-
-                            // Convert start_time and end_time to a readable format
-                            $start_time = new DateTime($schedule['start_time']);
-                            $formatted_start_time = $start_time->format('g:i A'); // E.g., "3:00 PM"
-
-                            $end_time = new DateTime($schedule['end_time']);
-                            $formatted_end_time = $end_time->format('g:i A'); // E.g., "5:00 PM"
-
-                            // Output the formatted schedule
-                            echo '<li>' . $formatted_date . ' at ' . $formatted_start_time . ' to ' . $formatted_end_time . '</li>';
+                            echo '<li>' . $schedule['event_date'] . ' at ' . $schedule['start_time'] . ' to ' . $schedule['end_time'] . '</li>';
                         }
                     } else {
                         echo "<li>No schedule available for this event.</li>";
                     }
                     ?>
+                </ul>
                 <p><strong>Description:</strong> <?php echo isset($event['description']) ? $event['description'] : 'Not available'; ?></p>
                 <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
 
@@ -362,111 +352,82 @@ if ($event_id > 0) {
     </footer>
 
     <script>
-        const swiper = new Swiper('.swiper-container', {
-            loop: true, // Enables infinite scrolling
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true, // Enables clickable pagination dots
-            },
-            autoplay: false, // Autoplay off
-        });
+    // Initialize Swiper
+    const swiper = new Swiper('.swiper-container', {
+        loop: true, // Enables infinite scrolling
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true, // Enables clickable pagination dots
+        },
+        autoplay: false, // Autoplay off
+    });
 
-        // Open Modal Function
-        function openModal(src) {
-            const modal = document.getElementById('imageModal');
-            const modalImage = document.getElementById('modalImage');
-            modal.style.display = 'block';
-            modalImage.src = src;
+    // Open Modal for Image
+    function openModal(src) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        modal.style.display = 'block';
+        modalImage.src = src;
 
-            // Store the image array and current index in global variables
-            window.currentImages = images;
-            window.currentIndex = images.indexOf(src);
-        }
-
-        // Close Modal Function
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            modal.style.display = 'none';
-        }
-    </script>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const registerBtn = document.getElementById('registerBtn');
-    const registrationModal = document.getElementById('registrationModal');
-    const closeModalBtn = document.querySelector('.close');
-
-    if (registerBtn) {
-        registerBtn.onclick = function() {
-            registrationModal.style.display = 'block';
-        };
+        // Store the image array and current index in global variables
+        window.currentImages = images;
+        window.currentIndex = images.indexOf(src);
     }
 
-    if (closeModalBtn) {    
-        closeModalBtn.onclick = function() {
-            registrationModal.style.display = 'none';
-        };
+    // Close Modal for Image
+    function closeModal() {
+        const modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
     }
 
-    // If the user clicks anywhere outside the modal, close it
-    window.onclick = function(event) {
-        if (event.target === registrationModal) {
-            registrationModal.style.display = 'none';
+    // Modal handling for Registration and Token
+    document.addEventListener("DOMContentLoaded", function () {
+        const registerBtn = document.getElementById('registerBtn');
+        const registrationModal = document.getElementById('registrationModal');
+        const closeModalBtn = document.querySelector('.close');
+
+        // Open registration modal
+        if (registerBtn) {
+            registerBtn.onclick = function () {
+                registrationModal.style.display = 'block';
+            };
         }
-    };
-});
 
-function showTokenModal() {
-    document.getElementById('tokenModal').style.display = 'block';
-}
+        // Close registration modal
+        if (closeModalBtn) {
+            closeModalBtn.onclick = function () {
+                registrationModal.style.display = 'none';
+            };
+        }
 
-function closeTokenModal(event) {
-        // Check if the click was outside the modal content (on the overlay)
+        // Close modal if user clicks outside of it
+        window.onclick = function (event) {
+            if (event.target === registrationModal) {
+                registrationModal.style.display = 'none';
+            }
+        };
+    });
+
+    // Token Modal handling
+    function showTokenModal() {
+        document.getElementById('tokenModal').style.display = 'block';
+    }
+
+    // Close Token Modal
+    function closeTokenModal(event) {
         if (event.target === document.getElementById('tokenModal')) {
             document.getElementById('tokenModal').style.display = 'none';
         }
     }
 
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const elements = document.querySelectorAll('.animate-on-scroll');
+    // Show Forgot Token Form
+    function showForgotTokenForm() {
+        document.getElementById('forgotTokenForm').style.display = 'block';
+        document.getElementById('tokenForm').style.display = 'none';
+    }
 
-        elements.forEach(el => {
-            el._fadeTimeout = null; // custom property for tracking timeout
-        });
-
-        function toggleVisibility() {
-            elements.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
-
-                if (inView) {
-                    clearTimeout(el._fadeTimeout); // cancel any pending hide
-                    el.classList.add('visible');
-                } else {
-                    // fade out first, then hide after transition
-                    el.classList.remove('visible');
-                    clearTimeout(el._fadeTimeout);
-                    el._fadeTimeout = setTimeout(() => {
-                        el.style.visibility = 'hidden';
-                    }, 600); // must match transition duration
-                }
-
-                // Always reset visibility to visible if showing
-                if (inView) {
-                    el.style.visibility = 'visible';
-                }
-            });
-        }
-
-        window.addEventListener('scroll', toggleVisibility);
-        window.addEventListener('resize', toggleVisibility);
-        toggleVisibility(); // Run on load
-    });
-</script>
-<script>
-    document.getElementById("registrationForm").addEventListener("submit", function(event) {
+    // Registration Form Submit with Fetch
+    document.getElementById("registrationForm").addEventListener("submit", function (event) {
         event.preventDefault(); // Prevent normal form submission
 
         const form = event.target;
@@ -476,99 +437,52 @@ function closeTokenModal(event) {
             method: "POST",
             body: formData
         })
-        .then(async response => {
-            const text = await response.text(); // Get raw response text
-            console.log("Raw response:", text); // Log raw response
+            .then(async response => {
+                const text = await response.text(); // Get raw response text
+                console.log("Raw response:", text); // Log it for debugging
 
-            try {
-                const data = JSON.parse(text); // Try to parse the response
-                console.log("Parsed response:", data); // Log parsed response
-
-                if (data.success) {
-                    showTokenSuccessModal(data.token);  // Show the token modal
-                    closeRegistrationModal();  // Close registration modal
-                } else {
-                    showTokenFailureModal(data.message || "Registration failed.");
+                try {
+                    const data = JSON.parse(text); // Try to parse it
+                    console.log("Parsed response:", data); // Log the parsed response to check its structure
+                    if (data.success) {
+                        showTokenSuccessModal(data.token);
+                        closeRegistrationModal(); // Close registration modal after success
+                    } else {
+                        // If the registration failed, show the token modal with a failure message instead of an alert
+                        showTokenFailureModal(data.message || "Registration failed.");
+                    }
+                } catch (e) {
+                    console.error("JSON parse error:", e, "Original response:", text);
+                    showTokenFailureModal("Something went wrong. Please try again.");
                 }
-            } catch (e) {
-                console.error("JSON parse error:", e, "Original response:", text);
+            })
+            .catch(error => {
+                console.error("Fetch error:", error);
                 showTokenFailureModal("Something went wrong. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Fetch error:", error);
-            showTokenFailureModal("Something went wrong. Please try again.");
-        });
+            });
     });
 
-
-    // Show the token success modal and set the token
-    // Show the token success modal and set the token
+    // Show Token Success Modal
     function showTokenSuccessModal(token) {
-        // Set the token in the modal
         document.getElementById('generatedTokenText').textContent = token;
-
-        // Show the success modal
         document.getElementById('tokenSuccessModal').style.display = 'block';
+    }
 
-        // Close the registration modal
+    // Close Token Success Modal
+    function closeTokenSuccessModal() {
+        document.getElementById('tokenSuccessModal').style.display = 'none';
         document.getElementById('registrationModal').style.display = 'none';
-
-        // Reset the registration form
         const form = document.getElementById('registrationForm');
         if (form) {
             form.reset();
-            form.querySelector('[name="event_id"]').value = ''; // Optional
         }
-
-        // Reset reCAPTCHA if available
+        document.getElementById('flashMessage').style.display = 'none';
         if (typeof grecaptcha !== "undefined") {
             grecaptcha.reset();
         }
-
-        // Clear flash message if any
-        const flash = document.getElementById('flashMessage');
-        if (flash) flash.style.display = 'none';
     }
 
-    // Close the token success modal and ensure everything resets
-    function closeTokenSuccessModal() {
-        // Hide the success modal
-        document.getElementById('tokenSuccessModal').style.display = 'none';
-
-        // Also make sure the registration modal is hidden
-        document.getElementById('registrationModal').style.display = 'none';
-
-        // Reset both forms if needed
-        const registrationForm = document.getElementById('registrationForm');
-        if (registrationForm) {
-            registrationForm.reset();
-            registrationForm.querySelector('[name="event_id"]').value = ''; // Optional
-        }
-
-        const tokenForm = document.getElementById('tokenForm');
-        if (tokenForm) {
-            tokenForm.reset();
-        }
-
-        const forgotForm = document.getElementById('retrieveTokenForm');
-        if (forgotForm) {
-            forgotForm.reset();
-        }
-
-        // Reset reCAPTCHA if available
-        if (typeof grecaptcha !== "undefined") {
-            grecaptcha.reset();
-        }
-
-        // Hide flash messages if present
-        const flash = document.getElementById('flashMessage');
-        if (flash) flash.style.display = 'none';
-    }
-
-
-
-    // Copy the generated token to clipboard
+    // Copy Token to Clipboard
     function copyGeneratedToken() {
         const token = document.getElementById('generatedTokenText').textContent;
         navigator.clipboard.writeText(token).then(() => {
@@ -580,91 +494,37 @@ function closeTokenModal(event) {
             flash.textContent = "Failed to copy token.";
             flash.style.display = 'block';
         });
-
     }
 
-    // Registration modal functionality
-    document.addEventListener("DOMContentLoaded", function() {
-        const registerBtn = document.getElementById('registerBtn');
-        const registrationModal = document.getElementById('registrationModal');
-        const closeModalBtn = document.querySelector('.close');
-
-        if (registerBtn) {
-            registerBtn.onclick = function() {
-                registrationModal.style.display = 'block';
-            };
-        }
-
-        if (closeModalBtn) {    
-            closeModalBtn.onclick = function() {
-                registrationModal.style.display = 'none';
-            };
-        }
-
-        // If the user clicks anywhere outside the modal, close it
-        window.onclick = function(event) {
-            if (event.target === registrationModal) {
-                registrationModal.style.display = 'none';
-            }
-        };
-    });
-
-    // Modal close on clicking outside the modal content
-    function closeTokenModal(event) {
-        // Check if the click was outside the modal content (on the overlay)
-        if (event.target === document.getElementById('tokenModal')) {
-            document.getElementById('tokenModal').style.display = 'none';
-        }
-    }
-
-
-    function closeTokenSuccessModal() {
-        document.getElementById('tokenSuccessModal').style.display = 'none';
-    }
-
-    // Show the Forgot Token form when the link is clicked
-    function showForgotTokenForm() {
-        document.getElementById('tokenForm').style.display = 'none';  // Hide the main token input form
-        document.getElementById('forgotTokenForm').style.display = 'block';  // Show the forgot token form
-    }
-
-    // Close the modal
-    function closeTokenModal(event) {
-        // Close modal if clicked outside modal content
-        if (event) {
-            event.stopPropagation();
-        }
-        document.getElementById('tokenModal').style.display = 'none';
-        document.getElementById('forgotTokenForm').style.display = 'none';  // Hide the forgot token form when closing modal
-        document.getElementById('tokenForm').style.display = 'block';  // Show the main token input form again
-    }
-
-    // Submit the email and get the token from forgot_token.php
-    document.getElementById('retrieveTokenForm').addEventListener('submit', function(event) {
+    // Token Retrieval Form Handling
+    document.getElementById('retrieveTokenForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const form = event.target;
-        const formData = new FormData(form);
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('retrieveTokenMessage');
+
+        message.style.display = 'none';
 
         fetch('forgot_token.php', {
             method: 'POST',
-            body: formData
+            body: new FormData(document.getElementById('retrieveTokenForm'))
         })
-        .then(async response => {
-            const data = await response.json();
-            if (data.success) {
-                alert('Your token is: ' + data.token);
-                closeTokenModal(); // Close modal after retrieval
-            } else {
-                document.getElementById('retrieveTokenMessage').textContent = data.message;
-                document.getElementById('retrieveTokenMessage').style.display = 'block';
-            }
-        })
-        .catch(error => {
-            alert('Something went wrong. Please try again.');
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Your token is: ' + data.token);
+                    closeTokenModal(); // Close modal after retrieval
+                } else {
+                    message.style.display = 'block';
+                    message.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                alert('Something went wrong. Please try again later.');
+            });
     });
 </script>
+
 </body>
 </html>
 

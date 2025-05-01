@@ -246,12 +246,6 @@ a {
     z-index: 10; /* Ensure it stays above card content */
     font-size: 14px; /* Adjust for better visibility */
     text-transform: uppercase; /* Make text more prominent */
-    /* No flipping effect applied here */
-}
-
-/* Hide Trending Tag on Flip */
-.flip-card:hover .trending-tag {
-    display: none;
 }
 
 
@@ -330,6 +324,16 @@ a {
 .flip-card-back .back-content p:nth-child(3) {
     font-size: 1rem;
     color: #e0e0e0; /* Softer text color */
+}
+
+.trending-tag {
+    display: inline-block;
+    background-color: #e74c3c;  /* Red background */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 /* Footer Styling */

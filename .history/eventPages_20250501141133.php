@@ -279,6 +279,7 @@ if ($event_id > 0) {
 
             <!-- Main Registration Form -->
             <form id="tokenForm" action="manage_registration.php" method="POST">
+                <input type="hidden" name="event_id" id="tokenEventId">
                 <input type="text" id="token" name="token" required placeholder="Enter your token here">
                 <button type="submit">Submit</button>
                 <a href="javascript:void(0);" id="forgotTokenLink" onclick="showForgotTokenForm()">Forgot your token?</a>
@@ -664,6 +665,8 @@ function closeTokenModal(event) {
             alert('Something went wrong. Please try again.');
         });
     });
+
+    
 </script>
 </body>
 </html>

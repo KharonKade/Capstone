@@ -279,6 +279,8 @@ if ($event_id > 0) {
 
             <!-- Main Registration Form -->
             <form id="tokenForm" action="manage_registration.php" method="POST">
+                <!-- Hidden field for event ID -->
+                <input type="hidden" name="event_id" value="<?= $event_id ?>"> <!-- Add this line -->
                 <input type="text" id="token" name="token" required placeholder="Enter your token here">
                 <button type="submit">Submit</button>
                 <a href="javascript:void(0);" id="forgotTokenLink" onclick="showForgotTokenForm()">Forgot your token?</a>

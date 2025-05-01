@@ -66,11 +66,6 @@
                             $publish_date = $row['publish_date'];
                             $image_path = ''; // Default image path in case there's no image
 
-                            // Format the publish_date to a more readable format
-                            $publish_date_obj = new DateTime($publish_date);
-                            $formatted_publish_date = $publish_date_obj->format('l, F j, Y'); // E.g., "Monday, May 1, 2025"
-
-
                             // Fetch image associated with the news if any
                             $news_id = $row['news_id']; // Change to match your actual column name for news ID
                             $image_sql = "SELECT * FROM news_images WHERE news_id = '$news_id' LIMIT 1";

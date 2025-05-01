@@ -66,11 +66,6 @@
                             $publish_date = $row['publish_date'];
                             $image_path = ''; // Default image path in case there's no image
 
-                            // Format the publish_date to a more readable format
-                            $publish_date_obj = new DateTime($publish_date);
-                            $formatted_publish_date = $publish_date_obj->format('l, F j, Y'); // E.g., "Monday, May 1, 2025"
-
-
                             // Fetch image associated with the news if any
                             $news_id = $row['news_id']; // Change to match your actual column name for news ID
                             $image_sql = "SELECT * FROM news_images WHERE news_id = '$news_id' LIMIT 1";
@@ -81,17 +76,17 @@
                             }
 
                             echo '
-                                <div class="news-item">
-                                    <img src="' . $image_path . '" alt="' . $news_title . '">
-                                    <div class="news-item-content">
-                                        <!-- Dynamically create link to the specific news page -->
-                                        <a href="newsPages.php?id=' . $news_id . '">
-                                            <h3>' . $news_title . '</h3>
-                                            <p>' . substr($news_content, 0, 100) . '...</p>
-                                            <p>' . $formatted_publish_date . '</p> <!-- Formatted publish date -->
-                                        </a>
-                                    </div>
-                                </div>';
+                            <div class="news-item">
+                                <img src="' . $image_path . '" alt="' . $news_title . '">
+                                <div class="news-item-content">
+                                    <!-- Dynamically create link to the specific news page -->
+                                    <a href="newsPages.php?id=' . $news_id . '">
+                                        <h3>' . $news_title . '</h3>
+                                        <p>' . substr($news_content, 0, 100) . '...</p>
+                                        <p>' . $publish_date . '</p>
+                                    </a>
+                                </div>
+                            </div>';
                         }
                     } else {
                         echo '<p>No news available at the moment.</p>';

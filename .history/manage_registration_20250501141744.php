@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 
 $token = $_POST['token'] ?? null;
 $registration_id = $_GET['id'] ?? null;
-
+$event_id = $_GET['event_id'] ?? null;
 
 if ($token) {
     // Search using token

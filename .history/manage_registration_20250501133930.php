@@ -9,34 +9,33 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$token = $_POST['token'] ?? null;
-$registration_id = $_GET['id'] ?? null;
+    $token = $_POST['token'] ?? null;
+    $registration_id = $_GET['id'] ?? null;
 
+    if ($token) {
+        // Search using token
+        $registration_sql = "SELECT * FROM event_registrations WHERE token = ?";
+        $stmt = $conn->prepare($registration_sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $registration_result = $stmt->get_result();
+        $registration = $registration_result->fetch_assoc();
+    } elseif ($registration_id) {
+        // Search using ID
+        $registration_sql = "SELECT * FROM event_registrations WHERE id = ?";
+        $stmt = $conn->prepare($registration_sql);
+        $stmt->bind_param("i", $registration_id);
+        $stmt->execute();
+        $registration_result = $stmt->get_result();
+        $registration = $registration_result->fetch_assoc();
+    } else {
+        $registration = null;
+    }
 
-if ($token) {
-    // Search using token
-    $registration_sql = "SELECT * FROM event_registrations WHERE token = ?";
-    $stmt = $conn->prepare($registration_sql);
-    $stmt->bind_param("s", $token);
-    $stmt->execute();
-    $registration_result = $stmt->get_result();
-    $registration = $registration_result->fetch_assoc();
-} elseif ($registration_id) {
-    // Search using ID
-    $registration_sql = "SELECT * FROM event_registrations WHERE id = ?";
-    $stmt = $conn->prepare($registration_sql);
-    $stmt->bind_param("i", $registration_id);
-    $stmt->execute();
-    $registration_result = $stmt->get_result();
-    $registration = $registration_result->fetch_assoc();
-} else {
-    $registration = null;
-}
-
-// Fetch event_id if registration is found
-if ($registration) {
-    $event_id = $registration['event_id'];
-}
+    // Fetch event_id if registration is found
+    if ($registration) {
+        $event_id = $registration['event_id'];
+    }
 
 
 $conn->close();

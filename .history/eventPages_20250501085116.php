@@ -162,29 +162,19 @@ if ($event_id > 0) {
         <!-- Right Section (Event Details) -->
         <div class="right-section animate-on-scroll">
             <div class="event-details">
-                <strong>Dates & Times:</strong>
+            <strong>Dates & Times:</strong>
+                <ul>
                     <?php
                     // Display event schedules
                     if (!empty($schedules)) {
                         foreach ($schedules as $schedule) {
-                            // Convert event_date to a readable format
-                            $event_date = new DateTime($schedule['event_date']);
-                            $formatted_date = $event_date->format('l, F j, Y'); // E.g., "Monday, May 1, 2025"
-
-                            // Convert start_time and end_time to a readable format
-                            $start_time = new DateTime($schedule['start_time']);
-                            $formatted_start_time = $start_time->format('g:i A'); // E.g., "3:00 PM"
-
-                            $end_time = new DateTime($schedule['end_time']);
-                            $formatted_end_time = $end_time->format('g:i A'); // E.g., "5:00 PM"
-
-                            // Output the formatted schedule
-                            echo '<li>' . $formatted_date . ' at ' . $formatted_start_time . ' to ' . $formatted_end_time . '</li>';
+                            echo '<li>' . $schedule['event_date'] . ' at ' . $schedule['start_time'] . ' to ' . $schedule['end_time'] . '</li>';
                         }
                     } else {
                         echo "<li>No schedule available for this event.</li>";
                     }
                     ?>
+                </ul>
                 <p><strong>Description:</strong> <?php echo isset($event['description']) ? $event['description'] : 'Not available'; ?></p>
                 <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
 
@@ -264,11 +254,7 @@ if ($event_id > 0) {
             <h2>Registration Successful!</h2>
             <p>Your token is:</p>
             <div class="token" id="generatedTokenText" style="font-weight: bold; font-size: 1.2rem; margin: 10px 0;"></div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                <button onclick="copyGeneratedToken()" style="background: #3498db; color: white; padding: 8px 12px; border: none; border-radius: 5px;">Copy</button>
-                <div id="flashMessage" style="display: none; color: green; font-weight: bold;"></div>
-                <button onclick="closeTokenSuccessModal()" style="background: #2ecc71; color: white; padding: 8px 12px; border: none; border-radius: 5px;">Okay</button>
-            </div>
+            <button onclick="copyGeneratedToken()" style="background: #3498db; color: white; padding: 8px 12px; border: none; border-radius: 5px;">Copy</button>
         </div>
     </div>
     
@@ -276,28 +262,12 @@ if ($event_id > 0) {
         <div class="modal-content" onclick="event.stopPropagation();">
             <span class="close" onclick="closeTokenModal()">&times;</span>
             <h2>Enter Your Token</h2>
-
-            <!-- Main Registration Form -->
             <form id="tokenForm" action="manage_registration.php" method="POST">
                 <input type="text" id="token" name="token" required placeholder="Enter your token here">
                 <button type="submit">Submit</button>
-                <a href="javascript:void(0);" id="forgotTokenLink" onclick="showForgotTokenForm()">Forgot your token?</a>
             </form>
-
-            <!-- Forgot Token Form (Initially Hidden) -->
-            <div id="forgotTokenForm" style="display:none;">
-                <h3>Retrieve Your Token</h3>
-                <form id="retrieveTokenForm">
-                    <label for="email">Enter your email:</label>
-                    <input type="email" id="email" name="email" required placeholder="Enter your email">
-                    <button type="submit">Retrieve Token</button>
-                </form>
-                <p id="retrieveTokenMessage" style="color:red; display:none;"></p>
-            </div>
         </div>
     </div>
-
-
     
 
 
@@ -478,16 +448,16 @@ function closeTokenModal(event) {
         })
         .then(async response => {
             const text = await response.text(); // Get raw response text
-            console.log("Raw response:", text); // Log raw response
+            console.log("Raw response:", text); // Log it for debugging
 
             try {
-                const data = JSON.parse(text); // Try to parse the response
-                console.log("Parsed response:", data); // Log parsed response
-
+                const data = JSON.parse(text); // Try to parse it
+                console.log("Parsed response:", data); // Log the parsed response to check its structure
                 if (data.success) {
-                    showTokenSuccessModal(data.token);  // Show the token modal
-                    closeRegistrationModal();  // Close registration modal
+                    showTokenSuccessModal(data.token);
+                    closeRegistrationModal(); // Close registration modal after success
                 } else {
+                    // If the registration failed, show the token modal with a failure message instead of an alert
                     showTokenFailureModal(data.message || "Registration failed.");
                 }
             } catch (e) {
@@ -503,84 +473,24 @@ function closeTokenModal(event) {
 
 
     // Show the token success modal and set the token
-    // Show the token success modal and set the token
     function showTokenSuccessModal(token) {
-        // Set the token in the modal
         document.getElementById('generatedTokenText').textContent = token;
-
-        // Show the success modal
         document.getElementById('tokenSuccessModal').style.display = 'block';
-
-        // Close the registration modal
-        document.getElementById('registrationModal').style.display = 'none';
-
-        // Reset the registration form
-        const form = document.getElementById('registrationForm');
-        if (form) {
-            form.reset();
-            form.querySelector('[name="event_id"]').value = ''; // Optional
-        }
-
-        // Reset reCAPTCHA if available
-        if (typeof grecaptcha !== "undefined") {
-            grecaptcha.reset();
-        }
-
-        // Clear flash message if any
-        const flash = document.getElementById('flashMessage');
-        if (flash) flash.style.display = 'none';
     }
 
-    // Close the token success modal and ensure everything resets
+    // Close the token success modal
     function closeTokenSuccessModal() {
-        // Hide the success modal
         document.getElementById('tokenSuccessModal').style.display = 'none';
-
-        // Also make sure the registration modal is hidden
-        document.getElementById('registrationModal').style.display = 'none';
-
-        // Reset both forms if needed
-        const registrationForm = document.getElementById('registrationForm');
-        if (registrationForm) {
-            registrationForm.reset();
-            registrationForm.querySelector('[name="event_id"]').value = ''; // Optional
-        }
-
-        const tokenForm = document.getElementById('tokenForm');
-        if (tokenForm) {
-            tokenForm.reset();
-        }
-
-        const forgotForm = document.getElementById('retrieveTokenForm');
-        if (forgotForm) {
-            forgotForm.reset();
-        }
-
-        // Reset reCAPTCHA if available
-        if (typeof grecaptcha !== "undefined") {
-            grecaptcha.reset();
-        }
-
-        // Hide flash messages if present
-        const flash = document.getElementById('flashMessage');
-        if (flash) flash.style.display = 'none';
     }
-
-
 
     // Copy the generated token to clipboard
     function copyGeneratedToken() {
         const token = document.getElementById('generatedTokenText').textContent;
         navigator.clipboard.writeText(token).then(() => {
-            const flash = document.getElementById('flashMessage');
-            flash.textContent = "Token copied to clipboard!";
-            flash.style.display = 'block';
+            alert("Token copied to clipboard!");
         }).catch(() => {
-            const flash = document.getElementById('flashMessage');
-            flash.textContent = "Failed to copy token.";
-            flash.style.display = 'block';
+            alert("Failed to copy token.");
         });
-
     }
 
     // Registration modal functionality
@@ -616,54 +526,6 @@ function closeTokenModal(event) {
             document.getElementById('tokenModal').style.display = 'none';
         }
     }
-
-
-    function closeTokenSuccessModal() {
-        document.getElementById('tokenSuccessModal').style.display = 'none';
-    }
-
-    // Show the Forgot Token form when the link is clicked
-    function showForgotTokenForm() {
-        document.getElementById('tokenForm').style.display = 'none';  // Hide the main token input form
-        document.getElementById('forgotTokenForm').style.display = 'block';  // Show the forgot token form
-    }
-
-    // Close the modal
-    function closeTokenModal(event) {
-        // Close modal if clicked outside modal content
-        if (event) {
-            event.stopPropagation();
-        }
-        document.getElementById('tokenModal').style.display = 'none';
-        document.getElementById('forgotTokenForm').style.display = 'none';  // Hide the forgot token form when closing modal
-        document.getElementById('tokenForm').style.display = 'block';  // Show the main token input form again
-    }
-
-    // Submit the email and get the token from forgot_token.php
-    document.getElementById('retrieveTokenForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const form = event.target;
-        const formData = new FormData(form);
-
-        fetch('forgot_token.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(async response => {
-            const data = await response.json();
-            if (data.success) {
-                alert('Your token is: ' + data.token);
-                closeTokenModal(); // Close modal after retrieval
-            } else {
-                document.getElementById('retrieveTokenMessage').textContent = data.message;
-                document.getElementById('retrieveTokenMessage').style.display = 'block';
-            }
-        })
-        .catch(error => {
-            alert('Something went wrong. Please try again.');
-        });
-    });
 </script>
 </body>
 </html>
