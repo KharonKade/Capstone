@@ -28,12 +28,12 @@ $sql = "
     FROM news_announcements, (SELECT @rownum := 0) r 
     WHERE status = 'active'
 ";
-if (!empty($filter_category) && strtolower($filter_category) !== 'all') {
-    $filter_category = $conn->real_escape_string($filter_category);
-    $sql .= " AND category = '$filter_category'";
-}
+    if (!empty($filter_category) && $filter_category !== 'All') {
+        $filter_category = $conn->real_escape_string($filter_category);
+        $sql .= " AND category = '$filter_category'";
+    }
 
-$sql .= " ORDER BY news_id DESC";
+    $sql .= " ORDER BY news_id DESC";
 $result = $conn->query($sql);
 ?>
 
@@ -69,15 +69,6 @@ $result = $conn->query($sql);
         </nav>
         <main class="content">
             <h2>Manage News & Announcements</h2>
-            <form method="GET" style="margin-bottom: 20px;">
-                <label for="category">Filter by Category:</label>
-                <select name="category" onchange="this.form.submit()">
-                    <option value="All" <?php if ($filter_category === 'All' || empty($filter_category)) echo 'selected'; ?>>All</option>
-                    <option value="Skateboard" <?php if ($filter_category === 'Skateboard') echo 'selected'; ?>>Skateboard</option>
-                    <option value="Inline" <?php if ($filter_category === 'Inline') echo 'selected'; ?>>Inline</option>
-                    <option value="BMX" <?php if ($filter_category === 'BMX') echo 'selected'; ?>>BMX</option>
-                </select>
-            </form>
             <?php if ($result->num_rows > 0): ?>
             <table>
                 <thead>

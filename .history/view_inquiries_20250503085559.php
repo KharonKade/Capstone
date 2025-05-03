@@ -78,7 +78,7 @@
                 <form method='get' style='margin-bottom: 20px;'>
                     <label for='filter'><strong>Filter by Concern:</strong></label>
                     <select name='filter' id='filter' onchange='this.form.submit()'>
-                        <option value=''>All</option>
+                        <option value=''>-- All --</option>
                         $concernOptions
                     </select>
                 </form>

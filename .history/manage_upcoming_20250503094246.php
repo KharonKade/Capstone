@@ -72,7 +72,7 @@ $result = $conn->query($sql);
             <form method="GET" style="margin-bottom: 20px;">
                 <label for="category">Filter by Category:</label>
                 <select name="category" onchange="this.form.submit()">
-                    <option value="All" <?php if ($filter_category === 'All' || empty($filter_category)) echo 'selected'; ?>>All</option>
+                    <option value="All" <?php if ($filter_category === 'All' || empty($filter_category)) echo 'selected'; ?>>--All--</option>
                     <option value="Skateboard" <?php if ($filter_category === 'Skateboard') echo 'selected'; ?>>Skateboard</option>
                     <option value="BMX" <?php if ($filter_category === 'BMX') echo 'selected'; ?>>BMX</option>
                     <option value="In-Line" <?php if ($filter_category === 'In-Line') echo 'selected'; ?>>In-Line</option>

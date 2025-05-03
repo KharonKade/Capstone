@@ -54,7 +54,6 @@
             echo "<div class='content-wrapper'>";
 
             if ($result->num_rows > 0) {
-                echo "<h2>Contact Inquiries</h2>";
                 $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 
                 // Optional: Fetch distinct concerns for the dropdown
@@ -78,11 +77,12 @@
                 <form method='get' style='margin-bottom: 20px;'>
                     <label for='filter'><strong>Filter by Concern:</strong></label>
                     <select name='filter' id='filter' onchange='this.form.submit()'>
-                        <option value=''>All</option>
+                        <option value=''>-- All --</option>
                         $concernOptions
                     </select>
                 </form>
                 ";
+                echo "<h2>Contact Inquiries</h2>";
                 echo "<table>
                         <thead>
                             <tr>

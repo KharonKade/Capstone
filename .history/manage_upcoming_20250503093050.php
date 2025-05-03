@@ -26,13 +26,7 @@ $sql = "
         id, event_name, location, category, registration, registration_limit
     FROM upcoming_events, (SELECT @rownum := 0) r 
     WHERE status = 'active'
-";
-if (!empty($filter_category) && $filter_category !== 'All') {
-    $filter_category = $conn->real_escape_string($filter_category);
-    $sql .= " AND category = '$filter_category'";
-}
-$sql . "ORDER BY id DESC";
-
+    ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 
@@ -69,15 +63,6 @@ $result = $conn->query($sql);
         </nav>
         <main class="content">
             <h2>Manage Upcoming Events</h2>
-            <form method="GET" style="margin-bottom: 20px;">
-                <label for="category">Filter by Category:</label>
-                <select name="category" onchange="this.form.submit()">
-                    <option value="All" <?php if ($filter_category === 'All' || empty($filter_category)) echo 'selected'; ?>>All</option>
-                    <option value="Skateboard" <?php if ($filter_category === 'Skateboard') echo 'selected'; ?>>Skateboard</option>
-                    <option value="BMX" <?php if ($filter_category === 'BMX') echo 'selected'; ?>>BMX</option>
-                    <option value="In-Line" <?php if ($filter_category === 'In-Line') echo 'selected'; ?>>In-Line</option>
-                </select>
-            </form>
             <?php if ($result->num_rows > 0): ?>
             <table>
                 <thead>

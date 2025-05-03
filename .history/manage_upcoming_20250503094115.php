@@ -71,11 +71,15 @@ $result = $conn->query($sql);
             <h2>Manage Upcoming Events</h2>
             <form method="GET" style="margin-bottom: 20px;">
                 <label for="category">Filter by Category:</label>
-                <select name="category" onchange="this.form.submit()">
-                    <option value="All" <?php if ($filter_category === 'All' || empty($filter_category)) echo 'selected'; ?>>All</option>
-                    <option value="Skateboard" <?php if ($filter_category === 'Skateboard') echo 'selected'; ?>>Skateboard</option>
-                    <option value="BMX" <?php if ($filter_category === 'BMX') echo 'selected'; ?>>BMX</option>
-                    <option value="In-Line" <?php if ($filter_category === 'In-Line') echo 'selected'; ?>>In-Line</option>
+                <select name="category" id="category" onchange="this.form.submit()">
+                    <option value="">-- All Categories --</option>
+                    <?php
+                    $cat_result = $conn->query("SELECT DISTINCT category FROM upcoming_events WHERE status = 'active'");
+                    while ($cat = $cat_result->fetch_assoc()) {
+                        $selected = $filter_category == $cat['category'] ? 'selected' : '';
+                        echo "<option value='{$cat['category']}' $selected>" . ucfirst($cat['category']) . "</option>";
+                    }
+                    ?>
                 </select>
             </form>
             <?php if ($result->num_rows > 0): ?>

@@ -20,20 +20,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contactNumber = htmlspecialchars($_POST['contactNumber']);
     $concerns = htmlspecialchars($_POST['concerns']);
     $message = htmlspecialchars($_POST['message']);
+    $companyName = isset($_POST['companyName']) ? htmlspecialchars($_POST['companyName']) : null;
 
     // Prepare and bind the SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("INSERT INTO contact_inquiries (full_name, email, contact_number, concerns, message) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $fullName, $email, $contactNumber, $concerns, $message);
+    $stmt = $conn->prepare("INSERT INTO contact_inquiries (full_name, email, contact_number, concerns, message, company_name) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $fullName, $email, $contactNumber, $concerns, $message, $companyName);
 
     // Execute the query
     if ($stmt->execute()) {
-        echo "<p>Your message has been submitted successfully!</p>";
+        echo "<script>alert('Your message has been submitted successfully!'); window.location.href='contactUs.html';</script>";
     } else {
-        echo "<p>There was an error submitting your message. Please try again later.</p>";
+        echo "<script>alert('There was an error submitting your message. Please try again later.'); window.location.href='contactUs.html';</script>";
     }
 
     // Close the statement and connection
     $stmt->close();
     $conn->close();
 }
+
 ?>

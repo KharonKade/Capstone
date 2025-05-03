@@ -18,12 +18,18 @@ if (isset($_GET['archive_id'])) {
     }
 }
 
+$filter_category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
+
 $sql = "
     SELECT 
         @rownum := @rownum + 1 AS row_num, 
         id, event_name, location, category, registration, registration_limit
     FROM upcoming_events, (SELECT @rownum := 0) r 
     WHERE status = 'active'
+";
+if (!empty($filter_category)) {
+    $sql .= " AND category = '$filter_category'";
+}
     ORDER BY id DESC
 ";
 $result = $conn->query($sql);
@@ -35,31 +41,46 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Upcoming Events</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="Css/manage_event.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <div class="admin-container">
         <nav class="sidebar">
             <h2>Admin Dashboard</h2>
             <ul>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="admin.html">Create Event</a></li>
-                <li><a href="manage_upcoming.php">Manage Events</a></li>
-                <li><a href="archived_events.php">Archived Events</a></li>
-                <li><a href="create_news.html">Create News & Announcements</a></li>
-                <li><a href="manage_news.php">Manage News & Announcements</a></li>
-                <li><a href="archived_news.php">Archived News</a></li>
-                <li><a href="admin_gallery.php">Manage Gallery Page</a></li>
-                <li><a href="editInlinePage.php">Manage Inline Page</a></li>
-                <li><a href="editBmxPage.php">Manage BMX Page</a></li>
-                <li><a href="editSkateboardPage.php">Manage Skateboard Page</a></li>
-                <li><a href="view_inquiries.php">Inquiries</a></li>
-                <li><a href="archived_inquiries.php">Archived Inquiries</a></li>
-                <li><a href="/logout">Logout</a></li>
+                <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="create_event.html."><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="manage_upcoming.php"><i class="fas fa-calendar-check"></i> Manage Events</a></li>
+                <li><a href="archived_events.php"><i class="fas fa-archive"></i> Archived Events</a></li>
+                <li><a href="create_news.html"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
+                <li><a href="manage_news.php"><i class="fas fa-edit"></i> Manage News & Announcements</a></li>
+                <li><a href="archived_news.php"><i class="fas fa-history"></i> Archived News</a></li>
+                <li><a href="admin_gallery.php"><i class="fas fa-images"></i> Manage Gallery Page</a></li>
+                <li><a href="editInlinePage.php"><i class="fas fa-skating"></i> Manage Inline Page</a></li>
+                <li><a href="editBmxPage.php"><i class="fas fa-bicycle"></i> Manage BMX Page</a></li>
+                <li><a href="editSkateboardPage.php"><i class="fas fa-snowboarding"></i> Manage Skateboard Page</a></li>
+                <li><a href="view_inquiries.php"><i class="fas fa-question-circle"></i> Inquiries</a></li>
+                <li><a href="archived_inquiries.php"><i class="fas fa-archive"></i> Archived Inquiries</a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
         <main class="content">
             <h2>Manage Upcoming Events</h2>
+            <form method="GET" style="margin-bottom: 20px;">
+                <label for="category">Filter by Category:</label>
+                <select name="category" id="category" onchange="this.form.submit()">
+                    <option value="">-- All Categories --</option>
+                    <?php
+                    $cat_result = $conn->query("SELECT DISTINCT category FROM upcoming_events WHERE status = 'active'");
+                    while ($cat = $cat_result->fetch_assoc()) {
+                        $selected = $filter_category == $cat['category'] ? 'selected' : '';
+                        echo "<option value='{$cat['category']}' $selected>" . ucfirst($cat['category']) . "</option>";
+                    }
+                    ?>
+                </select>
+            </form>
             <?php if ($result->num_rows > 0): ?>
             <table>
                 <thead>
@@ -103,10 +124,18 @@ $result = $conn->query($sql);
                             ?>
                         </td>
                         <td>
-                            <a href="view_event.php?id=<?php echo $row['id']; ?>">View</a> |
-                            <a href="edit_event.php?id=<?php echo $row['id']; ?>">Edit</a> |
-                            <a href="delete_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a> |
-                            <a href="archive_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Archive this event?')">Archive</a>
+                            <a href="view_event.php?id=<?php echo $row['id']; ?>" title="View">
+                                <i class="fas fa-eye"></i>
+                            </a> |
+                            <a href="edit_event.php?id=<?php echo $row['id']; ?>" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a> |
+                            <a href="delete_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this event?');" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </a> |
+                            <a href="archive_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Archive this event?');" title="Archive">
+                                <i class="fas fa-archive"></i>
+                            </a>
                         </td>
                     </tr>
                     <?php endwhile; ?>

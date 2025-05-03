@@ -39,21 +39,6 @@ $row = $result->fetch_assoc();
 </head>
 <body>
     <div class="admin-container">
-        <nav class="sidebar">
-            <h2>Admin Dashboard</h2>
-            <ul>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="admin.html">Create Event</a></li>
-                <li><a href="manage_upcoming.php">Manage Events</a></li>
-                <li><a href="archived_events.php">Archived Events</a></li>
-                <li><a href="create_news.html">Create News & Announcements</a></li>
-                <li><a href="manage_news.php">Manage News & Announcements</a></li>
-                <li><a href="archived_news.php">Archived News</a></li>
-                <li><a href="view_inquiries.php">Inquiries</a></li>
-                <li><a href="archived_inquiries.php">Archived Inquiries</a></li>
-                <li><a href="/logout">Logout</a></li>
-            </ul>
-        </nav>
         <div class="main-content">
             <h2>Inquiry Details</h2>
             <table>
@@ -77,6 +62,13 @@ $row = $result->fetch_assoc();
                     <th>Concerns</th>
                     <td><?php echo htmlspecialchars($row['concerns']); ?></td>
                 </tr>
+
+                <?php if (strtolower(trim($row['concerns'])) === 'sponsorship inquiry'): ?>
+                <tr>
+                    <th>Company Name</th>
+                    <td><?php echo htmlspecialchars($row['company_name']); ?></td>
+                </tr>
+                <?php endif; ?>
                 <tr>
                     <th>Message</th>
                     <td class="message-content"><?php echo nl2br(htmlspecialchars($row['message'])); ?></td>
@@ -88,6 +80,9 @@ $row = $result->fetch_assoc();
             </table>
         </div>
     </div>
+    <form method="post" action="javascript:history.back()">
+        <button type="submit">Return</button>
+    </form>
 </body>
 </html>
 

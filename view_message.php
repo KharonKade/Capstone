@@ -62,6 +62,13 @@ $row = $result->fetch_assoc();
                     <th>Concerns</th>
                     <td><?php echo htmlspecialchars($row['concerns']); ?></td>
                 </tr>
+
+                <?php if (strtolower(trim($row['concerns'])) === 'sponsorship inquiry'): ?>
+                <tr>
+                    <th>Company Name</th>
+                    <td><?php echo htmlspecialchars($row['company_name']); ?></td>
+                </tr>
+                <?php endif; ?>
                 <tr>
                     <th>Message</th>
                     <td class="message-content"><?php echo nl2br(htmlspecialchars($row['message'])); ?></td>

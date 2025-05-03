@@ -9,7 +9,7 @@
 <body>
     <header>
         <nav class="navbar">
-            <img src="images/logo.png" alt="BASF Logo" class="logo">
+            <img src="images/basflogo.png" alt="BASF Logo" class="logo">
             <div class="nav-center">
                 <ul class="nav-links">
                     <li><a href="index.php">Home</a></li>
@@ -30,7 +30,7 @@
         </div>
     </section>
 
-    <section class="contact-container">
+    <section class="contact-container animate-on-scroll">
         <!-- Left Side: Contact Form -->
         <div class="contact-form">
             <h3>Get in Touch</h3>
@@ -51,6 +51,11 @@
                     <option value="Sponsorship Inquiry">Sponsorship Inquiry</option>
                     <option value="Feedback">Feedback</option>
                 </select>
+
+                <div id="companyNameContainer" style="display: none;">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" name="companyName">
+                </div>                
             
                 <label for="message">Message</label>
                 <textarea id="message" name="message" rows="5" required></textarea>
@@ -60,7 +65,7 @@
         </div>
 
         <!-- Right Side: Contact Details -->
-        <div class="contact-details">
+        <div class="contact-details animate-on-scroll">
             <h3>Contact Informations</h3>
             <p><strong> Baguio Action Sports Federation</strong></p>
             <br>
@@ -75,7 +80,7 @@
         </div>
     </section>
 
-    <div class="advertisement">
+    <div class="advertisement animate-on-scroll">
         <a href="https://www.vans.com/en-us/shoes-c00081/old-skool-shoe-pvn000d3hy28" target="_blank">
             <div class="ad-container">
                 <img src="images/vansads.png" alt="Advertisement">
@@ -84,10 +89,16 @@
         </a>
     </div>
 
-    <footer class="footer">
+    <div class="footer-ramp-icons animate-on-scroll">
+        <img src="images/ramp.png" alt="Left Ramp" class="ramp-icon left">
+        <img src="images/pyramid.png" alt="Center Pyramid Ramp" class="ramp-icon center">
+        <img src="images/rampright.png" alt="Right Ramp" class="ramp-icon right">
+    </div>
+
+    <footer class="footer animate-on-scroll">
         <!-- BASF Logo Section -->
         <div class="footer-section logo-section">
-            <img src="images/logo.png" alt="BASF Logo" class="footer-logo">
+            <img src="images/whitelogo.png" alt="BASF Logo" class="footer-logo">
         </div>
     
         <!-- Explore Us Section -->
@@ -121,15 +132,15 @@
         <div class="footer-section social-section">
             <h3>Connect with us</h3>
             <div class="social-icons">
-                <a href="https://facebook.com"><img src="images/fblogo.png" alt="Facebook"></a>
-                <a href="https://instagram.com"><img src="images/iglogo.png" alt="Instagram"></a>
+                <a href="https://facebook.com"><img src="images/fbwhite.png" alt="Facebook"></a>
+                <a href="https://instagram.com"><img src="images/igwhite.png" alt="Instagram"></a>
             </div>
         </div>
     
         <!-- Supported by Section -->
         <div class="footer-section supported-section">
             <h3>Supported by</h3>
-            <img src="images/vanlogo.png" alt="Sponsor Logo" class="sponsor-logo">
+            <img src="images/vanswhite.png" alt="Sponsor Logo" class="sponsor-logo">
         </div>
     </footer>
     <script>
@@ -180,6 +191,42 @@
                 emailField.value = "";
                 contactNumberField.value = "";
             });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+
+            elements.forEach(el => {
+                el._fadeTimeout = null; // custom property for tracking timeout
+            });
+
+            function toggleVisibility() {
+                elements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
+
+                    if (inView) {
+                        clearTimeout(el._fadeTimeout); // cancel any pending hide
+                        el.classList.add('visible');
+                    } else {
+                        // fade out first, then hide after transition
+                        el.classList.remove('visible');
+                        clearTimeout(el._fadeTimeout);
+                        el._fadeTimeout = setTimeout(() => {
+                            el.style.visibility = 'hidden';
+                        }, 600); // must match transition duration
+                    }
+
+                    // Always reset visibility to visible if showing
+                    if (inView) {
+                        el.style.visibility = 'visible';
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', toggleVisibility);
+            window.addEventListener('resize', toggleVisibility);
+            toggleVisibility(); // Run on load
         });
     </script>
     

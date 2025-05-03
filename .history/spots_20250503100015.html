@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spots Page</title>
     <link rel="stylesheet" href="Css/spots.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <img src="images/logo.png" alt="BASF Logo" class="logo">
+            <img src="images/basflogo.png" alt="BASF Logo" class="logo">
             <div class="nav-center">
                 <ul class="nav-links">
                     <li><a href="index.php">Home</a></li>
@@ -31,7 +32,7 @@
     </section>
     
     <!-- Spots Page -->
-<section class="spots-page">
+<section class="spots-page animate-on-scroll">
     <div class="left-side">
       <h2>About the Skatepark</h2>
       <p>The Baguio Action Sports Skatepark is
@@ -66,16 +67,45 @@
       
     </div>
   
-    <div class="right-side">
+    <div class="right-side animate-on-scroll">
       <h2>Baguio Skate Park</h2>
       <div class="map-container">
-        <!-- Embed map here, for example a Google Maps iframe -->
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3582.1414487506618!2d120.59232759222289!3d16.410882596424496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3391a1d18137d1d5%3A0x702695c9e6710a06!2sBaguio%20Skatepark!5e1!3m2!1sen!2sph!4v1731373711885!5m2!1sen!2sph" width="600" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
+        <!-- Most Active Time -->
+        <div class="chart-section">
+            <h3>Busiest Hours of the Day</h3>
+            <canvas id="activeTimeChart" width="600" height="300"></canvas>
+        </div>
+
+        <!-- User Feedback Summary -->
+        <div class="feedback-section">
+            <h3>What Riders Say</h3>
+            <p>Average Rating: <strong>4.7 ★</strong></p>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>Top Pros</h4>
+                    <ul>
+                        <li>Friendly community</li>
+                        <li>Variety of ramps</li>
+                        <li>Clean environment</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>Top Cons</h4>
+                    <ul>
+                        <li>Gets crowded after school</li>
+                        <li>Limited shade areas</li>
+                        <li>Small parking space</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
       
   </section>
   
-    <div class="advertisement">
+    <div class="advertisement animate-on-scroll">
         <a href="https://www.vans.com/en-us/shoes-c00081/old-skool-shoe-pvn000d3hy28" target="_blank">
             <div class="ad-container">
                 <img src="images/vansads.png" alt="Advertisement">
@@ -84,7 +114,7 @@
         </a>
     </div>
     
-    <div class="spots-gallery-container">
+    <div class="spots-gallery-container animate-on-scroll">
         <h2 class="gallery-heading">Gallery</h2>
         <div class="spots-gallery">
             <div style="background-image: url('images/spots-gallery/skatepark1.png');"></div>
@@ -96,10 +126,16 @@
         </div>
     </div>
 
-    <footer class="footer">
+    <div class="footer-ramp-icons animate-on-scroll">
+        <img src="images/ramp.png" alt="Left Ramp" class="ramp-icon left">
+        <img src="images/pyramid.png" alt="Center Pyramid Ramp" class="ramp-icon center">
+        <img src="images/rampright.png" alt="Right Ramp" class="ramp-icon right">
+    </div>
+
+    <footer class="footer animate-on-scroll">
         <!-- BASF Logo Section -->
         <div class="footer-section logo-section">
-            <img src="images/logo.png" alt="BASF Logo" class="footer-logo">
+            <img src="images/whitelogo.png" alt="BASF Logo" class="footer-logo">
         </div>
     
         <!-- Explore Us Section -->
@@ -133,16 +169,80 @@
         <div class="footer-section social-section">
             <h3>Connect with us</h3>
             <div class="social-icons">
-                <a href="https://facebook.com"><img src="images/fblogo.png" alt="Facebook"></a>
-                <a href="https://instagram.com"><img src="images/iglogo.png" alt="Instagram"></a>
+                <a href="https://facebook.com"><img src="images/fbwhite.png" alt="Facebook"></a>
+                <a href="https://instagram.com"><img src="images/igwhite.png" alt="Instagram"></a>
             </div>
         </div>
     
         <!-- Supported by Section -->
         <div class="footer-section supported-section">
             <h3>Supported by</h3>
-            <img src="images/vanlogo.png" alt="Sponsor Logo" class="sponsor-logo">
+            <img src="images/vanswhite.png" alt="Sponsor Logo" class="sponsor-logo">
         </div>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const elements = document.querySelectorAll('.animate-on-scroll');
+
+        elements.forEach(el => {
+            el._fadeTimeout = null; // custom property for tracking timeout
+        });
+
+        function toggleVisibility() {
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
+
+                if (inView) {
+                    clearTimeout(el._fadeTimeout); // cancel any pending hide
+                    el.classList.add('visible');
+                } else {
+                    // fade out first, then hide after transition
+                    el.classList.remove('visible');
+                    clearTimeout(el._fadeTimeout);
+                    el._fadeTimeout = setTimeout(() => {
+                        el.style.visibility = 'hidden';
+                    }, 600); // must match transition duration
+                }
+
+                // Always reset visibility to visible if showing
+                if (inView) {
+                    el.style.visibility = 'visible';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', toggleVisibility);
+        window.addEventListener('resize', toggleVisibility);
+        toggleVisibility(); // Run on load
+    });
+    </script>
+    <script>
+        const ctx = document.getElementById('activeTimeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM'],
+                datasets: [{
+                    label: 'Average Visits',
+                    data: [5, 9, 13, 15, 14, 12, 18, 22, 19, 14, 10, 6],
+                    backgroundColor: '#3498db',
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Visit Count'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
