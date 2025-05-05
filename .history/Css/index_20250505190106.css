@@ -287,10 +287,14 @@ header {
     color: #333;
     margin-bottom: 10px;
     line-height: 1.5;
-    height: 4.5em; /* force height match */
+    height: 4.5em;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
+
 
 
 .news-item-content .publish-date {

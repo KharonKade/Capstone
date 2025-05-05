@@ -271,10 +271,9 @@ header {
     text-align: left;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    overflow: hidden;
+    justify-content: space-between;
+    height: 100%;
 }
-
 
 .news-item-content h3 {
     font-size: 1.4rem;
@@ -283,15 +282,11 @@ header {
 }
 
 .news-item-content p {
-    font-size: 0.95rem;
-    color: #333;
-    margin-bottom: 10px;
-    line-height: 1.5;
-    height: 4.5em; /* force height match */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
-
 
 .news-item-content .publish-date {
     font-size: 0.85rem;

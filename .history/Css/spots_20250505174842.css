@@ -86,6 +86,7 @@ header {
     z-index: 2;
 }
 
+
 .event-hero-content {
     text-align: center;
 }
@@ -100,114 +101,28 @@ header {
     font-weight: 300;
 }
 
-/* Contact Container */
-.contact-container {
+.spots-page {
     display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 50px 20px;
-    gap: 70px;
-}
-
-/* Contact Form */
-.contact-form {
-    flex: 3;
-    background-color: #f9f9f9;
+    gap: 20px;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.contact-form h3 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-.contact-form label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.contact-form input,
-.contact-form select,
-.contact-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.send-email-button {
+    font-size: large;
+  }
+  
+  .left-side, .right-side {
+    flex: 1;
+    padding: 15px;
+  }
+  
+  .map-container {
+    margin: 20px 0;
+  }
+  
+  .spots-page h2, h3 {
     margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1.1rem;
-    color: #fff;
-    background-color: #0073e6;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.send-email-button:hover {
-    background-color: #005bb5;
-}
-
-.clear-button {
-    background-color: #e74c3c; /* Red background */
-    color: white; /* White text */
-    border: none;
-    padding: 8px 13px;
-    font-size: 10px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    display: block; /* Ensure it takes full width if needed */
-    width: fit-content;
-}
-
-/* Hover effect */
-.clear-button:hover {
-    background-color: #c0392b;
-    transform: scale(1.05);
-}
-
-/* Active effect */
-.clear-button:active {
-    transform: scale(0.95);
-}
-
-
-/* Contact Details */
-.contact-details {
-    flex: 2;
-    background-color: #f1f1f1;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.contact-details h3 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-.contact-details p, .contact-details ul {
-    font-size: 1.1rem;
-}
-
-.contact-details ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.contact-details ul li {
-    margin-bottom: 5px;
-}
-
-/* Advertisement Section */
+    color: #333;
+  }
+  
+  /* Advertisement Section */
 .advertisement {
     text-align: center;
     padding: 20px 0;
@@ -237,6 +152,41 @@ header {
     border-radius: 3px;
     font-weight: bold;
     text-transform: uppercase;
+}
+
+.spots-gallery-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;   
+    text-align: center;  
+    padding: 20px;          
+}
+
+.gallery-heading {
+    font-size: 2rem;
+    margin-bottom: 1rem; 
+    color: #333; 
+}
+
+.spots-gallery {
+    display: flex;
+    height: 20rem;
+    gap: 1rem;
+    width: 80%;
+}
+
+.spots-gallery > div {
+    flex: 1;
+    border-radius: 1rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    transition: all .8s cubic-bezier(.25, .4, .45, 1.4);
+}
+
+.spots-gallery > div:hover {
+    flex: 5;
 }
 
 /* Footer Styling */
@@ -360,3 +310,4 @@ header {
     transform: translateY(0);
     visibility: visible;
 }
+

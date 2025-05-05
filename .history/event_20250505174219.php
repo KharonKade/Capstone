@@ -34,9 +34,9 @@
 
     <section class="event-navigation"> 
         <div class="advertisement animate-on-scroll">
-            <a id="ad-link" href="#" target="_blank">
+            <a href="https://www.vans.com/en-us/shoes-c00081/old-skool-shoe-pvn000d3hy28" target="_blank">
                 <div class="ad-container">
-                    <img id="ad-image" src="" alt="Advertisement">
+                    <img src="images/vansads.png" alt="Advertisement">
                     <span class="ad-label">Ads</span>
                 </div>
             </a>

@@ -195,22 +195,18 @@ header {
 
 .news-container {
     padding: 60px 20px;
-    background: linear-gradient(to bottom, #e0f7fa, #fff);
+    background: #f9f9f9;
     text-align: center;
-    animation: fadeInUp 1s ease;
 }
 
 .news-container h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 40px;
-    color: black;
-    text-shadow: 1px 1px #fff;
+    color: #2c3e50;
 }
 
 .news-carousel-wrapper {
     overflow-x: auto;
-    overflow-y: hidden; /* Prevents blocking vertical scroll */
-    touch-action: pan-y;
     scroll-behavior: smooth;
     padding-bottom: 10px;
 }
@@ -224,46 +220,39 @@ header {
 }
 
 .news-carousel::-webkit-scrollbar {
-    height: 10px;
+    height: 12px;
 }
 
 .news-carousel::-webkit-scrollbar-thumb {
-    background: linear-gradient(45deg, #26a69a, #00796b);
-    border-radius: 10px;
+    background: #aaa;
+    border-radius: 6px;
 }
 
 .news-carousel::-webkit-scrollbar-track {
-    background: #c8e6c9;
+    background: #eaeaea;
 }
 
 .news-item {
-    flex: 0 0 340px;
-    background: rgba(255, 255, 255, 0.25);
-    border: 2px solid transparent;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    flex: 0 0 350px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     scroll-snap-align: start;
     display: flex;
     flex-direction: column;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    position: relative;
-    cursor: pointer;
-    animation: bounceIn 0.8s ease forwards;
-    border-image: linear-gradient(45deg, #26a69a, #81c784) 1;
 }
 
 .news-item:hover {
-    transform: scale(1.03) rotateZ(0.5deg);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .news-item img {
     width: 100%;
     height: 180px;
     object-fit: cover;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
 }
 
 .news-item-content {
@@ -271,90 +260,49 @@ header {
     text-align: left;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    overflow: hidden;
+    justify-content: space-between;
+    height: 100%;
 }
 
-
 .news-item-content h3 {
-    font-size: 1.4rem;
-    color: #004d40;
+    font-size: 1.3rem;
+    color: #2c3e50;
     margin-bottom: 10px;
 }
 
 .news-item-content p {
     font-size: 0.95rem;
-    color: #333;
-    margin-bottom: 10px;
-    line-height: 1.5;
-    height: 4.5em; /* force height match */
+    color: #555;
+    margin-bottom: 12px;
+    line-height: 1.4;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
-
 
 .news-item-content .publish-date {
     font-size: 0.85rem;
-    color: #757575;
+    color: #999;
     margin-bottom: 10px;
 }
 
 .news-item-content a.read-more {
     align-self: flex-start;
     margin-top: auto;
-    background: linear-gradient(90deg, #26a69a, #00796b);
+    background-color: #0073e6;
     color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
+    padding: 8px 14px;
+    border-radius: 6px;
     font-size: 0.9rem;
     text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    transition: background-color 0.3s ease;
 }
 
 .news-item-content a.read-more:hover {
-    background: #004d40;
-    transform: scale(1.05);
+    background-color: #005bb5;
 }
-
-.news-item-content a.read-more::after {
-    content: " →";
-    transition: margin-left 0.3s ease;
-    margin-left: 0;
-}
-
-.news-item-content a.read-more:hover::after {
-    margin-left: 8px;
-}
-
-/* Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    60% {
-        opacity: 1;
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
 
 /* Advertisement Section */
 .advertisement {

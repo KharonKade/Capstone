@@ -85,10 +85,11 @@
                                     <img src="' . $image_path . '" alt="' . $news_title . '">
                                     <div class="news-item-content">
                                         <!-- Dynamically create link to the specific news page -->
-                                        <h3>' . $news_title . '</h3>
-                                            <p>' . substr($news_content, 0, 25) . '...</p>
-                                            <p class="publish-date">' . $formatted_publish_date . '</p>
-                                            <a class="read-more" href="newsPages.php?id=' . $news_id . '">Read More</a>
+                                        <a href="newsPages.php?id=' . $news_id . '">
+                                            <h3>' . $news_title . '</h3>
+                                            <p>' . substr($news_content, 0, 100) . '...</p>
+                                            <p>' . $formatted_publish_date . '</p> <!-- Formatted publish date -->
+                                        </a>
                                     </div>
                                 </div>';
                         }
@@ -257,38 +258,5 @@
     });
 
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const carousel = document.querySelector(".news-carousel-wrapper");
-            let isHovered = false;
-
-            // Auto-scroll every 5 seconds
-            setInterval(() => {
-                if (!isHovered) {
-                    // Scroll the carousel by 360px (or the width of one item + gap)
-                    if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth) {
-                        // If at the end, reset scroll to the beginning
-                        carousel.scrollLeft = 0;
-                    } else {
-                        carousel.scrollBy({
-                            left: 360, // Adjust based on card width + gap
-                            behavior: "smooth",
-                        });
-                    }
-                }
-            }, 5000);
-
-            // Pause on hover
-            carousel.addEventListener("mouseenter", () => {
-                isHovered = true;
-            });
-
-            carousel.addEventListener("mouseleave", () => {
-                isHovered = false;
-            });
-        });
-        </script>
-
-
 </body>
 </html>

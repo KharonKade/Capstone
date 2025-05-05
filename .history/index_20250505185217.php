@@ -86,7 +86,7 @@
                                     <div class="news-item-content">
                                         <!-- Dynamically create link to the specific news page -->
                                         <h3>' . $news_title . '</h3>
-                                            <p>' . substr($news_content, 0, 25) . '...</p>
+                                            <p>' . strip_tags($news_content) . '</p>
                                             <p class="publish-date">' . $formatted_publish_date . '</p>
                                             <a class="read-more" href="newsPages.php?id=' . $news_id . '">Read More</a>
                                     </div>

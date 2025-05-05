@@ -301,7 +301,7 @@ header {
 
 .news-item-content a.read-more {
     align-self: flex-start;
-    margin-top: auto;
+    margin-top: 10px;
     background: linear-gradient(90deg, #26a69a, #00796b);
     color: white;
     padding: 8px 16px;

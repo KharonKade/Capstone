@@ -188,33 +188,5 @@
         toggleVisibility(); // Run on load
     });
     </script>
-    <script>
-        const ads = [
-            {
-                image: 'images/vansads.png',
-                link: 'https://www.vans.com/en-us/shoes-c00081/old-skool-shoe-pvn000d3hy28'
-            },
-            {
-                image: 'images/nikead.webp',
-                link: 'https://www.nike.com/ph/'
-            },
-            {
-                image: 'images/redbullad.png',
-                link: 'https://www.redbull.com/ph-en'
-            }
-        ];
-
-        let currentAd = 0;
-
-        function rotateAd() {
-            const ad = ads[currentAd];
-            document.getElementById('ad-image').src = ad.image;
-            document.getElementById('ad-link').href = ad.link;
-            currentAd = (currentAd + 1) % ads.length;
-        }
-
-        rotateAd(); // Initial
-        setInterval(rotateAd, 3000); // Change every 8 seconds
-    </script>
 </body>
 </html>

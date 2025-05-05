@@ -80,13 +80,6 @@
                 if (editorInstance) {
                     // Sync CKEditor data to the hidden textarea
                     document.querySelector('#description').value = editorInstance.getData();
-                    
-                    // Validate the content before submission
-                    if (editorInstance.getData().trim() === "") {
-                        // If the editor has no content, show an alert or prevent form submission
-                        e.preventDefault(); // Prevent form submission
-                        alert("Please enter a description for the news.");
-                    }
                 }
             } catch (error) {
                 console.error("CKEditor content sync failed:", error);

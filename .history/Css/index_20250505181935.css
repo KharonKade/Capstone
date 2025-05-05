@@ -203,14 +203,12 @@ header {
 .news-container h2 {
     font-size: 3rem;
     margin-bottom: 40px;
-    color: black;
+    color: #00796b;
     text-shadow: 1px 1px #fff;
 }
 
 .news-carousel-wrapper {
     overflow-x: auto;
-    overflow-y: hidden; /* Prevents blocking vertical scroll */
-    touch-action: pan-y;
     scroll-behavior: smooth;
     padding-bottom: 10px;
 }
@@ -271,10 +269,9 @@ header {
     text-align: left;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    overflow: hidden;
+    justify-content: space-between;
+    height: 100%;
 }
-
 
 .news-item-content h3 {
     font-size: 1.4rem;
@@ -287,11 +284,12 @@ header {
     color: #333;
     margin-bottom: 10px;
     line-height: 1.5;
-    height: 4.5em; /* force height match */
     overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
-
 
 .news-item-content .publish-date {
     font-size: 0.85rem;

@@ -271,10 +271,10 @@ header {
     text-align: left;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    justify-content: space-between;
+    height: 100%;
     overflow: hidden;
 }
-
 
 .news-item-content h3 {
     font-size: 1.4rem;
@@ -287,9 +287,11 @@ header {
     color: #333;
     margin-bottom: 10px;
     line-height: 1.5;
-    height: 4.5em; /* force height match */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
     overflow: hidden;
-    text-overflow: ellipsis;
+    max-height: 4.5em; /* line-height (1.5) x 3 lines */
 }
 
 
