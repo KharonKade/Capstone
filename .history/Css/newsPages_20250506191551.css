@@ -106,7 +106,7 @@
     display: flex;
     padding: 20px;
     gap: 20px;
-    width: 100%;
+    width: 80%;
     justify-content: center;
     align-items: center;
     background: linear-gradient(to bottom, #e0f7fa, #fff);
@@ -167,13 +167,12 @@
   
   /* Right Section */
   .right-section {
-    flex: 0.8;
+    flex: 1;
     padding: 10px;
     background: #f9f9f9;
     border-radius: 10px;
     text-align: center;
     padding: 20px;
-    width: 80%;
   }
   
   .news-details {

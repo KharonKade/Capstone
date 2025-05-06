@@ -141,6 +141,9 @@ header {
     text-transform: uppercase;
 }
 
+.container {
+    linear-gradient(to bottom, #e0f7fa, #fff);
+}
 /* News Carousel */
 .event-container {
     background-color: linear-gradient(to bottom, #e0f7fa, #fff);;

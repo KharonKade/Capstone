@@ -50,7 +50,6 @@ body {
     position: relative;
     color: white;
     z-index: 2;
-
 }
 
 .player-img {
@@ -64,13 +63,11 @@ body {
 .player-name {
     font-size: 2rem;
     margin: 0;
-    text-align: center;
 }
 
 .player-role {
     font-size: 1.2rem;
     opacity: 0.8;
-    text-align: center;
 }
 
 /* Player Details Section */

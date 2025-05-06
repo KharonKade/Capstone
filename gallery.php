@@ -73,9 +73,9 @@ $conn->close();
         </div>
     </section>
 
-    <div class="gallery-section animate-on-scroll">
-        <h1 class="gallery-title">Our Gallery</h1>
-        <div class="gallery-container">
+    <div class="gallery-section">
+        <h1 class="gallery-title animate-on-scroll">Our Gallery</h1>
+        <div class="gallery-container animate-on-scroll">
             <?php foreach ($galleryItems as $item): ?>
                 <div class="gallery-item" onclick="showDetails(<?php echo htmlspecialchars(json_encode($item), ENT_QUOTES, 'UTF-8'); ?>)">
                     <img src="<?php echo $item['thumbnail']; ?>" alt="<?php echo $item['title']; ?>">
