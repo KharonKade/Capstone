@@ -65,6 +65,7 @@
                             $news_content = $row['news_content'];
                             $publish_date = $row['publish_date'];
                             $image_path = ''; // Default image path in case there's no image
+                            $news_content = preg_replace('/<p>(&nbsp;|\s)*<\/p>/i', '', $news_content);
 
                             // Format the publish_date to a more readable format
                             $publish_date_obj = new DateTime($publish_date);
@@ -86,7 +87,7 @@
                                     <div class="news-item-content">
                                         <!-- Dynamically create link to the specific news page -->
                                         <h3>' . $news_title . '</h3>
-                                            <p class="news-desc">' . substr(strip_tags($news_content), 0, 25) . '...</p>
+                                            <p class="news-desc">' . substr($news_content, 0, 25) . '...</p>
                                             <p class="publish-date">' . $formatted_publish_date . '</p>
                                             <a class="read-more" href="newsPages.php?id=' . $news_id . '">Read More</a>
                                     </div>

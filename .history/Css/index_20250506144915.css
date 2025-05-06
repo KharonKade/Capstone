@@ -267,7 +267,7 @@ header {
 }
 
 .news-item-content {
-    padding: 16px;
+    padding: 20px;
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -291,16 +291,11 @@ header {
     text-overflow: ellipsis;
 }
 
-.news-item-content .news-desc {
-    height: 3em; /* shorter height for 2 lines of text */
-    margin-bottom: 6px; /* reduce space */
-}
-
 
 .news-item-content .publish-date {
     font-size: 0.85rem;
     color: #757575;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
 }
 
 .news-item-content a.read-more {

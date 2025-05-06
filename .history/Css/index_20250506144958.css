@@ -267,7 +267,7 @@ header {
 }
 
 .news-item-content {
-    padding: 16px;
+    padding: 20px;
     text-align: left;
     display: flex;
     flex-direction: column;
