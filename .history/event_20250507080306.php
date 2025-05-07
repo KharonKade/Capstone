@@ -46,9 +46,9 @@
     <div class="event-filter">
         <select id="categoryFilter">
             <option value="all">All Categories</option>
-            <option value="skateboard">Skateboard</option>
-            <option value="bmx">BMX</option>
-            <option value="inline">Inline</option>
+            <option value="Skateboard">Skateboard</option>
+            <option value="BMX">BMX</option>
+            <option value="Inline">Inline</option>
         </select>
 
         <select id="dateFilter">

@@ -46,9 +46,9 @@
     <div class="event-filter">
         <select id="categoryFilter">
             <option value="all">All Categories</option>
-            <option value="skateboard">Skateboard</option>
-            <option value="bmx">BMX</option>
-            <option value="inline">Inline</option>
+            <option value="Skateboard">Skateboard</option>
+            <option value="BMX">BMX</option>
+            <option value="Inline">Inline</option>
         </select>
 
         <select id="dateFilter">
@@ -122,9 +122,7 @@
                 $is_trending = false;
             }
 
-            echo '<div class="event-item animate-on-scroll" 
-                    data-category="' . htmlspecialchars($row['category']) . '" 
-                    data-date="' . htmlspecialchars($row['event_date']) . '">
+                echo '<div class="event-item animate-on-scroll">
                     <a href="eventPages.php?id=' . $row['id'] . '">
                         <div class="flip-card">
                             <div class="flip-card-inner">

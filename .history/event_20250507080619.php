@@ -47,7 +47,7 @@
         <select id="categoryFilter">
             <option value="all">All Categories</option>
             <option value="skateboard">Skateboard</option>
-            <option value="bmx">BMX</option>
+            <option value="BMX">BMX</option>
             <option value="inline">Inline</option>
         </select>
 

@@ -48,7 +48,7 @@
             <option value="all">All Categories</option>
             <option value="skateboard">Skateboard</option>
             <option value="bmx">BMX</option>
-            <option value="inline">Inline</option>
+            <option value="In-line">Inline</option>
         </select>
 
         <select id="dateFilter">
