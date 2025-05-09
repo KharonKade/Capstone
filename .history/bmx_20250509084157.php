@@ -46,27 +46,25 @@
     }
     ?>
 
-    <section class="bmx-container">
-        <div class="bmx-content animate-on-scroll">
-            <div class="middle-content">
-                <h2 id="about-us"><i class="fas fa-info-circle"></i> About Us</h2>
-                <?php
-                $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
-                if ($row = $result->fetch_assoc()) {
-                    echo $row['content'];
-                } else {
-                    echo "<p>About Us content not found.</p>";
-                }            
-                ?>
-            </div>
-            <div class="advertisement animate-on-scroll">
-                <a id="ad-link" href="#" target="_blank">
-                    <div class="ad-container">
-                        <img id="ad-image" src="" alt="Advertisement">
-                        <span class="ad-label">Ads</span>
-                    </div>
-                </a>
-            </div>
+    <section class="bmx-content animate-on-scroll">
+        <div class="middle-content">
+            <h2 id="about-us">About Us</h2>
+            <?php
+            $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
+            if ($row = $result->fetch_assoc()) {
+                echo $row['content'];
+            } else {
+                echo "<p>About Us content not found.</p>";
+            }            
+            ?>
+        </div>
+        <div class="advertisement animate-on-scroll">
+            <a id="ad-link" href="#" target="_blank">
+                <div class="ad-container">
+                    <img id="ad-image" src="" alt="Advertisement">
+                    <span class="ad-label">Ads</span>
+                </div>
+            </a>
         </div>
     </section>
 
@@ -140,14 +138,10 @@
                             $description = htmlspecialchars($row["description"], ENT_QUOTES);
 
                             echo '<div class="carousel-item">
-                                <video src="' . $video . '" autoplay muted loop
-                                    onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\')">
+                                <video src="' . htmlspecialchars($row["video"], ENT_QUOTES) . '" autoplay muted loop
+                                    onclick="openModal(this, \'' . addslashes(htmlspecialchars($row["title"], ENT_QUOTES)) . '\', \'' . addslashes(htmlspecialchars($row["description"], ENT_QUOTES)) . '\')">
                                 </video>
-                                <div class="video-overlay">
-                                    <strong>' . $title . '</strong><br>' . $description . '
-                                </div>
                             </div>';
-
                             
                             // Debugging Output
                             echo "<!-- DEBUG: ID=" . $row["id"] . ", Video=" . $video . ", Title=" . $title . ", Desc=" . $description . " -->";

@@ -105,15 +105,10 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin: auto;
+    margin: 50px auto;
     padding: 40px;
     width: 80%;
     border-radius: 20px;
-}
-
-.bmx-container {
-    background: linear-gradient(to bottom, #e0f7fa, #fff);
-    margin-top: 0;
 }
 
 /* Middle Content */
@@ -400,12 +395,6 @@ header {
     align-items: center;
   }
   
-  .carousel-container::before {
-    width: 20px;
-    background: white;
-    z-index: 5;
-  }
-  
 
   /* Carousel with Horizontal Scroll */
 .carousel {
@@ -418,7 +407,7 @@ header {
     white-space: nowrap; /* Prevent wrapping */
     padding-bottom: 10px; /* Space for scrollbar */
     scrollbar-gutter: stable;
-    padding-left: 20px;
+    
 }
 
 /* Force Scrollbar to Always Appear */
@@ -449,11 +438,6 @@ header {
     transition: transform 0.3s ease-in-out;
     scroll-snap-align: center;
 }
-
-.carousel-item:first-child {
-    margin-left: 20px;
-  }
-  
 
 .carousel-item video {
     width: 100%;
@@ -633,39 +617,19 @@ header {
     padding-top: 5px;
 }
 
-
-
 #top-athletes h2 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: #2c3e50;
-    margin-bottom: 30px;
-    position: relative;
-    display: inline-block;
-}
-
-#top-athletes h2::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -10px;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 4px;
-    background-color: #3498db;
-    border-radius: 2px;
+    font-size: 3rem;
+    color: black;
+    margin: 0 0 40px; 
+    text-align: center;
+    z-index: 10; 
 }
 
 .slider {
     position: absolute;
     inset: 80px 200px 80px 80px;
-    background: #fff;
+    background: #ccc;
     border-radius: 20px;
-    display: flex;
-    align-items: center;
-    perspective: 1000px;
-    overflow: hidden;
-    margin-top: 20px;
 }
 
 .slider .slides {
@@ -789,24 +753,20 @@ header {
 .explore-btn {
     display: inline-block;
     margin-top: 20px;
-    padding: 10px 25px;
+    padding: 10px 20px;
     background-color: black;
     color: white;
     border: none;
-    border-radius: 30px;
+    border-radius: 5px;
     font-size: 1em;
     cursor: pointer;
     text-align: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .explore-btn:hover {
-    background-color: #006400;
-    transform: scale(1.08);
+    background-color: darkgreen;
+    transform: scale(1.05);
 }
 
 .explore-btn:active {
@@ -845,7 +805,6 @@ header {
         left: 360px;
     }
 }
-
 
 
 /* Community leaders Section Styling */

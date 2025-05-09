@@ -105,15 +105,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin: auto;
+    margin: 50px auto;
     padding: 40px;
     width: 80%;
     border-radius: 20px;
-}
-
-.bmx-container {
     background: linear-gradient(to bottom, #e0f7fa, #fff);
-    margin-top: 0;
+    background-clip: padding-box;
 }
 
 /* Middle Content */

@@ -105,15 +105,10 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin: auto;
+    margin: 50px auto;
     padding: 40px;
     width: 80%;
     border-radius: 20px;
-}
-
-.bmx-container {
-    background: linear-gradient(to bottom, #e0f7fa, #fff);
-    margin-top: 0;
 }
 
 /* Middle Content */
@@ -789,24 +784,20 @@ header {
 .explore-btn {
     display: inline-block;
     margin-top: 20px;
-    padding: 10px 25px;
+    padding: 10px 20px;
     background-color: black;
     color: white;
     border: none;
-    border-radius: 30px;
+    border-radius: 5px;
     font-size: 1em;
     cursor: pointer;
     text-align: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .explore-btn:hover {
-    background-color: #006400;
-    transform: scale(1.08);
+    background-color: darkgreen;
+    transform: scale(1.05);
 }
 
 .explore-btn:active {
