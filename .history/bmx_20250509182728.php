@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bmx Page</title>
+    <title>Inline Page</title>
     <link rel="stylesheet" href="Css/bmx.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -104,37 +104,42 @@
                 event_images i ON e.id = i.event_id
             WHERE 
                 e.status = 'active'   
-                AND (e.category = 'All' OR e.category = 'BMX')
+                AND (e.category = 'All' OR e.category = 'BMX')  -- Filter category
             GROUP BY 
                 e.id
             ORDER BY 
                 e.id DESC";
-
+            
             $result = $conn_events->query($sql);
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    // Trending logic
-                    $trend_sql = "
-                    SELECT 
-                        COUNT(r.id) AS recent_registrations
-                    FROM 
-                        event_registrations r
-                    WHERE 
-                        r.event_id = " . $row['id'] . "
-                        AND r.registration_time > NOW() - INTERVAL 7 DAY";
-                    
-                    $trend_result = $conn_events->query($trend_sql);
-                    $trend_row = $trend_result->fetch_assoc();
-                    $recent_registrations = $trend_row['recent_registrations'];
-                    $is_trending = $recent_registrations > 10;
+            // Query to count registrations in the last 24 hours
+            $trend_sql = "
+            SELECT 
+                COUNT(r.id) AS recent_registrations
+            FROM 
+                event_registrations r
+            WHERE 
+                r.event_id = " . $row['id'] . "
+                AND r.registration_time > NOW() - INTERVAL 7 DAY
+            ";
+            $trend_result = $conn->query($trend_sql);
+            $trend_row = $trend_result->fetch_assoc();
+            $recent_registrations = $trend_row['recent_registrations'];
 
+            if ($recent_registrations > 10) {
+                $is_trending = true;
+            } else {
+                $is_trending = false;
+            }
                     echo '<div class="event-item animate-on-scroll" 
                                 data-category="' . htmlspecialchars($row['category']) . '" 
                                 data-date="' . htmlspecialchars($row['event_date']) . '">
                             <a href="eventPages.php?id=' . $row['id'] . '">
                                 <div class="flip-card">
                                     <div class="flip-card-inner">
+                                        <!-- Trending Now Tag -->
                                         ' . ($is_trending ? '<span class="trending-tag">Trending Now</span>' : '') . '
                                         <div class="flip-card-front">
                                             <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
@@ -144,10 +149,11 @@
                                                 <p>' . $row["event_name"] . '</p>
                                                 <p>Category: ' . $row["category"] . '</p>';
 
+                                                // Convert the event_date to a more readable format
                                                 $event_date = new DateTime($row["event_date"]);
-                                                $formatted_date = $event_date->format('l, F j, Y');
+                                                $formatted_date = $event_date->format('l, F j, Y'); // E.g., "Monday, May 1, 2025"
                                                 echo '<p>Date: ' . $formatted_date . '</p>';
-
+                    
                                                 echo '<br>
                                                 <p>Click for more...</p>
                                             </div>

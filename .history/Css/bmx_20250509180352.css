@@ -361,28 +361,6 @@ header {
     color: #e0e0e0; /* Softer text color */
 }
 
-/* Trending Tag */
-.trending-tag {
-    position: absolute;
-    top: -20px; /* Slightly above the card */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #ff5722;
-    color: white;
-    padding: 5px 10px;
-    font-weight: bold;
-    border-radius: 3px;
-    z-index: 10; /* Ensure it stays above card content */
-    font-size: 14px; /* Adjust for better visibility */
-    text-transform: uppercase; /* Make text more prominent */
-    /* No flipping effect applied here */
-}
-
-/* Hide Trending Tag on Flip */
-.flip-card:hover .trending-tag {
-    display: none;
-}
-
 /* Highlight Section Styling */
 .highlight-carousel-section {
     text-align: center;

@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+// Check if the referrer is a sport page and store it in session
+$validPages = ['bmx.php', 'inline.php', 'skateboard.php'];
+if (in_array(basename($_SERVER['HTTP_REFERER']), $validPages)) {
+    $_SESSION['sport_referrer'] = basename($_SERVER['HTTP_REFERER']);
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

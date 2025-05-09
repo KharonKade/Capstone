@@ -1,17 +1,4 @@
 <?php
-session_start();
-
-// Store the referrer (sport page or event page) in the session
-if (isset($_SERVER['HTTP_REFERER'])) {
-    $referrer = basename($_SERVER['HTTP_REFERER']);
-    // Only store sport-specific pages and event page as referrers
-    if (in_array($referrer, ['event.php', 'bmx.php', 'inline.php', 'skateboard.php'])) {
-        $_SESSION['referrer'] = $referrer;
-    }
-}
-?>
-
-<?php
 // Establish a connection to the database
 $servername = "localhost"; // Your database host
 $username = "root";        // Your database username
@@ -265,7 +252,8 @@ if ($event_id > 0) {
         </div>
     </div>
 
-    <button onclick="goBack()" class="return-btn animate-on-scroll">Return</button>
+    <button onclick="window.location.href='event.php';" class="return-btn animate-on-scroll">Return</button>
+
 
    <!-- Registration Form Modal -->
     <div id="registrationModal" class="registration-modal" style="display:none;">
@@ -347,8 +335,15 @@ if ($event_id > 0) {
         </div>
     </div>
 
+
+    
+
+
     <!-- Add this script before closing body -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+
 
     <!-- Modal for Image Preview -->
     <div id="imageModal" class="image-modal" onclick="closeModal()">
@@ -616,21 +611,6 @@ function showForgotTokenForm() {
     document.getElementById('tokenForm').style.display = 'none';
     document.getElementById('forgotTokenForm').style.display = 'block';
 }
-</script>
-
-<script>
-    function goBack() {
-        // Check if a referrer is stored in session
-        const referrer = '<?php echo isset($_SESSION['referrer']) ? $_SESSION['referrer'] : ''; ?>';
-
-        if (referrer) {
-            // If the referrer is set, navigate to the stored referrer
-            window.location.href = referrer;
-        } else {
-            // If no referrer is found (e.g., direct access), default to event.php
-            window.location.href = 'event.php';
-        }
-    }
 </script>
 
 </body>

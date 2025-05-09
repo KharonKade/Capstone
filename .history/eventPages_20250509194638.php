@@ -1,16 +1,12 @@
 <?php
 session_start();
 
-// Store the referrer (sport page or event page) in the session
-if (isset($_SERVER['HTTP_REFERER'])) {
-    $referrer = basename($_SERVER['HTTP_REFERER']);
-    // Only store sport-specific pages and event page as referrers
-    if (in_array($referrer, ['event.php', 'bmx.php', 'inline.php', 'skateboard.php'])) {
-        $_SESSION['referrer'] = $referrer;
-    }
+// Check if the referrer is a sport page and store it in session
+$validPages = ['bmx.php', 'inline.php', 'skateboard.php'];
+if (in_array(basename($_SERVER['HTTP_REFERER']), $validPages)) {
+    $_SESSION['sport_referrer'] = basename($_SERVER['HTTP_REFERER']);
 }
 ?>
-
 <?php
 // Establish a connection to the database
 $servername = "localhost"; // Your database host
@@ -620,14 +616,23 @@ function showForgotTokenForm() {
 
 <script>
     function goBack() {
-        // Check if a referrer is stored in session
-        const referrer = '<?php echo isset($_SESSION['referrer']) ? $_SESSION['referrer'] : ''; ?>';
+        const referrer = document.referrer;
 
-        if (referrer) {
-            // If the referrer is set, navigate to the stored referrer
+        // List of allowed pages to return to (you can add more here if needed)
+        const allowedPages = [
+            'bmx.php',
+            'inline.php',
+            'skateboard.php'
+        ];
+
+        // Check if referrer is valid and not a feature page (edit registration, etc.)
+        const isValidReferrer = allowedPages.some(page => referrer.includes(page));
+
+        if (referrer && isValidReferrer) {
+            // If referrer is from one of the allowed pages, go back to it
             window.location.href = referrer;
         } else {
-            // If no referrer is found (e.g., direct access), default to event.php
+            // Otherwise, go back to the event page (default)
             window.location.href = 'event.php';
         }
     }

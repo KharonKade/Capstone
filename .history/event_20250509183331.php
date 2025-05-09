@@ -103,6 +103,7 @@
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
             // Query to count registrations in the last 24 hours
+            $event_id = (int)$row['id'];
             $trend_sql = "
             SELECT 
                 COUNT(r.id) AS recent_registrations

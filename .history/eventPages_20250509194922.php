@@ -620,14 +620,17 @@ function showForgotTokenForm() {
 
 <script>
     function goBack() {
-        // Check if a referrer is stored in session
-        const referrer = '<?php echo isset($_SESSION['referrer']) ? $_SESSION['referrer'] : ''; ?>';
+        const referrer = document.referrer;
+        const sessionSportReferrer = '<?php echo isset($_SESSION['sport_referrer']) ? $_SESSION['sport_referrer'] : ''; ?>';
 
-        if (referrer) {
-            // If the referrer is set, navigate to the stored referrer
+        // If the session sport referrer is set, return to that sport page
+        if (sessionSportReferrer) {
+            window.location.href = sessionSportReferrer;
+        } else if (referrer) {
+            // Otherwise, return to the referrer if it's valid
             window.location.href = referrer;
         } else {
-            // If no referrer is found (e.g., direct access), default to event.php
+            // Default: return to event.php
             window.location.href = 'event.php';
         }
     }

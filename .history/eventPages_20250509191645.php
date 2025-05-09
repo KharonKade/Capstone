@@ -1,17 +1,4 @@
 <?php
-session_start();
-
-// Store the referrer (sport page or event page) in the session
-if (isset($_SERVER['HTTP_REFERER'])) {
-    $referrer = basename($_SERVER['HTTP_REFERER']);
-    // Only store sport-specific pages and event page as referrers
-    if (in_array($referrer, ['event.php', 'bmx.php', 'inline.php', 'skateboard.php'])) {
-        $_SESSION['referrer'] = $referrer;
-    }
-}
-?>
-
-<?php
 // Establish a connection to the database
 $servername = "localhost"; // Your database host
 $username = "root";        // Your database username
@@ -265,7 +252,8 @@ if ($event_id > 0) {
         </div>
     </div>
 
-    <button onclick="goBack()" class="return-btn animate-on-scroll">Return</button>
+    <button onclick="window.location.href='event.php';" class="return-btn animate-on-scroll">Return</button>
+
 
    <!-- Registration Form Modal -->
     <div id="registrationModal" class="registration-modal" style="display:none;">
@@ -347,8 +335,15 @@ if ($event_id > 0) {
         </div>
     </div>
 
+
+    
+
+
     <!-- Add this script before closing body -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+
 
     <!-- Modal for Image Preview -->
     <div id="imageModal" class="image-modal" onclick="closeModal()">
@@ -433,114 +428,30 @@ if ($event_id > 0) {
         }
     </script>
 
-   <script>
-document.addEventListener("DOMContentLoaded", function () {
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
     const registerBtn = document.getElementById('registerBtn');
     const registrationModal = document.getElementById('registrationModal');
     const closeModalBtn = document.querySelector('.close');
 
     if (registerBtn) {
-        registerBtn.onclick = () => registrationModal.style.display = 'block';
+        registerBtn.onclick = function() {
+            registrationModal.style.display = 'block';
+        };
     }
 
-    if (closeModalBtn) {
-        closeModalBtn.onclick = () => registrationModal.style.display = 'none';
+    if (closeModalBtn) {    
+        closeModalBtn.onclick = function() {
+            registrationModal.style.display = 'none';
+        };
     }
 
-    window.onclick = function (event) {
+    // If the user clicks anywhere outside the modal, close it
+    window.onclick = function(event) {
         if (event.target === registrationModal) {
             registrationModal.style.display = 'none';
         }
     };
-
-    const elements = document.querySelectorAll('.animate-on-scroll');
-    elements.forEach(el => { el._fadeTimeout = null; });
-
-    function toggleVisibility() {
-        elements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
-
-            if (inView) {
-                clearTimeout(el._fadeTimeout);
-                el.classList.add('visible');
-                el.style.visibility = 'visible';
-            } else {
-                el.classList.remove('visible');
-                clearTimeout(el._fadeTimeout);
-                el._fadeTimeout = setTimeout(() => {
-                    el.style.visibility = 'hidden';
-                }, 600);
-            }
-        });
-    }
-
-    window.addEventListener('scroll', toggleVisibility);
-    window.addEventListener('resize', toggleVisibility);
-    toggleVisibility();
-
-    // Registration form submission
-    const registrationForm = document.getElementById("registrationForm");
-    if (registrationForm) {
-        registrationForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            const formData = new FormData(this);
-            fetch("submit_registration.php", {
-                method: "POST",
-                body: formData
-            })
-                .then(async response => {
-                    const text = await response.text();
-                    console.log("Raw response:", text);
-
-                    try {
-                        const data = JSON.parse(text);
-                        console.log("Parsed response:", data);
-
-                        if (data.success) {
-                            showTokenSuccessModal(data.token);
-                        } else {
-                            showTokenFailureModal(data.message || "Registration failed.");
-                        }
-                    } catch (e) {
-                        console.error("JSON parse error:", e, "Original response:", text);
-                        showTokenFailureModal("Something went wrong. Please try again.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Fetch error:", error);
-                    showTokenFailureModal("Something went wrong. Please try again.");
-                });
-        });
-    }
-
-    const forgotForm = document.getElementById('retrieveTokenForm');
-    if (forgotForm) {
-        forgotForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-
-            fetch('forgot_token.php', {
-                method: 'POST',
-                body: formData
-            })
-                .then(async response => {
-                    const data = await response.json();
-                    if (data.success) {
-                        alert('Your token is: ' + data.token);
-                        closeTokenModal();
-                    } else {
-                        const msg = document.getElementById('retrieveTokenMessage');
-                        msg.textContent = data.message;
-                        msg.style.display = 'block';
-                    }
-                })
-                .catch(() => {
-                    alert('Something went wrong. Please try again.');
-                });
-        });
-    }
 });
 
 function showTokenModal() {
@@ -548,91 +459,224 @@ function showTokenModal() {
 }
 
 function closeTokenModal(event) {
-    if (event) event.stopPropagation();
-    document.getElementById('tokenModal').style.display = 'none';
-    document.getElementById('forgotTokenForm').style.display = 'none';
-    document.getElementById('tokenForm').style.display = 'block';
-}
-
-function showTokenSuccessModal(token) {
-    document.getElementById('generatedTokenText').textContent = token;
-    document.getElementById('tokenSuccessModal').style.display = 'block';
-    document.getElementById('registrationModal').style.display = 'none';
-
-    const form = document.getElementById('registrationForm');
-    if (form) {
-        form.reset();
-        const eventInput = form.querySelector('[name="event_id"]');
-        if (eventInput) eventInput.value = '';
-    }
-
-    if (typeof grecaptcha !== "undefined") {
-        grecaptcha.reset();
-    }
-
-    const flash = document.getElementById('flashMessage');
-    if (flash) flash.style.display = 'none';
-}
-
-function closeTokenSuccessModal() {
-    document.getElementById('tokenSuccessModal').style.display = 'none';
-    document.getElementById('registrationModal').style.display = 'none';
-
-    const registrationForm = document.getElementById('registrationForm');
-    if (registrationForm) {
-        registrationForm.reset();
-        const eventInput = registrationForm.querySelector('[name="event_id"]');
-        if (eventInput) eventInput.value = '';
-    }
-
-    const tokenForm = document.getElementById('tokenForm');
-    if (tokenForm) tokenForm.reset();
-
-    const forgotForm = document.getElementById('retrieveTokenForm');
-    if (forgotForm) forgotForm.reset();
-
-    if (typeof grecaptcha !== "undefined") {
-        grecaptcha.reset();
-    }
-
-    const flash = document.getElementById('flashMessage');
-    if (flash) flash.style.display = 'none';
-}
-
-function copyGeneratedToken() {
-    const token = document.getElementById('generatedTokenText').textContent;
-    navigator.clipboard.writeText(token).then(() => {
-        const flash = document.getElementById('flashMessage');
-        flash.textContent = "Token copied to clipboard!";
-        flash.style.display = 'block';
-    }).catch(() => {
-        const flash = document.getElementById('flashMessage');
-        flash.textContent = "Failed to copy token.";
-        flash.style.display = 'block';
-    });
-}
-
-function showForgotTokenForm() {
-    document.getElementById('tokenForm').style.display = 'none';
-    document.getElementById('forgotTokenForm').style.display = 'block';
-}
-</script>
-
-<script>
-    function goBack() {
-        // Check if a referrer is stored in session
-        const referrer = '<?php echo isset($_SESSION['referrer']) ? $_SESSION['referrer'] : ''; ?>';
-
-        if (referrer) {
-            // If the referrer is set, navigate to the stored referrer
-            window.location.href = referrer;
-        } else {
-            // If no referrer is found (e.g., direct access), default to event.php
-            window.location.href = 'event.php';
+        // Check if the click was outside the modal content (on the overlay)
+        if (event.target === document.getElementById('tokenModal')) {
+            document.getElementById('tokenModal').style.display = 'none';
         }
     }
-</script>
 
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const elements = document.querySelectorAll('.animate-on-scroll');
+
+        elements.forEach(el => {
+            el._fadeTimeout = null; // custom property for tracking timeout
+        });
+
+        function toggleVisibility() {
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const inView = rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0;
+
+                if (inView) {
+                    clearTimeout(el._fadeTimeout); // cancel any pending hide
+                    el.classList.add('visible');
+                } else {
+                    // fade out first, then hide after transition
+                    el.classList.remove('visible');
+                    clearTimeout(el._fadeTimeout);
+                    el._fadeTimeout = setTimeout(() => {
+                        el.style.visibility = 'hidden';
+                    }, 600); // must match transition duration
+                }
+
+                // Always reset visibility to visible if showing
+                if (inView) {
+                    el.style.visibility = 'visible';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', toggleVisibility);
+        window.addEventListener('resize', toggleVisibility);
+        toggleVisibility(); // Run on load
+    });
+</script>
+<script>
+    document.getElementById("registrationForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent normal form submission
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch("submit_registration.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(async response => {
+            const text = await response.text(); // Get raw response text
+            console.log("Raw response:", text); // Log raw response
+
+            try {
+                const data = JSON.parse(text); // Try to parse the response
+                console.log("Parsed response:", data); // Log parsed response
+
+                if (data.success) {
+                    showTokenSuccessModal(data.token);  // Show the token modal
+                    closeRegistrationModal();  // Close registration modal
+                } else {
+                    showTokenFailureModal(data.message || "Registration failed.");
+                }
+            } catch (e) {
+                console.error("JSON parse error:", e, "Original response:", text);
+                showTokenFailureModal("Something went wrong. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+            showTokenFailureModal("Something went wrong. Please try again.");
+        });
+    });
+
+
+    // Show the token success modal and set the token
+    // Show the token success modal and set the token
+    function showTokenSuccessModal(token) {
+        // Set the token in the modal
+        document.getElementById('generatedTokenText').textContent = token;
+
+        // Show the success modal
+        document.getElementById('tokenSuccessModal').style.display = 'block';
+
+        // Close the registration modal
+        document.getElementById('registrationModal').style.display = 'none';
+
+        // Reset the registration form
+        const form = document.getElementById('registrationForm');
+        if (form) {
+            form.reset();
+            form.querySelector('[name="event_id"]').value = ''; // Optional
+        }
+
+        // Reset reCAPTCHA if available
+        if (typeof grecaptcha !== "undefined") {
+            grecaptcha.reset();
+        }
+
+        // Clear flash message if any
+        const flash = document.getElementById('flashMessage');
+        if (flash) flash.style.display = 'none';
+    }
+
+    // Close the token success modal and ensure everything resets
+    function closeTokenSuccessModal() {
+        // Hide the success modal
+        document.getElementById('tokenSuccessModal').style.display = 'none';
+
+        // Also make sure the registration modal is hidden
+        document.getElementById('registrationModal').style.display = 'none';
+
+        // Reset both forms if needed
+        const registrationForm = document.getElementById('registrationForm');
+        if (registrationForm) {
+            registrationForm.reset();
+            registrationForm.querySelector('[name="event_id"]').value = ''; // Optional
+        }
+
+        const tokenForm = document.getElementById('tokenForm');
+        if (tokenForm) {
+            tokenForm.reset();
+        }
+
+        const forgotForm = document.getElementById('retrieveTokenForm');
+        if (forgotForm) {
+            forgotForm.reset();
+        }
+
+        // Reset reCAPTCHA if available
+        if (typeof grecaptcha !== "undefined") {
+            grecaptcha.reset();
+        }
+
+        // Hide flash messages if present
+        const flash = document.getElementById('flashMessage');
+        if (flash) flash.style.display = 'none';
+    }
+
+
+
+    // Copy the generated token to clipboard
+    function copyGeneratedToken() {
+        const token = document.getElementById('generatedTokenText').textContent;
+        navigator.clipboard.writeText(token).then(() => {
+            const flash = document.getElementById('flashMessage');
+            flash.textContent = "Token copied to clipboard!";
+            flash.style.display = 'block';
+        }).catch(() => {
+            const flash = document.getElementById('flashMessage');
+            flash.textContent = "Failed to copy token.";
+            flash.style.display = 'block';
+        });
+
+    }
+
+    // Modal close on clicking outside the modal content
+    function closeTokenModal(event) {
+        // Check if the click was outside the modal content (on the overlay)
+        if (event.target === document.getElementById('tokenModal')) {
+            document.getElementById('tokenModal').style.display = 'none';
+        }
+    }
+
+
+    function closeTokenSuccessModal() {
+        document.getElementById('tokenSuccessModal').style.display = 'none';
+    }
+
+    // Show the Forgot Token form when the link is clicked
+    function showForgotTokenForm() {
+        document.getElementById('tokenForm').style.display = 'none';  // Hide the main token input form
+        document.getElementById('forgotTokenForm').style.display = 'block';  // Show the forgot token form
+    }
+
+    // Close the modal
+    function closeTokenModal(event) {
+        // Close modal if clicked outside modal content
+        if (event) {
+            event.stopPropagation();
+        }
+        document.getElementById('tokenModal').style.display = 'none';
+        document.getElementById('forgotTokenForm').style.display = 'none';  // Hide the forgot token form when closing modal
+        document.getElementById('tokenForm').style.display = 'block';  // Show the main token input form again
+    }
+
+    // Submit the email and get the token from forgot_token.php
+    document.getElementById('retrieveTokenForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch('forgot_token.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(async response => {
+            const data = await response.json();
+            if (data.success) {
+                alert('Your token is: ' + data.token);
+                closeTokenModal(); // Close modal after retrieval
+            } else {
+                document.getElementById('retrieveTokenMessage').textContent = data.message;
+                document.getElementById('retrieveTokenMessage').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            alert('Something went wrong. Please try again.');
+        });
+    });
+</script>
 </body>
 </html>
 
