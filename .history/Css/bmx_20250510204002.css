@@ -682,17 +682,17 @@ header {
 }
 
 .slider {
-    position: absolute;
-    inset: 80px 200px 80px 80px;
+    width: calc(100% - 280px); /* Match left: 80px and right: 200px padding */
+    margin: 20px auto 0 auto;  /* Top margin + centered horizontally */
     background: #fff;
     border-radius: 20px;
     display: flex;
     align-items: center;
     perspective: 1000px;
     overflow: hidden;
-    margin-top: 20px;
-    margin-left: 120px;
+    position: relative; /* Instead of absolute */
 }
+
 
 .slider .slides {
     position: absolute;

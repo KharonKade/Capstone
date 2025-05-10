@@ -691,14 +691,13 @@ header {
     perspective: 1000px;
     overflow: hidden;
     margin-top: 20px;
-    margin-left: 120px;
 }
 
 .slider .slides {
     position: absolute;
     top: 210px;
     transform: translateY(-50%);
-    width: 180px;
+    width: 80%;
     height: 260px;
     background-image: var(--img);
     background-size: cover;
