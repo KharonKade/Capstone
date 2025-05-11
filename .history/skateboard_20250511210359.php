@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bmx Page</title>
-    <link rel="stylesheet" href="Css/bmx.css">
+    <title>Skateboard Page</title>
+    <link rel="stylesheet" href="Css/skateboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>BMX</h1>
+            <h1>SkateBoard</h1>
         </div>
     </section>
 
@@ -35,7 +35,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname_content = "basf_content_bmx";
+    $dbname_content = "basf_content_skateboard";
     $dbname_events = "basf_events";
 
     $conn_content = new mysqli($servername, $username, $password, $dbname_content);
@@ -46,11 +46,10 @@
     }
     ?>
 
-    <section class="bmx-container">
-        <div class="bmx-content animate-on-scroll">
+    <section class="skateboard-container">
+        <div class="skateboard-content animate-on-scroll">
             <div class="middle-content">
                 <h2 id="about-us"><i class="fas fa-info-circle"></i> About Us</h2>
-                <div id="text">
                 <?php
                 $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
                 if ($row = $result->fetch_assoc()) {
@@ -59,7 +58,6 @@
                     echo "<p>About Us content not found.</p>";
                 }            
                 ?>
-                </div>
             </div>
             <div class="advertisement animate-on-scroll">
                 <a id="ad-link" href="#" target="_blank">
@@ -76,7 +74,7 @@
         <div class="event-filter animate-on-scroll">
             <select id="categoryFilter">
                 <option value="all">All Categories</option>
-                <option value="bmx">BMX</option>
+                <option value="skateboard">Skateboard</option>
             </select>
 
             <select id="dateFilter">
@@ -106,12 +104,12 @@
                 event_images i ON e.id = i.event_id
             WHERE 
                 e.status = 'active'   
-                AND (e.category = 'All' OR e.category = 'BMX')
+                AND (e.category = 'All' OR e.category = 'Skateboard')  -- Filter category
             GROUP BY 
                 e.id
             ORDER BY 
                 e.id DESC";
-
+            
             $result = $conn_events->query($sql);
 
             if ($result->num_rows > 0) {
@@ -228,7 +226,7 @@
                         <h1>' . $row["name"] . '</h1>
                         <p>' . $row["description"] . '</p>
                         <button class="explore-btn">
-                            <a href="playerPage.php?id=' . $row['id'] . '">Check this out</a>
+                            <a href="playerPage.php?id=' . $row['id'] . '">Explore</a>
                         </button>
                     </div>
                   </div>';            
@@ -354,6 +352,7 @@
             <img src="images/vanswhite.png" alt="Sponsor Logo" class="sponsor-logo">
         </div>
     </footer>
+
 
     <script src="jsScript/players.js"></script>
     <script src="jsScript/event.js"></script>

@@ -101,7 +101,7 @@ header {
 }
 
 /* Inline Content Section */
-.inline-content {
+.skateboard-content {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -111,7 +111,7 @@ header {
     border-radius: 20px;
 }
 
-.inline-container {
+.skateboard-container {
     background: linear-gradient(to bottom, #e0f7fa, #fff);
     margin-top: 0;
 }
@@ -139,12 +139,11 @@ header {
 
 .middle-content p {
     font-size: 1.1rem;
+    line-height: 1.8;
     color: #444;
     letter-spacing: 0.3px;
 }
 
-
-/* Right Ads */
 /* Advertisement Section */
 .advertisement {
     text-align: center;
@@ -327,7 +326,6 @@ header {
     opacity: 1; /* Make the details visible when the card is flipped */
 }
 
-
 /* Back content styling */
 .flip-card-back .back-content {
     z-index: 2; /* Above the blurred background */
@@ -382,6 +380,7 @@ header {
 .flip-card:hover .trending-tag {
     display: none;
 }
+
 
 /* Highlight Section Styling */
 .highlight-carousel-section {

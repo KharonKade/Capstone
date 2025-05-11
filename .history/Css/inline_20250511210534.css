@@ -139,6 +139,7 @@ header {
 
 .middle-content p {
     font-size: 1.1rem;
+    line-height: 1.8;
     color: #444;
     letter-spacing: 0.3px;
 }
