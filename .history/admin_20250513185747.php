@@ -79,7 +79,7 @@ while ($row = $result_events->fetch_assoc()) {
 }
 
 // Collect news
-$result_news = $conn_news->query("SELECT news_title AS title, created_at AS time FROM news_announcements WHERE status = 'active' AND created_at BETWEEN '$start_date' AND '$end_date'");
+$result_news = $conn_news->query("SELECT news_title AS title, publish_date AS time FROM news_announcements WHERE status = 'active' AND DATE(publish_date) BETWEEN DATE('$start_date') AND DATE('$end_date')");
 while ($row = $result_news->fetch_assoc()) {
     $activities[] = ['type' => 'News', 'title' => $row['title'], 'time' => $row['time'], 'emoji' => '📰'];
 }
