@@ -18,11 +18,20 @@ if (empty($news_title) || empty($news_content) || empty($publish_date)) {
     die("Error: Please fill all the required fields.");
 }
 
-// Insert main news data
+// Escape special characters in the inputs
+$news_title = $conn->real_escape_string($news_title);
+$news_content = $conn->real_escape_string($news_content);
+$category = $conn->real_escape_string($category);
+$publish_date = $conn->real_escape_string($publish_date);
+
+// Insert main news data using prepared statements
 $sql = "INSERT INTO news_announcements (news_title, news_content, category, publish_date) 
-        VALUES ('$news_title', '$news_content', '$category', '$publish_date')";
-if ($conn->query($sql) === TRUE) {
-    $news_id = $conn->insert_id;
+        VALUES (?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ssss", $news_title, $news_content, $category, $publish_date);
+
+if ($stmt->execute()) {
+    $news_id = $stmt->insert_id;
 
     // Check if an image was uploaded
     if (!empty($_FILES['image']['tmp_name'])) {
@@ -75,8 +84,9 @@ if ($conn->query($sql) === TRUE) {
             window.location.href = 'create_news.html'; // Redirect to admin dashboard after creation
           </script>";
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Error: " . $stmt->error;
 }
 
+$stmt->close();
 $conn->close();
 ?>

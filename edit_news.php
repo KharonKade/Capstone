@@ -44,96 +44,75 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Update news data in the database
+        // Update news data in the database using prepared statement
     $update_sql = "UPDATE news_announcements SET 
-                    news_title = '$news_title', 
-                    news_content = '$news_content', 
-                    category = '$category', 
-                    publish_date = '$publish_date'
-                    WHERE news_id = $news_id";
-    if ($conn->query($update_sql) === TRUE) {
-        // Handle image deletions if any
-        if (isset($_POST['delete_images'])) {
-            foreach ($_POST['delete_images'] as $image_id) {
-                // Delete the image from the database
-                $delete_image_sql = "SELECT image_path FROM news_images WHERE image_id = $image_id";
-                $delete_image_result = $conn->query($delete_image_sql);
-                if ($delete_image_result->num_rows > 0) {
-                    $image = $delete_image_result->fetch_assoc();
-                    // Delete the image file from the server
-                    if (file_exists($image['image_path'])) {
-                        unlink($image['image_path']);
-                    }
-                    // Delete the image record from the database
-                    $conn->query("DELETE FROM news_images WHERE image_id = $image_id");
+                    news_title = ?, 
+                    news_content = ?, 
+                    category = ?, 
+                    publish_date = ?
+                    WHERE news_id = ?";
+    $stmt = $conn->prepare($update_sql);
+    $stmt->bind_param("ssssi", $news_title, $news_content, $category, $publish_date, $news_id);
+
+    if ($stmt->execute()) {
+    // Image deletion logic...
+    if (!empty($_POST['delete_images'])) {
+        foreach ($_POST['delete_images'] as $image_id) {
+            $delete_image_sql = "SELECT image_path FROM news_images WHERE image_id = ?";
+            $stmt_img = $conn->prepare($delete_image_sql);
+            $stmt_img->bind_param("i", $image_id);
+            $stmt_img->execute();
+            $result = $stmt_img->get_result();
+
+            if ($result->num_rows > 0) {
+                $image = $result->fetch_assoc();
+                if (file_exists($image['image_path'])) {
+                    unlink($image['image_path']);
                 }
+
+                $delete_sql = "DELETE FROM news_images WHERE image_id = ?";
+                $stmt_del = $conn->prepare($delete_sql);
+                $stmt_del->bind_param("i", $image_id);
+                $stmt_del->execute();
             }
         }
-
-        // Handle image deletions if any
-        if (!empty($_POST['delete_images'])) {
-            foreach ($_POST['delete_images'] as $image_id) {
-                // Get the image path before deleting it
-                $delete_image_sql = "SELECT image_path FROM news_images WHERE image_id = ?";
-                $stmt = $conn->prepare($delete_image_sql);
-                $stmt->bind_param("i", $image_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($result->num_rows > 0) {
-                    $image = $result->fetch_assoc();
-                    // Delete the image file from the server
-                    if (file_exists($image['image_path'])) {
-                        unlink($image['image_path']);
-                    }
-
-                    // Delete the image record from the database
-                    $delete_sql = "DELETE FROM news_images WHERE image_id = ?";
-                    $stmt = $conn->prepare($delete_sql);
-                    $stmt->bind_param("i", $image_id);
-                    $stmt->execute();
-                }
-            }
-        }
-
-
-        // Handle new image uploads if any
-        if (!empty($_FILES['image']['tmp_name'])) {
-            $upload_dir = "images/uploads/";
-
-            // Ensure the directory exists
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-
-            // Handle new image uploads
-            if (is_array($_FILES['image']['tmp_name'])) {
-                foreach ($_FILES['image']['tmp_name'] as $index => $tmp_name) {
-                    $image_name = basename($_FILES['image']['name'][$index]);
-                    $image_path = $upload_dir . $image_name;
-                    if (move_uploaded_file($tmp_name, $image_path)) {
-                        // Insert the image into the database
-                        $image_sql = "INSERT INTO news_images (news_id, image_path) VALUES ('$news_id', '$image_path')";
-                        $conn->query($image_sql);
-                    }
-                }
-            } else {
-                // For single image uploads
-                $image_name = basename($_FILES['image']['name']);
-                $image_path = $upload_dir . $image_name;
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $image_path)) {
-                    // Insert the image into the database
-                    $image_sql = "INSERT INTO news_images (news_id, image_path) VALUES ('$news_id', '$image_path')";
-                    $conn->query($image_sql);
-                }
-            }
-        }
-
-        // Redirect with a success message
-        header("Location: manage_news.php?message=News item updated successfully");
-        exit();
-    } else {
-        die("Error updating news: " . $conn->error);
     }
+
+    // Image upload logic...
+    if (!empty($_FILES['image']['tmp_name'])) {
+        $upload_dir = "images/uploads/";
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+
+        if (is_array($_FILES['image']['tmp_name'])) {
+            foreach ($_FILES['image']['tmp_name'] as $index => $tmp_name) {
+                $image_name = basename($_FILES['image']['name'][$index]);
+                $image_path = $upload_dir . $image_name;
+                if (move_uploaded_file($tmp_name, $image_path)) {
+                    $image_sql = "INSERT INTO news_images (news_id, image_path) VALUES (?, ?)";
+                    $stmt_img = $conn->prepare($image_sql);
+                    $stmt_img->bind_param("is", $news_id, $image_path);
+                    $stmt_img->execute();
+                }
+            }
+        } else {
+            $image_name = basename($_FILES['image']['name']);
+            $image_path = $upload_dir . $image_name;
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $image_path)) {
+                $image_sql = "INSERT INTO news_images (news_id, image_path) VALUES (?, ?)";
+                $stmt_img = $conn->prepare($image_sql);
+                $stmt_img->bind_param("is", $news_id, $image_path);
+                $stmt_img->execute();
+            }
+        }
+    }
+
+    header("Location: manage_news.php?message=News item updated successfully");
+    exit();
+} else {
+    die("Error updating news: " . $stmt->error);
+}
 }
 
 $conn->close();
