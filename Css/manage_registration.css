@@ -142,3 +142,4 @@ body {
     .registration-container td:nth-of-type(7)::before { content: "Category"; }
     .registration-container td:nth-of-type(8)::before { content: "Actions"; }
 }
+

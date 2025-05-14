@@ -48,6 +48,7 @@ $conn->close();
     <meta charset="UTF-8">
     <title>Your Registration</title>
     <link rel="stylesheet" href="Css/manage_registration.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <div class="registration-container">
@@ -56,13 +57,12 @@ $conn->close();
             <table border="1" cellspacing="0" cellpadding="8">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Name</th><th>Email</th><th>Phone</th>
+                        <th>Name</th><th>Email</th><th>Phone</th>
                         <th>Age</th><th>Gender</th><th>Category</th><th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?= $registration['id']; ?></td>
                         <td><?= htmlspecialchars($registration['name']); ?></td>
                         <td><?= htmlspecialchars($registration['email']); ?></td>
                         <td><?= htmlspecialchars($registration['phone']); ?></td>
@@ -70,10 +70,14 @@ $conn->close();
                         <td><?= htmlspecialchars($registration['gender']); ?></td>
                         <td><?= htmlspecialchars($registration['category']); ?></td>
                         <td>
-                            <a href="edit_registration.php?id=<?= $registration['id']; ?>">Edit</a> |
-                            <a href="delete_registration.php?id=<?= $registration['id']; ?> "
-                            onclick="return confirm('Are you sure you want to delete this registration?');">
-                            Delete
+                            <a href="edit_registration.php?id=<?= $registration['id']; ?>" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            |
+                            <a href="delete_registration.php?id=<?= $registration['id']; ?>"
+                            onclick="return confirm('Are you sure you want to remove your registration?');" 
+                            title="Remove Registration">
+                                <i class="fas fa-trash-alt" style="color: red;"></i>
                             </a>
                         </td>
                     </tr>

@@ -213,6 +213,8 @@ header {
     touch-action: pan-y;
     scroll-behavior: smooth;
     padding-bottom: 10px;
+    width: 80%;
+    margin: 0 auto; /* Centers the element horizontally */
 }
 
 .news-carousel {
