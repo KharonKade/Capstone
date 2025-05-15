@@ -171,7 +171,7 @@
         <div class="carousel-container">
             <div class="carousel">
                 <?php
-                $result = $conn_content->query("SELECT id, video, title, description FROM highlight_carousel");
+                $result = $conn_content->query("SELECT id, video, title, description, views FROM highlight_carousel");
 
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -179,15 +179,14 @@
                             $title = htmlspecialchars($row["title"], ENT_QUOTES);
                             $description = htmlspecialchars($row["description"], ENT_QUOTES);
 
-                            echo '<div class="carousel-item">
+                            echo '<div class="carousel-item" data-views="' . (int)$row["views"] . '" data-id="' . $row["id"] . '">
                                 <video src="' . $video . '" autoplay muted loop
-                                    onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\')">
+                                    onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\', ' . $row["id"] . ')">
                                 </video>
                                 <div class="video-overlay">
                                     <strong>' . $title . '</strong><br>' . $description . '
                                 </div>
                             </div>';
-
                             
                             // Debugging Output
                             echo "<!-- DEBUG: ID=" . $row["id"] . ", Video=" . $video . ", Title=" . $title . ", Desc=" . $description . " -->";

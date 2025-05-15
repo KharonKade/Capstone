@@ -209,7 +209,7 @@
             <div class="video-details">
                 <h3 id="videoTitle"></h3>
                 <p id="videoDescription"></p>
-                <p id="videoViews">Views: 0</p>
+                
             </div>
         </div>
     </div>

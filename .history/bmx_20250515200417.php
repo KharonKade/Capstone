@@ -171,7 +171,7 @@
         <div class="carousel-container">
             <div class="carousel">
                 <?php
-                $result = $conn_content->query("SELECT id, video, title, description FROM highlight_carousel");
+                $result = $conn_content->query("SELECT id, video, title, description, views FROM highlight_carousel");
 
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -179,15 +179,14 @@
                             $title = htmlspecialchars($row["title"], ENT_QUOTES);
                             $description = htmlspecialchars($row["description"], ENT_QUOTES);
 
-                            echo '<div class="carousel-item">
+                            echo '<div class="carousel-item" data-views="' . (int)$row["views"] . '" data-id="' . $row["id"] . '">
                                 <video src="' . $video . '" autoplay muted loop
-                                    onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\')">
+                                    onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\', ' . $row["id"] . ')">
                                 </video>
                                 <div class="video-overlay">
                                     <strong>' . $title . '</strong><br>' . $description . '
                                 </div>
                             </div>';
-
                             
                             // Debugging Output
                             echo "<!-- DEBUG: ID=" . $row["id"] . ", Video=" . $video . ", Title=" . $title . ", Desc=" . $description . " -->";
@@ -361,34 +360,50 @@
     <script src="jsScript/videoplay.js"></script>
 
     <script>
-    function openModal(video, title, description) {
-            const modal = document.getElementById("videoModal");
-            const modalVideo = document.getElementById("modalVideo");
-            const modalTitle = document.getElementById("videoTitle");
-            const modalDescription = document.getElementById("videoDescription");
+    function openModal(video, title, description, videoId, currentViews) {
+        const modal = document.getElementById("videoModal");
+        const modalVideo = document.getElementById("modalVideo");
+        const modalTitle = document.getElementById("videoTitle");
+        const modalDescription = document.getElementById("videoDescription");
+        const modalViews = document.getElementById("videoViews");
 
-            // Show the modal
-            modal.style.opacity = "1";
-            modal.style.visibility = "visible";
-            
-            // Set the modal video source
-            modalVideo.src = video.src;
+        // Show the modal
+        modal.style.opacity = "1";
+        modal.style.visibility = "visible";
 
-            // Set the title and description in the modal
-            modalTitle.innerText = title;
-            modalDescription.innerText = description;
-        }
+        // Set content
+        modalVideo.src = video.src;
+        modalTitle.innerText = title;
+        modalDescription.innerText = description;
+        modalViews.innerText = `Views: ${currentViews}`;
 
-        // Close modal when clicking the close button
-        document.getElementById("closeModalBtn").addEventListener("click", function () {
-            const modal = document.getElementById("videoModal");
-            const modalVideo = document.getElementById("modalVideo");
+        // Update view count via AJAX
+        fetch('update_view_count.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ videoId: videoId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.newViews !== undefined) {
+                modalViews.innerText = `Views: ${data.newViews}`;
+            }
+        })
+        .catch(err => console.error('View count update failed:', err));
+    }
 
-            modal.style.opacity = "0";
-            modal.style.visibility = "hidden";
-            modalVideo.pause(); // Pause video when closing modal
-            modalVideo.src = ""; // Reset video source
-        });
+    // Close modal
+    document.getElementById("closeModalBtn").addEventListener("click", function () {
+        const modal = document.getElementById("videoModal");
+        const modalVideo = document.getElementById("modalVideo");
+
+        modal.style.opacity = "0";
+        modal.style.visibility = "hidden";
+        modalVideo.pause();
+        modalVideo.src = "";
+    });
     
         function initializePlayerSlides() {
             const slides = document.querySelectorAll('.slides');

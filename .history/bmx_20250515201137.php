@@ -171,7 +171,7 @@
         <div class="carousel-container">
             <div class="carousel">
                 <?php
-                $result = $conn_content->query("SELECT id, video, title, description FROM highlight_carousel");
+                $result = $conn_content->query("SELECT id, video, title, description, views FROM highlight_carousel");
 
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
