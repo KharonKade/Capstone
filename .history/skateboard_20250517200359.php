@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bmx Page</title>
-    <link rel="stylesheet" href="Css/bmx.css">
+    <title>Skateboard Page</title>
+    <link rel="stylesheet" href="Css/skateboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>BMX</h1>
+            <h1>SkateBoard</h1>
         </div>
     </section>
 
@@ -35,7 +35,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname_content = "basf_content_bmx";
+    $dbname_content = "basf_content_skateboard";
     $dbname_events = "basf_events";
 
     $conn_content = new mysqli($servername, $username, $password, $dbname_content);
@@ -46,8 +46,8 @@
     }
     ?>
 
-    <section class="bmx-container">
-        <div class="bmx-content animate-on-scroll">
+    <section class="skateboard-container">
+        <div class="skateboard-content animate-on-scroll">
             <div class="middle-content">
                 <h2 id="about-us"><i class="fas fa-info-circle"></i> About Us</h2>
                 <div id="text">
@@ -76,7 +76,7 @@
         <div class="event-filter animate-on-scroll">
             <select id="categoryFilter">
                 <option value="all">All Categories</option>
-                <option value="bmx">BMX</option>
+                <option value="skateboard">Skateboard</option>
             </select>
 
             <select id="dateFilter">
@@ -106,12 +106,12 @@
                 event_images i ON e.id = i.event_id
             WHERE 
                 e.status = 'active'   
-                AND (e.category = 'All' OR e.category = 'BMX')
+                AND (e.category = 'All' OR e.category = 'Skateboard')  -- Filter category
             GROUP BY 
                 e.id
             ORDER BY 
                 e.id DESC";
-
+            
             $result = $conn_events->query($sql);
 
             if ($result->num_rows > 0) {
@@ -178,17 +178,14 @@
                             $video = htmlspecialchars($row["video"], ENT_QUOTES);
                             $title = htmlspecialchars($row["title"], ENT_QUOTES);
                             $description = htmlspecialchars($row["description"], ENT_QUOTES);
-                            $source = 'bmx';
 
                             echo '<div class="carousel-item">
-                                <video 
+                                 <video 
                                     src="' . $video . '" 
                                     autoplay muted loop
                                     data-id="' . $row["id"] . '"
-                                    data-source="' . $source . '"
                                     onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\')">
                                 </video>
-
                                 <div class="video-overlay">
                                     <strong>' . $title . '</strong><br>' . $description . '
                                 </div>
@@ -213,13 +210,8 @@
             <button class="close-btn" id="closeModalBtn">&times;</button>
             <video id="modalVideo" controls autoplay></video>
             <div class="video-details">
-                <div class="video-info-left">
-                    <h3 id="videoTitle"></h3>
-                    <p id="videoDescription"></p>
-                </div>
-                <div class="video-views-right">
-                    <p id="videoViews">Views: 0</p>
-                </div>
+                <h3 id="videoTitle"></h3>
+                <p id="videoDescription"></p>
             </div>
         </div>
     </div>
@@ -239,7 +231,7 @@
                         <h1>' . $row["name"] . '</h1>
                         <p>' . $row["description"] . '</p>
                         <button class="explore-btn">
-                            <a href="playerPage.php?id=' . $row['id'] . '">Check this out</a>
+                            <a href="playerPage.php?id=' . $row['id'] . '">Check This Out</a>
                         </button>
                     </div>
                   </div>';            
@@ -366,52 +358,56 @@
         </div>
     </footer>
 
+
     <script src="jsScript/players.js"></script>
     <script src="jsScript/event.js"></script>
     <script src="jsScript/videoplay.js"></script>
 
     <script>
         function openModal(video, title, description) {
-        const modal = document.getElementById("videoModal");
-        const modalVideo = document.getElementById("modalVideo");
-        const modalTitle = document.getElementById("videoTitle");
-        const modalDescription = document.getElementById("videoDescription");
-        const modalViews = document.getElementById("videoViews");
+            const modal = document.getElementById("videoModal");
+            const modalVideo = document.getElementById("modalVideo");
+            const modalTitle = document.getElementById("videoTitle");
+            const modalDescription = document.getElementById("videoDescription");
+            const modalViews = document.getElementById("videoViews");
 
-        const videoId = video.dataset.id;
-        const source = video.dataset.source; // <-- Get the video source type
+            // Get video ID from dataset
+            const videoId = video.dataset.id;
 
-        modal.style.opacity = "1";
-        modal.style.visibility = "visible";
+            // Show the modal
+            modal.style.opacity = "1";
+            modal.style.visibility = "visible";
 
-        modalVideo.src = video.src;
-        modalTitle.innerText = title;
-        modalDescription.innerText = description;
+            // Set the modal video source
+            modalVideo.src = video.src;
 
-        // Fetch and update views
-        fetch('update_video_views.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: 'id=' + encodeURIComponent(videoId) + '&source=' + encodeURIComponent(source)
-        })
-        .then(response => response.text())
-        .then(viewCount => {
-            modalViews.innerText = "Views: " + viewCount;
+            // Set title and description
+            modalTitle.innerText = title;
+            modalDescription.innerText = description;
+
+            // Fetch and update views
+            fetch('update_video_views.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'id=' + encodeURIComponent(videoId)
+            })
+            .then(response => response.text())
+            .then(viewCount => {
+                modalViews.innerText = "Views: " + viewCount;
+            });
+        }
+
+        // Close modal
+        document.getElementById("closeModalBtn").addEventListener("click", function () {
+            const modal = document.getElementById("videoModal");
+            const modalVideo = document.getElementById("modalVideo");
+
+            modal.style.opacity = "0";
+            modal.style.visibility = "hidden";
+            modalVideo.pause();
+            modalVideo.src = "";
         });
-    }
 
-    // Close modal
-    document.getElementById("closeModalBtn").addEventListener("click", function () {
-        const modal = document.getElementById("videoModal");
-        const modalVideo = document.getElementById("modalVideo");
-
-        modal.style.opacity = "0";
-        modal.style.visibility = "hidden";
-        modalVideo.pause();
-        modalVideo.src = "";
-    });
-
-    
         function initializePlayerSlides() {
             const slides = document.querySelectorAll('.slides');
             const prevBtn = document.querySelector('.prev');

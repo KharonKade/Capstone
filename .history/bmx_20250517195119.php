@@ -178,17 +178,14 @@
                             $video = htmlspecialchars($row["video"], ENT_QUOTES);
                             $title = htmlspecialchars($row["title"], ENT_QUOTES);
                             $description = htmlspecialchars($row["description"], ENT_QUOTES);
-                            $source = 'bmx';
 
                             echo '<div class="carousel-item">
                                 <video 
                                     src="' . $video . '" 
                                     autoplay muted loop
                                     data-id="' . $row["id"] . '"
-                                    data-source="' . $source . '"
                                     onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\')">
                                 </video>
-
                                 <div class="video-overlay">
                                     <strong>' . $title . '</strong><br>' . $description . '
                                 </div>
@@ -213,13 +210,9 @@
             <button class="close-btn" id="closeModalBtn">&times;</button>
             <video id="modalVideo" controls autoplay></video>
             <div class="video-details">
-                <div class="video-info-left">
-                    <h3 id="videoTitle"></h3>
-                    <p id="videoDescription"></p>
-                </div>
-                <div class="video-views-right">
-                    <p id="videoViews">Views: 0</p>
-                </div>
+                <h3 id="videoTitle"></h3>
+                <p id="videoDescription"></p>
+                <p id="videoViews">Views: 0</p>
             </div>
         </div>
     </div>
@@ -371,20 +364,24 @@
     <script src="jsScript/videoplay.js"></script>
 
     <script>
-        function openModal(video, title, description) {
+    function openModal(video, title, description) {
         const modal = document.getElementById("videoModal");
         const modalVideo = document.getElementById("modalVideo");
         const modalTitle = document.getElementById("videoTitle");
         const modalDescription = document.getElementById("videoDescription");
         const modalViews = document.getElementById("videoViews");
 
+        // Get video ID from dataset
         const videoId = video.dataset.id;
-        const source = video.dataset.source; // <-- Get the video source type
 
+        // Show the modal
         modal.style.opacity = "1";
         modal.style.visibility = "visible";
 
+        // Set the modal video source
         modalVideo.src = video.src;
+
+        // Set title and description
         modalTitle.innerText = title;
         modalDescription.innerText = description;
 
@@ -392,7 +389,7 @@
         fetch('update_video_views.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: 'id=' + encodeURIComponent(videoId) + '&source=' + encodeURIComponent(source)
+            body: 'id=' + encodeURIComponent(videoId)
         })
         .then(response => response.text())
         .then(viewCount => {

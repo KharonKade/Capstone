@@ -178,7 +178,6 @@
                             $video = htmlspecialchars($row["video"], ENT_QUOTES);
                             $title = htmlspecialchars($row["title"], ENT_QUOTES);
                             $description = htmlspecialchars($row["description"], ENT_QUOTES);
-                            $source = 'bmx';
 
                             echo '<div class="carousel-item">
                                 <video 
@@ -213,13 +212,9 @@
             <button class="close-btn" id="closeModalBtn">&times;</button>
             <video id="modalVideo" controls autoplay></video>
             <div class="video-details">
-                <div class="video-info-left">
-                    <h3 id="videoTitle"></h3>
-                    <p id="videoDescription"></p>
-                </div>
-                <div class="video-views-right">
-                    <p id="videoViews">Views: 0</p>
-                </div>
+                <h3 id="videoTitle"></h3>
+                <p id="videoDescription"></p>
+                <p id="videoViews">Views: 0</p>
             </div>
         </div>
     </div>
