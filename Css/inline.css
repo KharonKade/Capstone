@@ -500,6 +500,7 @@ header {
 
 /* Overlay content */
 .video-overlay {
+    pointer-events: none; /* Allow click to pass through */
     position: absolute;
     bottom: 0;
     background: rgba(0, 0, 0, 0.7);
@@ -576,8 +577,10 @@ header {
     align-items: center;
     opacity: 0;
     visibility: hidden;
+    overflow: auto; /* Make modal scrollable */
     transition: opacity 0.3s, visibility 0.3s;
     z-index: 20;
+     padding: 40px 20px;
   }
   
   .video-modal.active {
@@ -598,10 +601,11 @@ header {
   
   .video-modal-content video {
     width: 100%;
-    max-width: 600px;
-    height: auto;
+    max-width: 90vw;
+    max-height: 80vh; /* Prevent vertical overflow */
+    object-fit: contain; /* Keep entire video visible */
     margin-bottom: 20px;
-  }
+}
   
   .video-details {
   display: flex;

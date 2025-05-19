@@ -10,12 +10,14 @@ body {
 /* Header Section */
 .player-header {
     position: relative;
+    width: 100%;
     height: 300px;
+    background-size: cover;
+    background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    color: #fff;
+    text-align: center;
 }
 
 .player-header::before {
@@ -135,6 +137,11 @@ h2 {
     padding: 40px;
 }
 
+.gallery-item {
+    text-align: center;
+    padding: 10px;
+}
+
 .gallery-container {
     display: flex;
     justify-content: center;
@@ -143,12 +150,24 @@ h2 {
 }
 
 .gallery img {
-    width: 200px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px; /* or 400px */
+    height: 225px; /* maintain 4:3 aspect ratio or adjust as needed */
+    object-fit: contain;
 }
+
+.gallery-description {
+    max-width: 300px; /* match the image width */
+    word-wrap: break-word;
+    white-space: normal;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
 
 .return-container {
     text-align: center;

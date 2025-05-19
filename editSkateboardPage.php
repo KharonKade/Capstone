@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Event</title>
+    <title>Skate Board Page</title>
     <link rel="stylesheet" href="Css/editSkateboardPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -63,7 +63,7 @@
                     <i class="fa fa-edit"></i> Edit
                 </button>
 
-                <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus.php">
+                <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus_skateboard.php">
                     <textarea name="about_us" id="about_us_editor"><?php echo htmlspecialchars($aboutUsContent); ?></textarea>
                     <button type="submit" style="display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
                         <i class="fa fa-check"></i> Update
@@ -79,7 +79,7 @@
                 <button onclick="showAddForm('addHighlightForm')">
                     <i class="fa fa-plus"></i> Add Highlight
                 </button>
-                <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight_bmx.php" enctype="multipart/form-data">
+                <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight_skateboard.php" enctype="multipart/form-data">
                     <input type="file" name="video" required>
                     <input type="text" name="title" placeholder="Title" required>
                     <textarea name="description" placeholder="Description" required></textarea>
@@ -112,7 +112,7 @@
                                     <a href='#' onclick=\"toggleEditForm('editRow{$row['id']}')\" class='edit-link' title='Edit'>
                                         <i class='fa fa-edit'></i> 
                                     </a> |
-                                    <a href='handle_highlight_bmx.php?delete_id={$row['id']}' class='remove-link'  title='Delete' onclick='return confirm(\"Are you sure?\")'>
+                                    <a href='handle_highlight_skateboard.php?delete_id={$row['id']}' class='remove-link'  title='Delete' onclick='return confirm(\"Are you sure?\")'>
                                         <i class='fa fa-trash'></i> 
                                     </a>
                                 </td>";
@@ -369,7 +369,7 @@
                     <i class="fa fa-user-plus"></i> Add Leader
                 </button>
 
-                <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders_bmx.php" enctype="multipart/form-data">
+                <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders_skateboard.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="role" placeholder="Role" required>
                     <input type="file" name="image" required>
@@ -414,7 +414,7 @@
                                             </a>
                                         </form>
                                     </div>
-                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders_bmx.php" enctype="multipart/form-data">
+                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders_skateboard.php" enctype="multipart/form-data">
                                         <input type="hidden" name="edit_id" value="' . $row['id'] . '">
                                         <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
                                         <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
@@ -443,7 +443,7 @@
                     <i class="fa fa-handshake"></i> Add Partner
                 </button>
 
-                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships_bmx.php" enctype="multipart/form-data">
+                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships_skateboard.php" enctype="multipart/form-data">
                     <input type="file" name="logo" required>
                     <button type="submit" style="padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
                         <i class="fa fa-plus"></i> Add
@@ -469,7 +469,7 @@
                                 echo '<tr>';
                                 echo '<td>' . htmlspecialchars($logoFileName) . '</td>';
                                 echo '<td>
-                                        <form method="POST" action="handle_partnerships_bmx.php" style="margin: 0;">
+                                        <form method="POST" action="handle_partnerships_skateboard.php" style="margin: 0;">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
                                             <button type="submit" name="delete" style="display: none;"></button>
                                             <a href="javascript:void(0);" onclick="this.closest(\'form\').querySelector(\'button[type=submit]\').click();" title="Remove">
