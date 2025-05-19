@@ -152,7 +152,7 @@
                 </button>
                 
                 <!-- Add Athlete Form -->
-                <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes_bmx.php" enctype="multipart/form-data">
+                <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes_skateboard.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Athlete Name" required>
                     <textarea name="bio" placeholder="Bio" required></textarea>
                     <textarea name="description" placeholder="Description" required></textarea>

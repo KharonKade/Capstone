@@ -14,8 +14,8 @@
         <nav class="sidebar">
             <h2>Admin Dashboard</h2>
             <ul>
-                <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="create_event.html.html"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="create_event.html"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
                 <li><a href="manage_upcoming.php"><i class="fas fa-calendar-check"></i> Manage Events</a></li>
                 <li><a href="archived_events.php"><i class="fas fa-archive"></i> Archived Events</a></li>
                 <li><a href="create_news.html"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
@@ -47,32 +47,48 @@
             ?>
             <h2>Manage Inline Page</h2>
             <section>
-                    <label>About Us:</label>
-                    <?php
-                    $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
-                    if ($row = $result->fetch_assoc()) {
-                        echo '<p class="wrapped-text">' . $row['content'] . '</p>';
-                    } else {
-                        echo "<p>About Us content not found.</p>";
-                    }
-                    ?>
-                    <button onclick="showEditForm('aboutUsForm')">Edit</button>
-                    <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus.php">
-                        <textarea name="about_us" required></textarea>
-                        <button type="submit">Update</button>
-                        <button type="button" onclick="hideForm('aboutUsForm')">Cancel</button>
-                    </form>
+                <label>About Us:</label>
+                <?php
+                $result = $conn_content->query("SELECT content FROM content WHERE section='about_us'");
+                $aboutUsContent = "";
+                if ($row = $result->fetch_assoc()) {
+                    $aboutUsContent = $row['content'];
+                    echo '<p class="wrapped-text">' . $row['content'] . '</p>';
+                } else {
+                    echo "<p>About Us content not found.</p>";
+                }
+                ?>
+                
+                <button onclick="showEditForm('aboutUsForm')" style="display: inline-block; padding: 10px; background-color: #C76E00; color: white; border-radius: 5px;">
+                    <i class="fa fa-edit"></i> Edit
+                </button>
+
+                <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus.php">
+                    <textarea name="about_us" id="about_us_editor"><?php echo htmlspecialchars($aboutUsContent); ?></textarea>
+                    <button type="submit" style="display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
+                        <i class="fa fa-check"></i> Update
+                    </button>
+                    <button type="button" onclick="hideForm('aboutUsForm')" style="display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;">
+                        <i class="fa fa-times"></i> Cancel
+                    </button>
+                </form>
             </section>
 
             <section>
                 <label>Highlight Carousel</label>
-                <button onclick="showAddForm('addHighlightForm')">Add Highlight</button>
-                <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight.php" enctype="multipart/form-data">
+                <button onclick="showAddForm('addHighlightForm')">
+                    <i class="fa fa-plus"></i> Add Highlight
+                </button>
+                <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight_bmx.php" enctype="multipart/form-data">
                     <input type="file" name="video" required>
                     <input type="text" name="title" placeholder="Title" required>
                     <textarea name="description" placeholder="Description" required></textarea>
-                    <button type="submit">Add</button>
-                    <button type="button" onclick="hideForm('addHighlightForm')">Cancel</button>
+                    <button type="submit" style="display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
+                        <i class="fa fa-check"></i> Add
+                    </button>
+                    <button type="button" onclick="hideForm('addHighlightForm')" style="display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;">
+                        <i class="fa fa-times"></i> Cancel
+                    </button>
                 </form>
 
                 <table border="1">
@@ -93,8 +109,12 @@
                             echo "<td>{$row['title']}</td>";
                             echo "<td>{$row['description']}</td>";
                             echo "<td>
-                                    <button onclick=\"toggleEditForm('editRow{$row['id']}')\">Edit</button>
-                                    <button class='remove' onclick='deleteItem(\"handle_highlight.php?delete_id={$row['id']}\")'>Remove</button>
+                                    <a href='#' onclick=\"toggleEditForm('editRow{$row['id']}')\" class='edit-link' title='Edit'>
+                                        <i class='fa fa-edit'></i> 
+                                    </a> |
+                                    <a href='handle_highlight_bmx.php?delete_id={$row['id']}' class='remove-link'  title='Delete' onclick='return confirm(\"Are you sure?\")'>
+                                        <i class='fa fa-trash'></i> 
+                                    </a>
                                 </td>";
                             
                             // Edit form in a separate row
@@ -108,8 +128,12 @@
                                         <input type='text' name='title' value='{$row['title']}' required>
                                         <h3>Description:</h3>
                                         <textarea name='description' required>{$row['description']}</textarea>
-                                        <button type='submit'>Update</button>
-                                        <button type='button' onclick=\"toggleEditForm('editRow{$row['id']}')\">Cancel</button>
+                                        <button type='submit' style='display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;'>
+                                            <i class='fa fa-check'></i> Update
+                                        </button>
+                                        <button type='button' onclick=\"toggleEditForm('editRow{$row['id']}')\" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>
+                                            <i class='fa fa-times'></i> Cancel
+                                        </button>
                                     </form>
                                 </td>";
                             echo "</tr>";
@@ -123,7 +147,9 @@
 
             <section>
                 <label>Top Athletes:</label>
-                <button onclick="showAddForm('addAthleteForm')" style="margin-bottom: 20px";>Add Athlete</button>
+                <button onclick="showAddForm('addAthleteForm')" style="margin-bottom: 20px;">
+                    <i class="fa fa-plus"></i> Add Athlete
+                </button>
                 
                 <!-- Add Athlete Form -->
                 <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes.php" enctype="multipart/form-data">
@@ -144,7 +170,9 @@
                             <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
                         </div>
                     </div>
-                    <button type="button" onclick="addNewAchievement()">+ Add More Achievements</button>
+                    <button type="button" onclick="addNewAchievement()">
+                        <i class="fa fa-trophy"></i> + Add More Achievements
+                    </button>
 
                     <!-- Gallery -->
                     <h3>Gallery</h3>
@@ -155,11 +183,17 @@
                             <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
                         </div>
                     </div>
-                    <button type="button" onclick="addNewGalleryImage()">+ Add More Images</button>
+                    <button type="button" onclick="addNewGalleryImage()">
+                        <i class="fa fa-image"></i> + Add More Images
+                    </button>
                     
                     <div class = "button-container">
-                    <button type="submit">Add</button>
-                    <button type="button" onclick="hideForm('addAthleteForm')">Cancel</button>
+                    <button type="submit" style="display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
+                        <i class="fa fa-check"></i> Add
+                    </button>
+                    <button type="button" onclick="hideForm('addAthleteForm')" style="display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;">
+                        <i class="fa fa-times"></i> Cancel
+                    </button>
                     </div>
                 </form>
 
@@ -235,8 +269,12 @@
 
                     // Edit Athlete Form
                     echo "<div class='edit-button'>";
-                    echo "<button onclick=\"showEditForm('editAthleteForm{$row['id']}')\">Edit</button>";
-                    echo "<button class='remove' onclick=\"confirmDelete({$row['id']})\">Delete</button>"; // Added delete button
+                    echo "<button onclick=\"showEditForm('editAthleteForm{$row['id']}')\" style='display: inline-block; padding: 10px; background-color: #C76E00; color: white; border-radius: 5px;'>
+                            <i class='fa fa-edit'></i> Edit
+                        </button>";
+                    echo "<button class='remove' onclick=\"confirmDelete({$row['id']})\" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>
+                            <i class='fa fa-trash'></i> Delete
+                        </button>"; // Added delete button
                     echo "</div>";
                     echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes.php' enctype='multipart/form-data'>";
                     echo "<input type='hidden' name='edit_id' value='{$row['id']}'>";
@@ -260,12 +298,16 @@
                         echo "<input type='hidden' name='achievement_ids[]' value='{$ach['id']}'>";
                         echo "<input type='text' name='achievements[]' value='{$ach['title']}' required>";
                         echo "<textarea name='achievements_descriptions[]' required>{$ach['description']}</textarea>";
-                        echo "<button class='remove' type='button' onclick=\"removeAchievement('achievement-{$ach['id']}')\">Remove</button>";
+                        echo "<button class='remove' type='button' onclick=\"removeAchievement('achievement-{$ach['id']}')\">
+                            <i class='fa fa-trash'></i> Remove
+                        </button>";
                         echo "</div>";
                     }
                     echo "</div>";
                     echo "<div class='edit-button'>";
-                    echo "<button type='button' onclick=\"addAchievement('achievements-container-{$row['id']}')\">+ Add More Achievements</button>";
+                    echo "<button type='button' onclick=\"addAchievement('achievements-container-{$row['id']}')\">
+                        <i class='fa fa-plus'></i> Add More Achievements
+                    </button>";
                     echo "</div>";
 
                     // Gallery Section
@@ -281,21 +323,28 @@
                         echo "<input type='hidden' name='gallery_existing_images[]' value='{$img['image']}'>"; 
                         echo "<input type='file' name='athlete_gallery[]'>"; 
                         echo "<textarea name='gallery_descriptions[]' required>{$img['description']}</textarea>";
-                        echo "<button class='remove' type='button' onclick=\"removeGalleryImage('gallery-{$img['id']}', '{$row['id']}')\">Remove</button>";
+                        echo "<button class='remove' type='button' onclick=\"removeGalleryImage('gallery-{$img['id']}', '{$row['id']}')\">
+                                <i class='fa fa-trash'></i> Remove
+                            </button>";
                         echo "</div>";
                         
                     }
                     echo "</div>";
                     echo "<div class='edit-button'>";
-                    echo "<button type='button' onclick=\"addGalleryImage('gallery-container-{$row['id']}')\">+ Add More Images</button>";
+                    echo "<button type='button' onclick=\"addGalleryImage('gallery-container-{$row['id']}')\">
+                            <i class='fa fa-plus'></i> Add More Images
+                        </button>";
                     echo "</div>";
 
                     echo "<div class='button-container'>";
-                    echo "<button type='submit'>Update</button>";
-                    echo "<button type='button' onclick=\"hideForm('editAthleteForm{$row['id']}')\">Cancel</button>";
+                    echo "<button type='submit' style='display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;'>
+                            <i class='fa fa-check'></i> Update
+                        </button>";
+                    echo "<button type='button' onclick=\"hideForm('editAthleteForm{$row['id']}')\" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>
+                            <i class='fa fa-times'></i> Cancel
+                        </button>";
                     echo "</div>";
                     echo "</form></div>";
-
                 }
                 ?>
                 <div class="pagination">
@@ -313,20 +362,22 @@
                 </div>
             </section>
 
-
-
-
-
             <section>
                 <label class="section-heading">Community Leaders:</label>
-                <button onclick="toggleForm('addLeaderForm')">Add Leader</button>
+                <button onclick="toggleForm('addLeaderForm')">
+                    <i class="fa fa-user-plus"></i> Add Leader
+                </button>
 
-                <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
+                <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders_bmx.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="role" placeholder="Role" required>
                     <input type="file" name="image" required>
-                    <button type="submit">Add</button>
-                    <button type="button" onclick="hideForm('addLeaderForm')">Cancel</button>
+                    <button type="submit" style="display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
+                        <i class="fa fa-plus"></i> Add
+                    </button>
+                    <button type="button" onclick="hideForm('addLeaderForm')" style="display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;">
+                        <i class="fa fa-times"></i> Cancel
+                    </button>
                 </form>
 
                 <table border="1">
@@ -350,19 +401,29 @@
                                 echo '<td style="word-wrap: break-word; white-space: normal; max-width: 200px;">' . htmlspecialchars($row["role"]) . '</td>';
                                 echo '<td>
                                     <div style="display: flex; align-items: center; gap: 5px;">
-                                        <button onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" style="height: 36px;">Edit</button>
-                                        <form method="POST" action="handle_leaders.php" style="margin: 0;">
+                                        <a href="javascript:void(0);" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" title="Edit">
+                                            <i class="fa fa-edit"></i>
+                                        </a> |
+                                         <form id="remove-form-' . $row['id'] . '" method="POST" action="handle_leaders_bmx.php" style="margin: 0; display: inline;">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete" style="height: 36px;">Remove</button>
+                                            <input type="hidden" name="delete" value="1">
+                                            <!-- Remove link with JavaScript for form submission -->
+                                            <a href="javascript:void(0);" onclick="document.getElementById(\'remove-form-' . $row['id'] . '\').submit();" title="Remove" >
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         </form>
                                     </div>
-                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
+                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders_bmx.php" enctype="multipart/form-data">
                                         <input type="hidden" name="edit_id" value="' . $row['id'] . '">
                                         <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
                                         <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
                                         <input type="file" name="image" style="width: 90%;">
-                                        <button type="submit">Update</button>
-                                        <button type="button" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')">Cancel</button>
+                                        <button type="submit" style="display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
+                                            <i class="fa fa-check"></i> Update
+                                        </button>
+                                        <button type="button" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\');" style="display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;">
+                                            <i class="fa fa-times"></i> Cancel
+                                        </button>
                                     </form>
                                 </td>';
                                 echo '</tr>';
@@ -375,17 +436,20 @@
                 </table>
             </section>
 
-
-
-
             <section>
                 <label>Partners & Sponsors:</label>
-                <button onclick="toggleForm('addPartnerForm')">Add Partner</button>
+                <button onclick="toggleForm('addPartnerForm')">
+                    <i class="fa fa-handshake"></i> Add Partner
+                </button>
 
-                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships.php" enctype="multipart/form-data">
+                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships_bmx.php" enctype="multipart/form-data">
                     <input type="file" name="logo" required>
-                    <button type="submit">Add</button>
-                    <button type="button" onclick="hideForm('addPartnerForm')">Cancel</button>
+                    <button type="submit" style="padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
+                        <i class="fa fa-plus"></i> Add
+                    </button>
+                    <button type="button" onclick="hideForm('addPartnerForm')" style="padding: 10px; background-color: #f44336; color: white; border-radius: 5px;">
+                        <i class="fa fa-times"></i> Cancel
+                    </button>
                 </form>
 
                 <table border="1">
@@ -404,9 +468,12 @@
                                 echo '<tr>';
                                 echo '<td>' . htmlspecialchars($logoFileName) . '</td>';
                                 echo '<td>
-                                        <form method="POST" action="handle_partnerships.php">
+                                        <form method="POST" action="handle_partnerships_bmx.php" style="margin: 0;">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <button type="submit" name="delete">Remove</button>
+                                            <button type="submit" name="delete" style="display: none;"></button>
+                                            <a href="javascript:void(0);" onclick="this.closest(\'form\').querySelector(\'button[type=submit]\').click();" title="Remove">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         </form>
                                     </td>';
                                 echo '</tr>';
@@ -421,6 +488,30 @@
 
 
             <script>
+            let editorInstance;
+
+            ClassicEditor
+            .create(document.querySelector('#about_us_editor'))
+            .then(editor => {
+                // Show the textarea once CKEditor is fully initialized
+                editor.ui.view.editable.element.parentElement.style.display = 'block';
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+
+            // Listen for form submission and sync the editor content
+            document.querySelector('form').addEventListener('submit', function (e) {
+                try {
+                    if (editorInstance) {
+                        document.querySelector('#description').value = editorInstance.getData();
+                    }
+                } catch (error) {
+                    console.error("CKEditor content sync failed:", error);
+                }
+            });
+
             function showEditForm(id) {
                 document.getElementById(id).style.display = 'block';
             }
@@ -469,7 +560,7 @@
                 newAchievement.innerHTML = `
                     <input type="text" name="achievements[]" placeholder="Achievement Title" required>
                     <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                    <button type="button" onclick="this.parentNode.remove()">Remove</button>
+                    <button type="button" onclick="this.parentNode.remove()" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>Remove</button>
                 `;
                 container.appendChild(newAchievement);
             }
@@ -478,11 +569,11 @@
                 const container = document.getElementById('gallery-container');
                 if (!container) return;
                 const newGalleryItem = document.createElement('div');
-                newGalleryItem.classList.add('gallery-item');
+                newGalleryItem.classList.add('new-gallery-item');
                 newGalleryItem.innerHTML = `
                     <input type="file" name="athlete_gallery[]" accept="image/*" required>
                     <textarea name="gallery_descriptions[]" placeholder="Enter description for this image." required></textarea>
-                    <button type="button" onclick="this.parentNode.remove()">Remove</button>
+                    <button type="button" onclick="this.parentNode.remove()" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>Remove</button>
                 `;
                 container.appendChild(newGalleryItem);
             }
@@ -550,7 +641,7 @@
                         <input type="hidden" name="achievement_ids[]" value="new">
                         <input type="text" name="achievements[]" placeholder="Title" required>
                         <textarea name="achievements_descriptions[]" placeholder="Description" required></textarea>
-                        <button type="button" onclick="removeAchievement('${uniqueId}')">Remove</button>
+                        <button type="button" onclick="removeAchievement('${uniqueId}')" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>Remove</button>
                     `;
                     container.appendChild(newAchievement);
                 };
@@ -565,13 +656,13 @@
                     }
                     let uniqueId = `new-gallery-${Date.now()}`;
                     let newImageDiv = document.createElement("div");
-                    newImageDiv.classList.add("gallery-item");
+                    newImageDiv.classList.add("gallery-item", "edit-gallery-item");
                     newImageDiv.id = uniqueId;
                     newImageDiv.innerHTML = `
                         <input type="hidden" name="gallery_existing_ids[]" value="new">
                         <input type="file" name="athlete_gallery[]" accept="image/*" required>
                         <textarea name="gallery_descriptions[]" placeholder="Image Description" required></textarea>
-                        <button type="button" onclick="removeGalleryImage('${uniqueId}', '${containerId}')">Remove</button>
+                        <button type="button" onclick="removeGalleryImage('${uniqueId}', '${containerId}')" style='display: inline-block; padding: 10px; background-color: #f44336; color: white; border-radius: 5px;'>Remove</button>
                     `;
                     container.appendChild(newImageDiv);
                 };
