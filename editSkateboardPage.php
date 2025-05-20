@@ -405,7 +405,7 @@
                                         <a href="javascript:void(0);" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a> |
-                                         <form id="remove-form-' . $row['id'] . '" method="POST" action="handle_leaders_bmx.php" style="margin: 0; display: inline;">
+                                         <form id="remove-form-' . $row['id'] . '" method="POST" action="handle_leaders_skateboard.php" style="margin: 0; display: inline;">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
                                             <input type="hidden" name="delete" value="1">
                                             <!-- Remove link with JavaScript for form submission -->
@@ -671,7 +671,7 @@
 
             function confirmDelete(athleteId) {
                 if (confirm('Are you sure you want to delete this athlete? This action cannot be undone.')) {
-                    window.location.href = 'handle_athletes.php?delete_id=' + athleteId;
+                    window.location.href = 'handle_athletes_skateboard.php?delete_id=' + athleteId;
                 }
             }
 

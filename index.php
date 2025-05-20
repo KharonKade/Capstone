@@ -118,9 +118,7 @@
         <h2>In Partnership With</h2>
         <div class="partner-logos">
             <img src="images/vanlogo.png" alt="Partner 1" class="partner-logo">
-            <img src="images/vanlogo.png" alt="Partner 2" class="partner-logo">
-            <img src="images/vanlogo.png" alt="Partner 3" class="partner-logo">
-            <img src="images/vanlogo.png" alt="Partner 4" class="partner-logo">
+            <img src="images/sk.jpg" alt="Partner 2" class="partner-logo">
         </div>
     </section>
 

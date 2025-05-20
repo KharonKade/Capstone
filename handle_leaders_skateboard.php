@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "basf_content_bmx";
+$dbname = "basf_content_skateboard";
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["name"]) && !isset($_POST["edit_id"])) {
     // Insert new record

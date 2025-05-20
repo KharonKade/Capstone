@@ -674,7 +674,7 @@
 
             function confirmDelete(athleteId) {
                 if (confirm('Are you sure you want to delete this athlete? This action cannot be undone.')) {
-                    window.location.href = 'handle_athletes.php?delete_id=' + athleteId;
+                    window.location.href = 'handle_athletes_bmx.php?delete_id=' + athleteId;
                 }
             }
 

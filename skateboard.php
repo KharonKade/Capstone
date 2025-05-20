@@ -178,10 +178,10 @@
                             $video = htmlspecialchars($row["video"], ENT_QUOTES);
                             $title = htmlspecialchars($row["title"], ENT_QUOTES);
                             $description = htmlspecialchars($row["description"], ENT_QUOTES);
-                            $source = 'skateboard';
+                            $source = 'inline';
 
                             echo '<div class="carousel-item">
-                                 <video 
+                                <video 
                                     src="' . $video . '" 
                                     autoplay muted loop
                                     data-id="' . $row["id"] . '"
@@ -189,7 +189,7 @@
                                     onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\')">
                                 </video>
                                 <div class="video-overlay">
-                                    <strong>' . $title . '</strong><br>' . $description . '
+                                    <strong>' . $title . '</strong>
                                 </div>
                             </div>';
 
@@ -210,7 +210,9 @@
     <div class="video-modal" id="videoModal">
         <div class="video-modal-content">
             <button class="close-btn" id="closeModalBtn">&times;</button>
-            <video id="modalVideo" controls autoplay></video>
+            <div class="video-container">
+                <video id="modalVideo" controls autoplay></video>
+            </div>
             <div class="video-details">
                 <div class="video-info-left">
                     <h3 id="videoTitle"></h3>
@@ -222,6 +224,7 @@
             </div>
         </div>
     </div>
+
 
 
 

@@ -208,7 +208,9 @@
     <div class="video-modal" id="videoModal">
         <div class="video-modal-content">
             <button class="close-btn" id="closeModalBtn">&times;</button>
-            <video id="modalVideo" controls autoplay></video>
+            <div class="video-container">
+                <video id="modalVideo" controls autoplay></video>
+            </div>
             <div class="video-details">
                 <div class="video-info-left">
                     <h3 id="videoTitle"></h3>
