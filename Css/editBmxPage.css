@@ -216,6 +216,12 @@ th, td {
     text-align: left;
 }
 
+td:nth-child(3) {
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 300px; /* optional: limits width to help wrapping */
+}
+
 th {
     background: #1e293b;
     color: #ecf0f1;

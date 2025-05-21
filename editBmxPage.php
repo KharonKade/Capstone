@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMx Page</title>
+    <title>BMX Page</title>
     <link rel="stylesheet" href="Css/editBmxPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -63,7 +63,7 @@
                     <i class="fa fa-edit"></i> Edit
                 </button>
 
-                <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus.php">
+                <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus_bmx.php">
                     <textarea name="about_us" id="about_us_editor"><?php echo htmlspecialchars($aboutUsContent); ?></textarea>
                     <button type="submit" style="display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
                         <i class="fa fa-check"></i> Update

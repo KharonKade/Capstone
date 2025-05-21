@@ -255,7 +255,7 @@ if ($event_id > 0) {
                 <?php
                 if (!empty($sponsors)) {
                     foreach ($sponsors as $sponsor) {
-                        echo '<img src="' . $sponsor['logo_path'] . '" alt="Sponsor Logo">';
+                        echo '<div class="sponsor-logo-container"><img src="' . $sponsor['logo_path'] . '" alt="Sponsor Logo" class="sponsor-logo"></div>';
                     }
                 } else {
                     echo "<p>No sponsor logos available for this event.</p>";

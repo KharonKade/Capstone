@@ -117,8 +117,11 @@
     <section class="partnership-section animate-on-scroll">
         <h2>In Partnership With</h2>
         <div class="partner-logos">
-            <img src="images/vanlogo.png" alt="Partner 1" class="partner-logo">
-            <img src="images/sk.jpg" alt="Partner 2" class="partner-logo">
+            <div class="partner-logo-container"><img src="images/vanlogo.png" alt="Partner 1" class="partner-logo"></div>
+            <div class="partner-logo-container"><img src="images/sk.jpg" alt="Partner 2" class="partner-logo"></div>
+            <div class="partner-logo-container"><img src="images/skate.jpg" alt="Partner 3" class="partner-logo"></div>
+            <div class="partner-logo-container"><img src="images/bmx logo.png" alt="Partner 4" class="partner-logo"></div>
+            <div class="partner-logo-container"><img src="images/wheel.png" alt="Partner 5" class="partner-logo"></div>
         </div>
     </section>
 

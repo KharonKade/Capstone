@@ -186,10 +186,10 @@
                                     autoplay muted loop
                                     data-id="' . $row["id"] . '"
                                     data-source="' . $source . '"
-                                    onclick="openModal(this, \'' . addslashes($title) . '\', \'' . addslashes($description) . '\')">
+                                    onclick=\'openModal(this, ' . json_encode($title) . ', ' . json_encode($description) . ')\'>
                                 </video>
                                 <div class="video-overlay">
-                                    <strong>' . $title . '</strong><br>' . $description . '
+                                    <strong>' . $title . '</strong>
                                 </div>
                             </div>';
 
@@ -297,7 +297,7 @@
             // Check if there are any partners
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    echo '<img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo" class="partner-logo">';
+                    echo '<div class="partner-logo-container"><img src="' . htmlspecialchars($row["logo"]) . '" alt="Partner Logo" class="partner-logo"></div>';
                 }
             } else {
                 // Display message when there are no partners

@@ -1091,10 +1091,20 @@ header {
     gap: 20px; /* Space between logos */
 }
 
+.partner-logo-container {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .partner-logo {
-    width: 100px; /* Adjust width as needed */
-    height: auto; /* Keep aspect ratio */
-    transition: transform 0.3s ease; /* Add a smooth hover effect */
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: transform 0.3s ease;
 }
 
 .partner-logo:hover {
