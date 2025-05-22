@@ -12,8 +12,8 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMX Page</title>
-    <link rel="stylesheet" href="Css/editBmxPage.css">
+    <title>Inline Page</title>
+    <link rel="stylesheet" href="Css/editInlinePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
@@ -24,10 +24,10 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             <h2>Admin Dashboard</h2>
             <ul>
                 <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="create_event.php"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="create_event.html"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
                 <li><a href="manage_upcoming.php"><i class="fas fa-calendar-check"></i> Manage Events</a></li>
                 <li><a href="archived_events.php"><i class="fas fa-archive"></i> Archived Events</a></li>
-                <li><a href="create_news.php"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
+                <li><a href="create_news.html"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
                 <li><a href="manage_news.php"><i class="fas fa-edit"></i> Manage News & Announcements</a></li>
                 <li><a href="archived_news.php"><i class="fas fa-history"></i> Archived News</a></li>
                 <li><a href="admin_gallery.php"><i class="fas fa-images"></i> Manage Gallery Page</a></li>
@@ -45,16 +45,16 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                 $servername = "localhost";
                 $username = "root";
                 $password = "";
-                $dbname_content = "basf_content_bmx";
+                $dbname_content = "basf_content";
 
-                $conn_content = new mysqli($servername, $username, $password, "basf_content_bmx");
+                $conn_content = new mysqli($servername, $username, $password, "basf_content");
 
                 if ($conn_content->connect_error) {
                     die("Connection failed: " . $conn_content->connect_error);
                 }
-                include 'handle_athletes_bmx.php';
+                include 'handle_athletes.php';
             ?>
-            <h2>Manage BMX Page</h2>
+            <h2>Manage Inline Page</h2>
             <section>
                 <label>About Us:</label>
                 <?php
@@ -72,7 +72,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                     <i class="fa fa-edit"></i> Edit
                 </button>
 
-                <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus_bmx.php">
+                <form id="aboutUsForm" style="display:none;" method="post" action="handle_aboutus.php">
                     <textarea name="about_us" id="about_us_editor"><?php echo htmlspecialchars($aboutUsContent); ?></textarea>
                     <button type="submit" style="display: inline-block; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
                         <i class="fa fa-check"></i> Update
@@ -88,7 +88,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                 <button onclick="showAddForm('addHighlightForm')">
                     <i class="fa fa-plus"></i> Add Highlight
                 </button>
-                <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight_bmx.php" enctype="multipart/form-data">
+                <form id="addHighlightForm" style="display:none;" method="post" action="handle_highlight.php" enctype="multipart/form-data">
                     <input type="file" name="video" required>
                     <input type="text" name="title" placeholder="Title" required>
                     <textarea name="description" placeholder="Description" required></textarea>
@@ -121,7 +121,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                                     <a href='#' onclick=\"toggleEditForm('editRow{$row['id']}')\" class='edit-link' title='Edit'>
                                         <i class='fa fa-edit'></i> 
                                     </a> |
-                                    <a href='handle_highlight_bmx.php?delete_id={$row['id']}' class='remove-link'  title='Delete' onclick='return confirm(\"Are you sure?\")'>
+                                    <a href='handle_highlight.php?delete_id={$row['id']}' class='remove-link'  title='Delete' onclick='return confirm(\"Are you sure?\")'>
                                         <i class='fa fa-trash'></i> 
                                     </a>
                                 </td>";
@@ -129,7 +129,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                             // Edit form in a separate row
                             echo "<tr id='editRow{$row['id']}' style='display:none;'>";
                             echo "<td colspan='4'>
-                                    <form method='post' action='handle_highlight_bmx.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
+                                    <form method='post' action='handle_highlight.php' enctype='multipart/form-data' style='display:flex; flex-direction:culomn; gap:5px; padding: 10px;'>
                                         <input type='hidden' name='id' value='{$row['id']}'>
                                         <h3>Edit Video File:</h3>
                                         <input type='file' name='video'>
@@ -161,7 +161,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                 </button>
                 
                 <!-- Add Athlete Form -->
-                <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes_bmx.php" enctype="multipart/form-data">
+                <form id="addAthleteForm" style="display:none;" method="post" action="handle_athletes.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Athlete Name" required>
                     <textarea name="bio" placeholder="Bio" required></textarea>
                     <textarea name="description" placeholder="Description" required></textarea>
@@ -285,7 +285,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                             <i class='fa fa-trash'></i> Delete
                         </button>"; // Added delete button
                     echo "</div>";
-                    echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes_bmx.php' enctype='multipart/form-data'>";
+                    echo "<form id='editAthleteForm{$row['id']}' style='display:none;' method='post' action='handle_athletes.php' enctype='multipart/form-data'>";
                     echo "<input type='hidden' name='edit_id' value='{$row['id']}'>";
                     echo "<input type='hidden' name='page' value='$page'>";
                     echo "<input type='text' name='name' value='{$row['name']}' required>";
@@ -354,7 +354,6 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                         </button>";
                     echo "</div>";
                     echo "</form></div>";
-
                 }
                 ?>
                 <div class="pagination">
@@ -378,7 +377,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                     <i class="fa fa-user-plus"></i> Add Leader
                 </button>
 
-                <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders_bmx.php" enctype="multipart/form-data">
+                <form id="addLeaderForm" style="display: none;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
                     <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="role" placeholder="Role" required>
                     <input type="file" name="image" required>
@@ -414,7 +413,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                                         <a href="javascript:void(0);" onclick="toggleForm(\'editLeaderForm' . $row['id'] . '\')" title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a> |
-                                         <form id="remove-form-' . $row['id'] . '" method="POST" action="handle_leaders_bmx.php" style="margin: 0; display: inline;">
+                                         <form id="remove-form-' . $row['id'] . '" method="POST" action="handle_leaders.php" style="margin: 0; display: inline;">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
                                             <input type="hidden" name="delete" value="1">
                                             <!-- Remove link with JavaScript for form submission -->
@@ -423,7 +422,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                                             </a>
                                         </form>
                                     </div>
-                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders_bmx.php" enctype="multipart/form-data">
+                                    <form id="editLeaderForm' . $row['id'] . '" style="display: none; margin-top: 10px;" method="POST" action="handle_leaders.php" enctype="multipart/form-data">
                                         <input type="hidden" name="edit_id" value="' . $row['id'] . '">
                                         <input type="text" name="name" value="' . htmlspecialchars($row['name']) . '" required style="width: 90%;">
                                         <input type="text" name="role" value="' . htmlspecialchars($row['role']) . '" required style="width: 90%;">
@@ -446,16 +445,13 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                 </table>
             </section>
 
-
-
-
             <section>
                 <label>Partners & Sponsors:</label>
                 <button onclick="toggleForm('addPartnerForm')">
                     <i class="fa fa-handshake"></i> Add Partner
                 </button>
 
-                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships_bmx.php" enctype="multipart/form-data">
+                <form id="addPartnerForm" style="display: none;" method="POST" action="handle_partnerships.php" enctype="multipart/form-data">
                     <input type="file" name="logo" required>
                     <button type="submit" style="padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
                         <i class="fa fa-plus"></i> Add
@@ -481,7 +477,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                                 echo '<tr>';
                                 echo '<td>' . htmlspecialchars($logoFileName) . '</td>';
                                 echo '<td>
-                                        <form method="POST" action="handle_partnerships_bmx.php" style="margin: 0;">
+                                        <form method="POST" action="handle_partnerships.php" style="margin: 0;">
                                             <input type="hidden" name="id" value="' . $row['id'] . '">
                                             <button type="submit" name="delete" style="display: none;"></button>
                                             <a href="javascript:void(0);" onclick="this.closest(\'form\').querySelector(\'button[type=submit]\').click();" title="Remove">
@@ -648,7 +644,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                     }
                     let uniqueId = `new-achievement-${Date.now()}`;
                     let newAchievement = document.createElement("div");
-                    newAchievement.classList.add("achievement",);
+                    newAchievement.classList.add("achievement");
                     newAchievement.id = uniqueId;
                     newAchievement.innerHTML = `
                         <input type="hidden" name="achievement_ids[]" value="new">
@@ -683,7 +679,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
 
             function confirmDelete(athleteId) {
                 if (confirm('Are you sure you want to delete this athlete? This action cannot be undone.')) {
-                    window.location.href = 'handle_athletes_bmx.php?delete_id=' + athleteId;
+                    window.location.href = 'handle_athletes.php?delete_id=' + athleteId;
                 }
             }
 

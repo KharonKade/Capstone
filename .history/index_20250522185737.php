@@ -290,10 +290,7 @@
             });
         });
         </script>
-        <script>
-        document.getElementById("basflogo").addEventListener("dblclick", function () {
-            window.location.href = "admin.php";
-        });
-        </script>
+
+
 </body>
 </html>

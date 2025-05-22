@@ -1,53 +1,4 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
-    // Not logged in as admin, redirect to admin login page
-    header("Location: admin_login.php");
-    exit();
-}
-?>
-
-<?php
-// Database connection
-$conn = new mysqli("localhost", "root", "", "basf_news");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Handle Archive Action
-if (isset($_GET['archive_id'])) {
-    $archive_id = intval($_GET['archive_id']);
-    $archive_sql = "UPDATE news_announcements SET status = 'archived' WHERE news_id = $archive_id";
-
-    if ($conn->query($archive_sql)) {
-        header("Location: manage_news.php?message=News archived successfully");
-        exit();
-    } else {
-        die("Error archiving news: " . $conn->error);
-    }
-}
-
-$filter_category = $_GET['category'] ?? '';
-
-
-$sql = "
-    SELECT 
-        @rownum := @rownum + 1 AS row_num, 
-        news_id, news_title, category, publish_date 
-    FROM news_announcements, (SELECT @rownum := 0) r 
-    WHERE status = 'active'
-";
-if (!empty($filter_category) && strtolower($filter_category) !== 'all') {
-    $filter_category = $conn->real_escape_string($filter_category);
-    $sql .= " AND category = '$filter_category'";
-}
-
-$sql .= " ORDER BY news_id DESC";
-$result = $conn->query($sql);
-?>
-
-<?php
 // Database connection
 $conn = new mysqli("localhost", "root", "", "basf_news");
 
@@ -82,10 +33,10 @@ $result = $conn->query($sql);
             <h2>Admin Dashboard</h2>
             <ul>
                 <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="create_event.php"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="create_event.html"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
                 <li><a href="manage_upcoming.php"><i class="fas fa-calendar-check"></i> Manage Events</a></li>
                 <li><a href="archived_events.php"><i class="fas fa-archive"></i> Archived Events</a></li>
-                <li><a href="create_news.php"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
+                <li><a href="create_news.html"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
                 <li><a href="manage_news.php"><i class="fas fa-edit"></i> Manage News & Announcements</a></li>
                 <li><a href="archived_news.php"><i class="fas fa-history"></i> Archived News</a></li>
                 <li><a href="admin_gallery.php"><i class="fas fa-images"></i> Manage Gallery Page</a></li>

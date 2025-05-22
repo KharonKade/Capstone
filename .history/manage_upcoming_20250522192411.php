@@ -10,7 +10,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
 
 <?php
 // Database connection
-$conn = new mysqli("localhost", "root", "", "basf_news");
+$conn = new mysqli("localhost", "root", "", "basf_events");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -18,32 +18,31 @@ if ($conn->connect_error) {
 // Handle Archive Action
 if (isset($_GET['archive_id'])) {
     $archive_id = intval($_GET['archive_id']);
-    $archive_sql = "UPDATE news_announcements SET status = 'archived' WHERE news_id = $archive_id";
+    $archive_sql = "UPDATE upcoming_events SET status = 'archived' WHERE id = $archive_id";
 
     if ($conn->query($archive_sql)) {
-        header("Location: manage_news.php?message=News archived successfully");
+        header("Location: manage_upcoming.php?message=Event archived successfully");
         exit();
     } else {
-        die("Error archiving news: " . $conn->error);
+        die("Error archiving event: " . $conn->error);
     }
 }
 
-$filter_category = $_GET['category'] ?? '';
-
+$filter_category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
 
 $sql = "
     SELECT 
         @rownum := @rownum + 1 AS row_num, 
-        news_id, news_title, category, publish_date 
-    FROM news_announcements, (SELECT @rownum := 0) r 
+        id, event_name, location, category, registration, registration_limit
+    FROM upcoming_events, (SELECT @rownum := 0) r 
     WHERE status = 'active'
 ";
-if (!empty($filter_category) && strtolower($filter_category) !== 'all') {
+if (!empty($filter_category) && $filter_category !== 'All') {
     $filter_category = $conn->real_escape_string($filter_category);
     $sql .= " AND category = '$filter_category'";
 }
+$sql . "ORDER BY id DESC";
 
-$sql .= " ORDER BY news_id DESC";
 $result = $conn->query($sql);
 ?>
 
@@ -52,9 +51,10 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage News & Announcements</title>
+    <title>Manage Upcoming Events</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="Css/manage_event.css"> <!-- You can reuse the existing stylesheet -->
+    <link rel="stylesheet" href="Css/manage_event.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <div class="admin-container">
@@ -62,10 +62,10 @@ $result = $conn->query($sql);
             <h2>Admin Dashboard</h2>
             <ul>
                 <li><a href="admin.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="create_event.php"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="create_event.html."><i class="fas fa-calendar-plus"></i> Create Event</a></li>
                 <li><a href="manage_upcoming.php"><i class="fas fa-calendar-check"></i> Manage Events</a></li>
                 <li><a href="archived_events.php"><i class="fas fa-archive"></i> Archived Events</a></li>
-                <li><a href="create_news.php"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
+                <li><a href="create_news.html"><i class="fas fa-newspaper"></i> Create News & Announcements</a></li>
                 <li><a href="manage_news.php"><i class="fas fa-edit"></i> Manage News & Announcements</a></li>
                 <li><a href="archived_news.php"><i class="fas fa-history"></i> Archived News</a></li>
                 <li><a href="admin_gallery.php"><i class="fas fa-images"></i> Manage Gallery Page</a></li>
@@ -78,14 +78,14 @@ $result = $conn->query($sql);
             </ul>
         </nav>
         <main class="content">
-            <h2>Manage News & Announcements</h2>
+            <h2>Manage Upcoming Events</h2>
             <form method="GET" style="margin-bottom: 20px;">
                 <label for="category">Filter by Category:</label>
                 <select name="category" onchange="this.form.submit()">
                     <option value="All" <?php if ($filter_category === 'All' || empty($filter_category)) echo 'selected'; ?>>All</option>
                     <option value="Skateboard" <?php if ($filter_category === 'Skateboard') echo 'selected'; ?>>Skateboard</option>
-                    <option value="Inline" <?php if ($filter_category === 'Inline') echo 'selected'; ?>>Inline</option>
                     <option value="BMX" <?php if ($filter_category === 'BMX') echo 'selected'; ?>>BMX</option>
+                    <option value="In-Line" <?php if ($filter_category === 'In-Line') echo 'selected'; ?>>In-Line</option>
                 </select>
             </form>
             <?php if ($result->num_rows > 0): ?>
@@ -93,9 +93,12 @@ $result = $conn->query($sql);
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>News Title</th>
+                        <th>Event Name</th>
+                        <th>Location</th>
                         <th>Category</th>
-                        <th>Publish Date</th>
+                        <th>Registration</th>
+                        <th>Limit</th>
+                        <th>Schedules</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -106,30 +109,47 @@ $result = $conn->query($sql);
                     while ($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row_num++; ?></td> <!-- Display the row number -->
-                        <td><?php echo $row['news_title']; ?></td>
+                        <td><?php echo $row['event_name']; ?></td>
+                        <td><?php echo $row['location']; ?></td>
                         <td><?php echo ucfirst($row['category']); ?></td>
-                        <td><?php echo $row['publish_date']; ?></td>
+                        <td><?php echo $row['registration'] == 1 ? 'Enabled' : 'Disabled'; ?></td>
+                        <td><?php echo $row['registration_limit'] ?? 'Unlimited'; ?></td>
                         <td>
-                            <a href="view_news.php?id=<?php echo $row['news_id']; ?>" title="View">
+                            <?php
+                            // Fetch schedules for the event
+                            $schedule_sql = "SELECT * FROM event_schedules WHERE event_id = " . $row['id'];
+                            $schedule_result = $conn->query($schedule_sql);
+                            if ($schedule_result->num_rows > 0) {
+                                while ($schedule = $schedule_result->fetch_assoc()) {
+                                    echo "Date: " . $schedule['event_date'] . "<br>";
+                                    echo "Start: " . $schedule['start_time'] . "<br>";
+                                    echo "End: " . $schedule['end_time'] . "<br><hr>";
+                                }
+                            } else {
+                                echo "No schedules found.";
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <a href="view_event.php?id=<?php echo $row['id']; ?>" title="View">
                                 <i class="fas fa-eye"></i>
                             </a> |
-                            <a href="edit_news.php?id=<?php echo $row['news_id']; ?>" title="Edit">
+                            <a href="edit_event.php?id=<?php echo $row['id']; ?>" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a> |
-                            <a href="delete_news.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Are you sure you want to delete this news item?');" title="Delete">
+                            <a href="delete_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this event?');" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </a> |
-                            <a href="archive_news.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Archive this news item?');" title="Archive">
+                            <a href="archive_event.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Archive this event?');" title="Archive">
                                 <i class="fas fa-archive"></i>
                             </a>
                         </td>
-
                     </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
             <?php else: ?>
-            <p>No news found.</p>
+            <p>No upcoming events found.</p>
             <?php endif; ?>
         </main>
     </div>

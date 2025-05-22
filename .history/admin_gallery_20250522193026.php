@@ -47,23 +47,21 @@ $sql .= " ORDER BY news_id DESC";
 $result = $conn->query($sql);
 ?>
 
-<?php
-// Database connection
-$conn = new mysqli("localhost", "root", "", "basf_news");
 
+<?php
+// Database Connection
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "basf_gallery";
+
+$conn = new mysqli($host, $username, $password, $database);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch archived news
-$sql = "
-    SELECT 
-        @rownum := @rownum + 1 AS row_num, 
-        news_id, news_title, category, publish_date 
-    FROM news_announcements, (SELECT @rownum := 0) r 
-    WHERE status = 'archived'
-    ORDER BY news_id DESC
-";
+// Fetch Gallery Items
+$sql = "SELECT * FROM gallery";
 $result = $conn->query($sql);
 ?>
 
@@ -72,12 +70,12 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archived News</title>
+    <title>Manage Gallery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="Css/archived_news.css"> <!-- Update the path as needed -->
+    <link rel="stylesheet" href="Css/admin_gallery.css">
 </head>
 <body>
-    <div class="admin-container">
+<div class="admin-container">
         <nav class="sidebar">
             <h2>Admin Dashboard</h2>
             <ul>
@@ -97,56 +95,52 @@ $result = $conn->query($sql);
                 <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
-        <main class="content">
-            <h2>Archived News</h2>
 
-            <form method="post" action="delete_all_news.php" onsubmit="return confirm('Are you sure you want to delete all archived news?');">
-                <button type="submit" name="delete_all" class="delete-all-btn">Delete All</button>
-            </form>
+        <div class="content">
+            <h1>Manage Gallery</h1>
+            <a href="add_gallery.php" class="btn">Add New Gallery Item</a>
 
-            <?php if ($result->num_rows > 0): ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>News Title</th>
-                            <th>Category</th>
-                            <th>Publish Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        // Initialize a counter for row numbers
-                        $row_num = 1;
-                        while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo $row_num++; ?></td>
-                                <td><?php echo htmlspecialchars($row['news_title']); ?></td>
-                                <td><?php echo ucfirst($row['category']); ?></td>
-                                <td><?php echo $row['publish_date']; ?></td>
-                                <td>
-                                    <a href="view_news.php?id=<?php echo $row['news_id']; ?>" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </a> |
-                                    <a href="delete_archiveNews.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Are you sure you want to delete this news item?');" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                    </a> |
-                                    <a href="restore_news.php?id=<?php echo $row['news_id']; ?>" onclick="return confirm('Are you sure you want to restore this news item?');" title="Restore">
-                                        <i class="fas fa-undo"></i>
-                                    </a>
-                                </td>
+            <table border="1">
+                <tr>
+                    <th>Thumbnail</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
 
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No archived news found.</p>
-            <?php endif; ?>
-        </main>
-    </div>
-</body>
-</html>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><img src="<?php echo 'images/uploads/' . basename($row['thumbnail']); ?>" width="100"></td>
+                    <td>
+                        <div style="word-wrap: break-word; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px;">
+                            <?php echo $row['title']; ?>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="word-wrap: break-word; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px;">
+                            <?php echo strtok($row['description'], '.'); ?> <!-- Displays only the first sentence -->
+                        </div>
+                    </td>
+                    <td>
+                        <a href="view_gallery.php?id=<?php echo $row['id']; ?>" title="View">
+                            <i class="fas fa-eye"></i>
+                        </a> |
+                        <a href="edit_gallery.php?id=<?php echo $row['id']; ?>" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a> |
+                        <a href="delete_gallery.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure?')" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
 
-<?php $conn->close(); ?>
+                </tr>
+            <?php endwhile; ?>
+
+            </table>
+        </div>
+</div>
+
+    </body>
+    </html>
+
+    <?php $conn->close(); ?>

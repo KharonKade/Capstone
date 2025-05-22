@@ -292,7 +292,7 @@
         </script>
         <script>
         document.getElementById("basflogo").addEventListener("dblclick", function () {
-            window.location.href = "admin.php";
+            window.location.href = "admin_login.php";
         });
         </script>
 </body>
