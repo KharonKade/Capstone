@@ -213,9 +213,8 @@ if ($event_id > 0) {
                         echo "<li>No schedule available for this event.</li>";
                     }
                     ?>
-                <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
                 <p><strong>Description:</strong> <?php echo isset($event['description']) ? $event['description'] : 'Not available'; ?></p>
-                
+                <p><strong>Location:</strong> <?php echo isset($event['location']) ? $event['location'] : 'Not available'; ?></p>
 
                 <?php if ($event['registration'] == 1): ?>
                     <?php if ($registration_limit == 0 || $registration_count < $registration_limit): ?>

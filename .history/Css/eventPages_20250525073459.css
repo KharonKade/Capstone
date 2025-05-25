@@ -315,6 +315,9 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #fff;
 }
 
 .sponsor-logo {
