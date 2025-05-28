@@ -34,14 +34,32 @@
 
     <section class="event-navigation"> 
         <div class="advertisement animate-on-scroll">
-            <a href="https://www.vans.com/en-us/shoes-c00081/old-skool-shoe-pvn000d3hy28" target="_blank">
+            <a id="ad-link" href="#" target="_blank">
                 <div class="ad-container">
-                    <img src="images/vansads.png" alt="Advertisement">
+                    <img id="ad-image" src="" alt="Advertisement">
                     <span class="ad-label">Ads</span>
                 </div>
             </a>
         </div>
     </section>
+
+    <div class="event-filter">
+        <select id="categoryFilter">
+            <option value="all">All Categories</option>
+            <option value="skateboard">Skateboard</option>
+            <option value="bmx">BMX</option>
+            <option value="inline">Inline</option>
+        </select>
+
+        <select id="dateFilter">
+            <option value="all">All Dates</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="this-week">This Week</option>
+            <option value="this-month">This Month</option>
+        </select>
+
+        <div id="event-count" class="event-count">Total Events: 0</div>
+    </div>
 
     <section class="container event-container animate-on-scroll" id="upcoming">
         <h2>Events & Activities</h2>
@@ -92,34 +110,41 @@
                 event_registrations r
             WHERE 
                 r.event_id = " . $row['id'] . "
-                AND r.registration_time > NOW() - INTERVAL 1 DAY
+                AND r.registration_time > NOW() - INTERVAL 7 DAY
             ";
             $trend_result = $conn->query($trend_sql);
             $trend_row = $trend_result->fetch_assoc();
             $recent_registrations = $trend_row['recent_registrations'];
 
-            if ($recent_registrations > 10) {
+            if ($recent_registrations > 5) {
                 $is_trending = true;
             } else {
                 $is_trending = false;
             }
 
-                    echo '<div class="event-item animate-on-scroll">
+            echo '<div class="event-item animate-on-scroll" 
+                    data-category="' . htmlspecialchars($row['category']) . '" 
+                    data-date="' . htmlspecialchars($row['event_date']) . '">
                     <a href="eventPages.php?id=' . $row['id'] . '">
                         <div class="flip-card">
                             <div class="flip-card-inner">
+                                <!-- Trending Now Tag -->
+                                ' . ($is_trending ? '<span class="trending-tag">Trending Now</span>' : '') . '
+
                                 <div class="flip-card-front">
                                     <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
                                 </div>
                                 <div class="flip-card-back" style="background-image: url(' . "'" . $row["image_path"] . "'" . ');">
                                     <div class="back-content">
                                         <p>' . $row["event_name"] . '</p>
-                                        <p>Category: ' . $row["category"] . '</p>
-                                        <p>Date: ' . $row["event_date"] . '</p>';
-                                        if ($is_trending) {
-                                            echo '<span class="trending-tag">Trending Now</span>';
-                                        }
-                                    echo '<br>
+                                        <p>Category: ' . $row["category"] . '</p>';
+
+                                        // Convert the event_date to a more readable format
+                                        $event_date = new DateTime($row["event_date"]);
+                                        $formatted_date = $event_date->format('l, F j, Y'); // E.g., "Monday, May 1, 2025"
+                                        echo '<p>Date: ' . $formatted_date . '</p>';
+            
+                                        echo '<br>
                                         <p>Click for more...</p>
                                     </div>
                                 </div>
@@ -127,6 +152,7 @@
                         </div>
                     </a>
                 </div>';
+        
                 }
             } else {
                 echo "<p>No upcoming events found.</p>";
@@ -245,5 +271,93 @@
     });
 
     </script>
+    <script>
+        const ads = [
+            {
+                image: 'images/vansads.png',
+                link: 'https://www.vans.com/en-us/shoes-c00081/old-skool-shoe-pvn000d3hy28'
+            },
+            {
+                image: 'images/nikead.webp',
+                link: 'https://www.nike.com/ph/'
+            },
+            {
+                image: 'images/redbullad.png',
+                link: 'https://www.redbull.com/ph-en'
+            }
+        ];
+
+        let currentAd = 0;
+
+        function rotateAd() {
+            const ad = ads[currentAd];
+            document.getElementById('ad-image').src = ad.image;
+            document.getElementById('ad-link').href = ad.link;
+            currentAd = (currentAd + 1) % ads.length;
+        }
+
+        rotateAd(); // Initial
+        setInterval(rotateAd, 3000); // Change every 8 seconds
+    </script>
+    <script>
+        document.getElementById('categoryFilter').addEventListener('change', filterEvents);
+        document.getElementById('dateFilter').addEventListener('change', filterEvents);
+
+        function filterEvents() {
+            const category = document.getElementById('categoryFilter').value;
+            const date = document.getElementById('dateFilter').value;
+            const items = document.querySelectorAll('.event-item');
+
+            const today = new Date();
+
+            items.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+                const itemDate = new Date(item.getAttribute('data-date'));
+                let show = true;
+
+                if (category !== 'all' && category !== itemCategory) {
+                    show = false;
+                }
+
+                if (date === 'upcoming' && itemDate < today) {
+                    show = false;
+                } else if (date === 'this-week') {
+                    const dayOfWeek = today.getDay(); // 0 = Sunday, 6 = Saturday
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - dayOfWeek);
+
+                    const endOfWeek = new Date(today);
+                    endOfWeek.setDate(today.getDate() + (6 - dayOfWeek));
+
+                    // Remove time for accurate comparison
+                    startOfWeek.setHours(0, 0, 0, 0);
+                    endOfWeek.setHours(23, 59, 59, 999);
+                    itemDate.setHours(0, 0, 0, 0);
+
+                    if (itemDate < startOfWeek || itemDate > endOfWeek) {
+                        show = false;
+                    }
+                } else if (date === 'this-month') {
+                    if (itemDate.getMonth() !== today.getMonth() || itemDate.getFullYear() !== today.getFullYear()) {
+                        show = false;
+                    }
+                }
+
+                item.style.display = show ? 'inline-block' : 'none';
+            });
+
+            updateEventCount(); // Update count after filter
+        }
+    </script>
+    <script>
+    function updateEventCount() {
+        const visibleItems = document.querySelectorAll('.event-item:not([style*="display: none"])');
+        document.getElementById('event-count').textContent = `Total Events: ${visibleItems.length}`;
+    }
+
+    window.onload = updateEventCount;
+    </script>
+
+
 </body>
 </html>

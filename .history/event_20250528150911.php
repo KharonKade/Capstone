@@ -116,7 +116,7 @@
                     $trend_result = $conn->query($trend_sql);
                     $trend_row = $trend_result->fetch_assoc();
                     $recent_registrations = $trend_row['recent_registrations'];
-                    $is_trending = $recent_registrations > 5;
+                    $is_trending = $recent_registrations > 10;
 
                     // Add to appropriate array
                     if ($is_trending) {

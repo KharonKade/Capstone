@@ -99,73 +99,73 @@
                 e.id DESC
         ";
 
-            $result = $conn->query($sql);
+        $result = $conn->query($sql);
 
-            $trending_events = [];
-            $regular_events = [];
+        $trending_events = [];
+        $regular_events = [];
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    // Check if trending
-                    $trend_sql = "
-                        SELECT COUNT(r.id) AS recent_registrations
-                        FROM event_registrations r
-                        WHERE r.event_id = " . $row['id'] . "
-                        AND r.registration_time > NOW() - INTERVAL 7 DAY
-                    ";
-                    $trend_result = $conn->query($trend_sql);
-                    $trend_row = $trend_result->fetch_assoc();
-                    $recent_registrations = $trend_row['recent_registrations'];
-                    $is_trending = $recent_registrations > 5;
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // Check if trending
+                $trend_sql = "
+                    SELECT COUNT(r.id) AS recent_registrations
+                    FROM event_registrations r
+                    WHERE r.event_id = " . $row['id'] . "
+                    AND r.registration_time > NOW() - INTERVAL 7 DAY
+                ";
+                $trend_result = $conn->query($trend_sql);
+                $trend_row = $trend_result->fetch_assoc();
+                $recent_registrations = $trend_row['recent_registrations'];
+                $is_trending = $recent_registrations > 10;
 
-                    // Add to appropriate array
-                    if ($is_trending) {
-                        $trending_events[] = ['data' => $row, 'trending' => true];
-                    } else {
-                        $regular_events[] = ['data' => $row, 'trending' => false];
-                    }
+                // Add to appropriate array
+                if ($is_trending) {
+                    $trending_events[] = ['data' => $row, 'trending' => true];
+                } else {
+                    $regular_events[] = ['data' => $row, 'trending' => false];
                 }
+            }
 
-                // Merge arrays (trending first)
-                $all_events = array_merge($trending_events, $regular_events);
+            // Merge arrays (trending first)
+            $all_events = array_merge($trending_events, $regular_events);
 
-                foreach ($all_events as $event) {
-                    $row = $event['data'];
-                    $is_trending = $event['trending'];
+            foreach ($all_events as $event) {
+                $row = $event['data'];
+                $is_trending = $event['trending'];
 
-                    echo '<div class="event-item animate-on-scroll" 
-                            data-category="' . htmlspecialchars($row['category']) . '" 
-                            data-date="' . htmlspecialchars($row['event_date']) . '">
-                            <a href="eventPages.php?id=' . $row['id'] . '">
-                                <div class="flip-card">
-                                    <div class="flip-card-inner">
-                                        ' . ($is_trending ? '<span class="trending-tag">Trending Now</span>' : '') . '
-                                        <div class="flip-card-front">
-                                            <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
-                                        </div>
-                                        <div class="flip-card-back" style="background-image: url(' . "'" . $row["image_path"] . "'" . ');">
-                                            <div class="back-content">
-                                                <p>' . $row["event_name"] . '</p>
-                                                <p>Category: ' . $row["category"] . '</p>';
+                echo '<div class="event-item animate-on-scroll" 
+                        data-category="' . htmlspecialchars($row['category']) . '" 
+                        data-date="' . htmlspecialchars($row['event_date']) . '">
+                        <a href="eventPages.php?id=' . $row['id'] . '">
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    ' . ($is_trending ? '<span class="trending-tag">Trending Now</span>' : '') . '
+                                    <div class="flip-card-front">
+                                        <img src="' . $row["image_path"] . '" alt="' . $row["event_name"] . '">
+                                    </div>
+                                    <div class="flip-card-back" style="background-image: url(' . "'" . $row["image_path"] . "'" . ');">
+                                        <div class="back-content">
+                                            <p>' . $row["event_name"] . '</p>
+                                            <p>Category: ' . $row["category"] . '</p>';
 
-                                                $event_date = new DateTime($row["event_date"]);
-                                                $formatted_date = $event_date->format('l, F j, Y');
-                                                echo '<p>Date: ' . $formatted_date . '</p>';
+                                            $event_date = new DateTime($row["event_date"]);
+                                            $formatted_date = $event_date->format('l, F j, Y');
+                                            echo '<p>Date: ' . $formatted_date . '</p>';
 
-                                                echo '<br><p>Click for more...</p>
-                                            </div>
+                                            echo '<br><p>Click for more...</p>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>';
-                }
-            } else {
-                echo "<p>No upcoming events found.</p>";
+                            </div>
+                        </a>
+                    </div>';
             }
+        } else {
+            echo "<p>No upcoming events found.</p>";
+        }
 
-            $conn->close();
-            ?>
+        $conn->close();
+        ?>
         </div>
     </section>
 
