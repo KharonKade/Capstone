@@ -61,7 +61,7 @@ header {
 /* Body */
 /* Sports Container */
 .sports-container {
-    background-image: url('../images/bg.png'); 
+    background-image: url('../images/herobg.png'); 
     background-size: cover;
     background-position: center;
     height: 100vh; 
@@ -100,7 +100,7 @@ header {
         -2px -2px 5px rgba(255,255,255,0.1);
     padding: 40px 70px;
     background: linear-gradient(145deg, #3a3a3a, #2b2b2b);
-    border: 2px solid red; /* Sporty orange-red border */
+    border: 2px solid #ff4500; /* Sporty orange-red border */
     border-radius: 20px;
     color: white;
     cursor: pointer;
@@ -193,102 +193,179 @@ header {
 }
 
 
-/* News Section */
 .news-container {
-    padding: 40px;
+    padding: 60px 20px;
+    background: linear-gradient(to bottom, #e0f7fa, #fff);
     text-align: center;
+    animation: fadeInUp 1s ease;
 }
 
 .news-container h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #333;
+    font-size: 3rem;
+    margin-bottom: 40px;
+    color: black;
+    text-shadow: 1px 1px #fff;
+}
+
+.news-carousel-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden; /* Prevents blocking vertical scroll */
+    touch-action: pan-y;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+    width: 80%;
+    margin: 0 auto; /* Centers the element horizontally */
 }
 
 .news-carousel {
     display: flex;
-    gap: 30px;
-    overflow-x: auto;
-    padding: 20px;
-    scroll-behavior: smooth; 
-    overflow-y: hidden;
+    gap: 20px;
+    padding: 10px;
     scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
     white-space: nowrap;
 }
 
-.news-carousel::-webkit-scrollbar {
+.news-carousel-wrapper::-webkit-scrollbar {
     height: 20px;
 }
 
-.news-carousel::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 5px;
+.news-carousel-wrapper::-webkit-scrollbar-thumb {
+    background: #ccc; /* Thumb color */
+    border-radius: 10px;
 }
 
-.news-carousel::-webkit-scrollbar-thumb:hover {
-    background: #555;
+.news-carousel-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track color */
+    border-radius: 10px;
 }
 
-.news-carousel::-webkit-scrollbar-track {
-    background: #f5f5f5;
+.news-carousel-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker shade when hovered */
 }
 
 .news-item {
-    flex-shrink: 0;
-    width: 400px;
-    height: 250px;
-    border-radius: 10px;
-    background-color: #f5f5f5;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex: 0 0 340px;
+    background: rgba(255, 255, 255, 0.25);
+    border: 2px solid transparent;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     scroll-snap-align: start;
     display: flex;
-    align-items: center;
-    justify-content: start;
-    text-align: left;
-    padding: 15px;
-    gap: 20px;
+    flex-direction: column;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+    cursor: pointer;
+    animation: bounceIn 0.8s ease forwards;
+    border-image: linear-gradient(45deg, #26a69a, #81c784) 1;
+}
+
+.news-item:hover {
+    transform: scale(1.03) rotateZ(0.5deg);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
 .news-item img {
-    width: 150px;
-    height: 100%;
+    width: 100%;
+    height: 180px;
     object-fit: cover;
-    border-radius: 10px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
 }
 
 .news-item-content {
+    padding: 16px;
+    text-align: left;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 10px;
+    flex-grow: 1;
     overflow: hidden;
 }
 
+
 .news-item-content h3 {
-    font-size: 1.5rem;
-    color: #333;
-    margin: 0;
+    font-size: 1.4rem;
+    color: #004d40;
+    margin-bottom: 10px;
 }
 
 .news-item-content p {
-    font-size: 1rem;
-    color: #666;
-    margin: 0;
-    white-space: nowrap;
-    text-overflow: ellipsis; /* In case text overflows, it will show ellipsis */
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.news-item-content .news-desc {
+    height: 3em; /* shorter height for 2 lines of text */
+    margin-bottom: 6px; /* reduce space */
+}
+
+
+.news-item-content .publish-date {
+    font-size: 0.85rem;
+    color: #757575;
+    margin-bottom: 6px;
+}
+
+.news-item-content a.read-more {
+    align-self: flex-start;
+    margin-top: auto;
+    background: linear-gradient(90deg, #26a69a, #00796b);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
     overflow: hidden;
 }
 
-.news-item-content a {
-    color: #0073e6;
-    text-decoration: none;
-    font-weight: bold;
+.news-item-content a.read-more:hover {
+    background: #004d40;
+    transform: scale(1.05);
 }
 
-.news-item-content a:hover {
-    color: #005bb5;
+.news-item-content a.read-more::after {
+    content: " →";
+    transition: margin-left 0.3s ease;
+    margin-left: 0;
 }
+
+.news-item-content a.read-more:hover::after {
+    margin-left: 8px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 
 /* Advertisement Section */
 .advertisement {
@@ -337,13 +414,23 @@ header {
 .partner-logos {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap; 
-    gap: 20px; 
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.partner-logo-container {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .partner-logo {
-    width: 100px; 
-    height: auto; 
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
     transition: transform 0.3s ease;
 }
 
